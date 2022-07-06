@@ -1,13 +1,19 @@
 
-import { AuthScreen } from './src/screens/auth-screens';
-import { HomeScreen } from './src/screens/home-screens';
+
+import { NavigationContainer } from '@react-navigation/native';
+import React from 'react';
+import { BottomNavigationBar } from './src/navigation';
 
 
 export default function App() {
-  
+
   return (
-    <AuthScreen/>
+    <NavigationContainer>
+      <BottomNavigationBar />
+    </NavigationContainer>
+
   );
 }
+
 
 

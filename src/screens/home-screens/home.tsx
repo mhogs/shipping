@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { View, StyleSheet, Image, StatusBar, Text, TextInput, KeyboardAvoidingView, Pressable } from 'react-native'
 import { add_squar_icon_asset, checkRatesIcon, logo_asset, notification_asset, scanIcon, searchIcon } from '../../assets'
+import { Space } from '../../components/util'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 
@@ -54,18 +55,37 @@ export const HomeScreen = () => {
                 </View>
                 <View style={styles.body} >
                     <Text style={styles.featuresText}>Features</Text>
-                    <View style={styles.featuresCard}>
+                    <View style={styles.featuresWraper}>
                         <Pressable style={styles.feature} >
                             <Image source={checkRatesIcon} width={24} height={24} />
                             <Text style={styles.featureName}>Check Rates</Text>
                         </Pressable>
+                        <Space size={15} />
                         <Pressable style={styles.feature} >
                             <Image source={checkRatesIcon} width={24} height={24} />
-                            <Text style={styles.featureName}>Check Rates</Text>
+                            <Text style={styles.featureName}>Nearby Drop</Text>
                         </Pressable>
+                        <Space size={15} />
                         <Pressable style={styles.feature} >
                             <Image source={checkRatesIcon} width={24} height={24} />
-                            <Text style={styles.featureName}>Check Rates</Text>
+                            <Text style={styles.featureName}>Order</Text>
+                        </Pressable>
+                    </View>
+                    <Space size={15} direction= 'vertical'/>
+                    <View style={styles.featuresWraper}>
+                        <Pressable style={styles.feature} >
+                            <Image source={checkRatesIcon} width={24} height={24} />
+                            <Text style={styles.featureName}>Help Center</Text>
+                        </Pressable>
+                        <Space size={15} />
+                        <Pressable style={styles.feature} >
+                            <Image source={checkRatesIcon} width={24} height={24} />
+                            <Text style={styles.featureName}>Wallet</Text>
+                        </Pressable>
+                        <Space size={15} />
+                        <Pressable style={styles.feature} >
+                            <Image source={checkRatesIcon} width={24} height={24} />
+                            <Text style={styles.featureName}>Others</Text>
                         </Pressable>
                     </View>
                 </View>
@@ -84,9 +104,9 @@ const getStyles = (theme: ThemeType) => {
         },
         head: {
             backgroundColor: palette.primary[theme.mode].main,
-            padding:24
+            padding: 24
         },
-       
+
         title: {
             flexDirection: 'row',
             alignItems: 'center',
@@ -155,43 +175,43 @@ const getStyles = (theme: ThemeType) => {
             marginTop: 20,
             backgroundColor: palette.primary[mode][2],
             flexDirection: 'row',
-            justifyContent:'space-between',
+            justifyContent: 'space-between',
             borderRadius: 12,
             alignItems: 'center',
             padding: 14,
         },
         searchInput: {
             marginLeft: 14,
-            color:palette.grey[mode][3]
+            color: palette.grey[mode][3]
         },
         /** Body */
         body: {
             flex: 1,
-            paddingTop:30,
-            paddingLeft:24,
-            paddingRight:24
+            paddingTop: 30,
+            paddingLeft: 24,
+            paddingRight: 24
         },
-        featuresText:{
+        featuresText: {
             ...text.heading.H3,
-            color:palette.black[mode].main
+            color: palette.black[mode].main,
+            marginBottom:20
         },
-        featuresCard:{
-            flexDirection:"row",
-            flexWrap:"wrap",
-            marginTop:20
+        featuresWraper: {
+            flexDirection: "row",
+            flexWrap: "wrap",
         },
-        feature:{
-            flex:1,
-            paddingTop:16,
-            paddingBottom:16,
-            borderWidth:1,
-            borderColor:palette.lightGrey[mode].main,
-            alignItems:'center',
+        feature: {
+            flex: 1,
+            paddingTop: 16,
+            paddingBottom: 16,
+            borderWidth: 1,
+            borderColor: palette.lightGrey[mode].main,
+            alignItems: 'center',
         },
-        featureName:{
+        featureName: {
             ...text.medium.P12_Lh130,
-            color:palette.black[mode].main,
-            marginTop:6
+            color: palette.black[mode].main,
+            marginTop: 6
         }
     })
 }

@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { changeLanguage, useTranslation } from '../locales';
-import { HomeScreen, LoginScreen } from '../screens';
+import { HomeScreen } from '../screens';
 
 const Tab = createBottomTabNavigator();
 
@@ -16,11 +16,6 @@ export  function BottomNavigationBar() {
                 <Tab.Screen
                     name="Home"
                     component={HomeScreen}
-                    options={{ title: 'Welcome' }}
-                />
-                <Tab.Screen
-                    name="Login"
-                    component={LoginScreen}
                     options={{ title: 'Welcome' }}
                 />
             </Tab.Navigator>

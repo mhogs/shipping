@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, StatusBar } from 'react-native'
+import { View, Text, StyleSheet, KeyboardAvoidingView } from 'react-native'
 import React from 'react'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
@@ -8,12 +8,9 @@ export const RegisterScreen = () => {
     const styles = getStyles(theme)
 
     return (
-        <>
-            <StatusBar backgroundColor={theme.palette.primary[theme.mode].main} />
-            <View style={styles.root}>
-                <Text>register screen</Text>
-            </View>
-        </>
+        <KeyboardAvoidingView style={styles.root}>
+            <Text>login screen</Text>
+        </KeyboardAvoidingView>
     )
 }
 

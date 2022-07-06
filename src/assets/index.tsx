@@ -1,2 +1,6 @@
 export const logo_asset=require("./home/logo.png")
 export const notification_asset=require("./home/notification.png")
+export const add_squar_icon_asset=require("./home/addSquarIcon.png")
+export const searchIcon=require("./icons/searchIcon.png")
+export const scanIcon=require("./icons/scanIcon.png")
+ export const checkRatesIcon=require('./icons/checkRatesIcon.png')

@@ -1,2 +1,6 @@
 export const logo_asset=require("./home/logo.png")
 export const notification_asset=require("./home/notification.png")
+export const profile_asset= require("./auth/profile.png")
+export const call_asset= require("./auth/call.png")
+export const lock_asset= require("./auth/lock.png")
+export const leftarrow_asset= require("./auth/arrow-left.png")

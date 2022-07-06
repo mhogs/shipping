@@ -37,7 +37,7 @@ function initI18N() {
 
 i18n.use(initReactI18next).init({
   compatibilityJSON: 'v3',
-  resources: { en, ar, he },
+  resources: { en, ar, fr },
   defaultNS: 'translation',
   fallbackLng: 'en',
   lng: findBestAvailableLanguage(),

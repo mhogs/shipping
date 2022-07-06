@@ -1,17 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+
 import { useTranslation, changeLanguage } from './src/locales'
-import { LoginScreen, RegisterScreen } from './src/screens/auth-screens';
-import { HomeScreen } from './src/screens/home-screens';
+import { NavigationContainer } from '@react-navigation/native';
+
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React from 'react';
+import { BottomNavigationBar } from './src/navigation';
 
 
 export default function App() {
   const { t } = useTranslation('home')
-  const switch_lang=()=>changeLanguage('fr')
-  
+  const switch_lang = () => changeLanguage('fr')
+
   return (
-    <LoginScreen/>
+    <NavigationContainer>
+      <BottomNavigationBar />
+    </NavigationContainer>
+
   );
 }
+
 
 

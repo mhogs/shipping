@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { View, StyleSheet, Image, StatusBar, Text, TextInput, KeyboardAvoidingView, Pressable } from 'react-native'
-import { add_squar_icon_asset, checkRatesIcon, logo_asset, notification_asset, scanIcon, searchIcon } from '../../assets'
+import { add_squar_icon_asset, checkRatesIcon, HelpCenterFeatureIcon, logo_asset, NearByFeatureIcon, notification_asset, OrderFeatureIcon, OtherFeatureIcon, scanIcon, searchIcon, WalletFeatureIcon } from '../../assets'
 import { Space } from '../../components/util'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
@@ -62,29 +62,29 @@ export const HomeScreen = () => {
                         </Pressable>
                         <Space size={15} />
                         <Pressable style={styles.feature} >
-                            <Image source={checkRatesIcon} width={24} height={24} />
+                            <Image source={NearByFeatureIcon} width={24} height={24} />
                             <Text style={styles.featureName}>Nearby Drop</Text>
                         </Pressable>
                         <Space size={15} />
                         <Pressable style={styles.feature} >
-                            <Image source={checkRatesIcon} width={24} height={24} />
+                            <Image source={OrderFeatureIcon} width={24} height={24} />
                             <Text style={styles.featureName}>Order</Text>
                         </Pressable>
                     </View>
                     <Space size={15} direction= 'vertical'/>
                     <View style={styles.featuresWraper}>
                         <Pressable style={styles.feature} >
-                            <Image source={checkRatesIcon} width={24} height={24} />
+                            <Image source={HelpCenterFeatureIcon} width={24} height={24} />
                             <Text style={styles.featureName}>Help Center</Text>
                         </Pressable>
                         <Space size={15} />
                         <Pressable style={styles.feature} >
-                            <Image source={checkRatesIcon} width={24} height={24} />
+                            <Image source={WalletFeatureIcon} width={24} height={24} />
                             <Text style={styles.featureName}>Wallet</Text>
                         </Pressable>
                         <Space size={15} />
                         <Pressable style={styles.feature} >
-                            <Image source={checkRatesIcon} width={24} height={24} />
+                            <Image source={OtherFeatureIcon} width={24} height={24} />
                             <Text style={styles.featureName}>Others</Text>
                         </Pressable>
                     </View>
@@ -100,7 +100,7 @@ const getStyles = (theme: ThemeType) => {
     return StyleSheet.create({
         root: {
             flex: 1,
-            backgroundColor: palette.white[theme.mode].main,
+            backgroundColor: palette.lightGrey[theme.mode][3],
         },
         head: {
             backgroundColor: palette.primary[theme.mode].main,
@@ -204,9 +204,11 @@ const getStyles = (theme: ThemeType) => {
             flex: 1,
             paddingTop: 16,
             paddingBottom: 16,
-            borderWidth: 1,
+            borderWidth: 1.5,
             borderColor: palette.lightGrey[mode].main,
             alignItems: 'center',
+            borderRadius:12
+
         },
         featureName: {
             ...text.medium.P12_Lh130,

@@ -1,27 +1,78 @@
-import { View, Text, StyleSheet, StatusBar, Pressable, KeyboardAvoidingView } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, StatusBar, Pressable, useWindowDimensions, KeyboardAvoidingView  } from 'react-native'
+import React, {useState} from 'react'
+
 import { LoginScreen } from './login-screen'
 import { RegisterScreen } from './register-screen'
+import { TabView, SceneMap, TabBar  } from 'react-native-tab-view';
+
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 import { LeftArrowIcon } from '../../components/icons'
+
+
+const renderScene = SceneMap({
+    login: LoginScreen,
+    register: RegisterScreen,
+  });
+
+
 
 export const AuthScreen = () => {
     const { theme } = useTheme()
     const styles = getStyles(theme)
 
+    const layout = useWindowDimensions();
+
+    const [index, setIndex] = useState(0);
+    const [routes] = useState([
+        { key: 'login', title: 'Sign In' },
+        { key: 'register', title: 'Sign Up' },
+    ]);
+
+    const _renderTabBar = (props: any) => {
+        
+        return (
+          <View style={styles.tapBar}>
+            {props.navigationState.routes.map((route, i) => {
+              
+              return (
+                <Pressable
+                    key={i}
+                    style={index===i? styles.tabItemFocused: styles.tabItemNotFocused}
+                    onPress={() => setIndex(i)}>
+                    <Text style={index===i? styles.focusedLabel: styles.nonFocusedLabel}>{route.title}</Text>
+                </Pressable>
+              );
+            })}
+          </View>
+        );
+      };
+
+
     return (
         <>
             <StatusBar barStyle={'dark-content'} backgroundColor={theme.palette.white[theme.mode].main} />
 
-            <KeyboardAvoidingView style={styles.root}>
+            <View style={styles.root}>
                 <View style={styles.header}>
                     <Pressable onPress={()=> console.log("back")} style={styles.back_wraper}>
                         <LeftArrowIcon size={24} color={theme.palette.black[theme.mode].main}></LeftArrowIcon>
                     </Pressable>
                 </View>
+                <Text style={styles.title}>Shipping and Track Anytime</Text>
+                <Text style={styles.description}>Get great experience with tracky</Text>
+                <KeyboardAvoidingView style={styles.container}>
+                    <TabView
+                        navigationState={{ index, routes }}
+                        renderTabBar={_renderTabBar}
+                        renderScene={renderScene}
+                        swipeEnabled={false}
+                        onIndexChange={setIndex}
+                        initialLayout={{ width: layout.width }}
+                    />
+                </KeyboardAvoidingView>
                 
-            </KeyboardAvoidingView>
+            </View>
         </>
     )
 }
@@ -33,18 +84,14 @@ const getStyles = (theme: ThemeType) => {
         root: {
             flex: 1,
             backgroundColor: palette.white[theme.mode].main,
-            paddingTop: 24,
             paddingLeft: 24,
             paddingRight: 24
         },
         header: {
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'flex-start'
-        },
-        back_arrow: {
-            width: 23,
-            height: 23,
+            justifyContent: 'flex-start',
+            marginTop:30
         },
         back_wraper: {
             justifyContent: 'center',
@@ -55,5 +102,59 @@ const getStyles = (theme: ThemeType) => {
             borderWidth: 1,
             borderColor: palette.grey[theme.mode][3],
         },
+        back_arrow: {
+            width: 23,
+            height: 23,
+        },
+        title: {
+            marginTop: 20,
+            ...text.heading.H2,
+            color: palette.black[mode].main
+        },
+        description: {
+            marginTop: 10,
+            marginBottom:30,
+            ...text.regular.P14_Lh130,
+            color: palette.grey[mode].main
+        },
+        container:{
+            flex:1,
+        },
+       
+        tapBar:{
+            display:'flex',
+            flexDirection:'row',
+            alignItems:'center',
+            borderRadius:25,
+            height:50,
+            padding:4,
+            elevation:0,
+            backgroundColor: palette.lightGrey[theme.mode][3],
+        },
+        tabItemFocused:{
+            flex:1,
+            borderRadius:25,
+            height:'100%',
+            backgroundColor: palette.white[theme.mode].main,
+            justifyContent:'center'
+        },
+        tabItemNotFocused:{
+            flex:1,
+            borderRadius:25,
+            height:'100%',
+            backgroundColor: 'transparent',
+            justifyContent:'center'
+        },
+        focusedLabel:{
+            color: palette.black[mode].main,
+            ...text.medium.P14_Lh130,
+            textAlign:'center'
+        },
+        nonFocusedLabel:{
+            color: palette.grey[mode].main,
+            ...text.medium.P14_Lh130,
+            textAlign:'center'
+        },
+
     })
 }

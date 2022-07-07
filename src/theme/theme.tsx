@@ -11,7 +11,8 @@ export type ColorType = {
 export type TextStyleType = {
     fontSize: number,
     fontWeight: "600" | "500" | "400",
-    lineHeight?: number
+    lineHeight?: number,
+    fontFamily:string
 }
 export type TypographyType = {
     P20_Lh180: TextStyleType,
@@ -155,131 +156,157 @@ export const defaultTheme: ThemeType = {
             H1: {
                 fontSize: 22,
                 fontWeight: "600",
-                lineHeight: 28.6
+                lineHeight: 28.6,
+                fontFamily: 'Outfit_600SemiBold'
             },
             H2: {
                 fontSize: 18,
                 fontWeight: "600",
-                lineHeight: 23.4
+                lineHeight: 23.4,
+                fontFamily: 'Outfit_600SemiBold'
             },
             H3: {
                 fontSize: 16,
                 fontWeight: "600",
-                lineHeight: 20.8
+                lineHeight: 20.8,
+                fontFamily: 'Outfit_600SemiBold'
             },
             H4: {
                 fontSize: 14,
                 fontWeight: "600",
-                lineHeight: 18.2
+                lineHeight: 18.2,
+                fontFamily: 'Outfit_600SemiBold'
             },
             H5: {
                 fontSize: 12,
                 fontWeight: "600",
-                lineHeight: 15.6
+                lineHeight: 15.6,
+                fontFamily: 'Outfit_600SemiBold'
             },
         },
         regular:{
             P20_Lh180: {
                 fontSize: 20,
                 fontWeight: "400",
-                lineHeight: 36
+                lineHeight: 36,
+                fontFamily: 'Outfit_400Regular'
+                
             },
             P20_Lh130: {
                 fontSize: 20,
                 fontWeight: "400",
-                lineHeight: 26
+                lineHeight: 26,
+                fontFamily: 'Outfit_400Regular'
             },
             P18_Lh180: {
                 fontSize: 18,
                 fontWeight: "400",
-                lineHeight: 32.4
+                lineHeight: 32.4,
+                fontFamily: 'Outfit_400Regular'
             },
             P18_Lh130: {
                 fontSize: 18,
                 fontWeight: "400",
-                lineHeight: 23.4
+                lineHeight: 23.4,
+                fontFamily: 'Outfit_400Regular'
             },
             P16_Lh180: {
                 fontSize: 16,
                 fontWeight: "400",
-                lineHeight: 28.8
+                lineHeight: 28.8,
+                fontFamily: 'Outfit_400Regular'
             },
             P16_Lh130: {
                 fontSize: 16,
                 fontWeight: "400",
-                lineHeight: 20.8
+                lineHeight: 20.8,
+                fontFamily: 'Outfit_400Regular'
             },
             P14_Lh180: {
                 fontSize: 14,
                 fontWeight: "400",
-                lineHeight: 25.2
+                lineHeight: 25.2,
+                fontFamily: 'Outfit_400Regular'
             },
             P14_Lh130: {
                 fontSize: 14,
                 fontWeight: "400",
-                lineHeight: 18.2
+                lineHeight: 18.2,
+                fontFamily: 'Outfit_400Regular'
             },
             P12_Lh180: {
                 fontSize: 12,
                 fontWeight: "400",
-                lineHeight: 21.6
+                lineHeight: 21.6,
+                fontFamily: 'Outfit_400Regular'
             },
             P12_Lh130: {
                 fontSize: 12,
                 fontWeight: "400",
-                lineHeight: 15.6
+                lineHeight: 15.6,
+                fontFamily: 'Outfit_400Regular'
             },
         },
         medium: {
             P20_Lh180: {
                 fontSize: 20,
                 fontWeight: "500",
-                lineHeight: 36
+                lineHeight: 36,
+                fontFamily: 'Outfit_500Medium'
             },
             P20_Lh130: {
                 fontSize: 20,
                 fontWeight: "400",
-                lineHeight: 26
+                lineHeight: 26,
+                fontFamily: 'Outfit_500Medium'
             },
             P18_Lh180: {
                 fontSize: 18,
                 fontWeight: "400",
-                lineHeight: 32.4
+                lineHeight: 32.4,
+                fontFamily: 'Outfit_500Medium'
             },
             P18_Lh130: {
                 fontSize: 18,
                 fontWeight: "400",
-                lineHeight: 23.4
+                lineHeight: 23.4,
+                fontFamily: 'Outfit_500Medium'
             },
             P16_Lh180: {
                 fontSize: 16,
                 fontWeight: "400",
-                lineHeight: 28.8
+                lineHeight: 28.8,
+                fontFamily: 'Outfit_500Medium'
             },
             P16_Lh130: {
                 fontSize: 16,
                 fontWeight: "400",
-                lineHeight: 20.8
+                lineHeight: 20.8,
+                fontFamily: 'Outfit_500Medium'
             },
             P14_Lh180: {
                 fontSize: 14,
                 fontWeight: "400",
-                lineHeight: 25.2
+                lineHeight: 25.2,
+                fontFamily: 'Outfit_500Medium'
             },
             P14_Lh130: {
                 fontSize: 14,
                 fontWeight: "400",
-                lineHeight: 18.2
+                lineHeight: 18.2,
+                fontFamily: 'Outfit_500Medium'
             },
             P12_Lh180: {
                 fontSize: 12,
                 fontWeight: "400",
-                lineHeight: 21.6
+                lineHeight: 21.6,
+                fontFamily: 'Outfit_500Medium'
             },
             P12_Lh130: {
                 fontSize: 12,
                 fontWeight: "400",
-                lineHeight: 15.6
+                lineHeight: 15.6,
+                fontFamily: 'Outfit_500Medium'
             },
         },
     }

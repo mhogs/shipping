@@ -15,7 +15,9 @@ export const HomeIconActive=require('./icons/home-icon-active.png')
 export const OrdersIcon=require('./icons/orders-icon.png')
 export const OrdersIconActive=require('./icons/orders-icon-active.png')
 export const MessageIcon=require('./icons/message-icon.png')
+export const MessageIconActive=require('./icons/message-icon-active.png')
 export const ProfileIcon=require('./icons/profile-icon.png')
+export const ProfileIconActive=require('./icons/profile-icon-active.png')
 
 /** features */
 export const checkRatesIcon=require('./icons/checkrate-feature-icon.png')

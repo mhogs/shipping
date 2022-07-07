@@ -27,12 +27,15 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                             <Image width={28} height={28} source={logo_asset} />
                             <Text style={styles.logo_text}  >Tracky</Text>
                         </View>
-                        <View style={styles.notification_wraper}>
+                        <Pressable
+                            style={styles.notification_wraper}
+                            onPress={() => navigate('NotificationsStack', { userId: "1" })}
+                        >
                             <View style={styles.notification_icon}>
                                 <View style={styles.notification_indicator} />
                                 <Image source={notification_asset} />
                             </View>
-                        </View>
+                        </Pressable>
                     </View>
                     {/** balance banner */}
                     <View style={styles.balanceBaner}>
@@ -52,6 +55,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                         <View style={{ flexDirection: 'row' }}>
                             <Image source={searchIcon} width={24} height={24} />
                             <TextInput
+                                onFocus={() => navigate("TrackingStack")}
                                 placeholder='Enter track number'
                                 placeholderTextColor={theme.palette.grey[theme.mode][3]}
                                 style={styles.searchInput}
@@ -71,13 +75,16 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                                     {
                                         row.map((feature: featureType) => (
                                             <Fragment key={feature.name}>
-                                                <Pressable
-                                                    style={styles.feature}
-                                                    onPress={() => navigate(feature.route)}
-                                                >
-                                                    <Image source={feature.icon} width={24} height={24} />
-                                                    <Text style={styles.featureName}>{feature.name}</Text>
-                                                </Pressable>
+                                                <View style={styles.feature}>
+                                                    <Pressable
+                                                        style={styles.featurePressable}
+                                                        onPress={() => navigate(feature.route)}
+                                                        android_ripple={{ color: theme.palette.grey[theme.mode][3], borderless: false }}
+                                                    >
+                                                        <Image source={feature.icon} width={24} height={24} />
+                                                        <Text style={styles.featureName}>{feature.name}</Text>
+                                                    </Pressable>
+                                                </View>
                                                 <Space size={15} />
                                             </Fragment>
                                         ))
@@ -87,7 +94,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                             </Fragment>
                         ))
                     }
-                    
+
                 </View>
             </KeyboardAvoidingView>
         </>
@@ -129,9 +136,9 @@ const features = [
     {
         name: 'Others',
         icon: OtherFeatureIcon,
-        route: 'Home'
+        route: 'HomeStack'
     },
-  
+
 
 
 
@@ -242,14 +249,19 @@ const getStyles = (theme: ThemeType) => {
             flexWrap: "wrap",
         },
         feature: {
+            position: 'relative',
             flex: 1,
-            paddingTop: 16,
-            paddingBottom: 16,
+            overflow: 'hidden',
             borderWidth: 1.5,
             borderColor: palette.lightGrey[mode].main,
             alignItems: 'center',
             borderRadius: 12
-
+        },
+        featurePressable: {
+            paddingTop: 16,
+            paddingBottom: 16,
+            width: "100%",
+            alignItems: 'center'
         },
         featureName: {
             ...text.medium.P12_Lh130,

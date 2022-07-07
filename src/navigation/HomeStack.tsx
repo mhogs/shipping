@@ -2,7 +2,12 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { HomeScreen } from '../screens';
 import { CheckRatesStackNavigator } from './CheckRatesStack';
+import { HelpCenterStackNavigator } from './HelpCenterStack';
 import { NearByStackNavigator } from './NearByStack';
+import { NotificationsStackNavigator } from './NotificationsStack';
+import { OrderHistoryStackNavigator } from './OrderHistoryStack';
+import { TrakingStackNavigator } from './TrackingStack';
+import { WalletStackNavigator } from './WalletStack';
 
 
 
@@ -22,6 +27,11 @@ export const HomeStackNavigator = () => {
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="CheckRatesStack" component={CheckRatesStackNavigator} />
             <Stack.Screen name="NearbyDropStack" component={NearByStackNavigator} />
+            <Stack.Screen name="OrderHistoryStack" component={OrderHistoryStackNavigator} />
+            <Stack.Screen name="HelpCenterStack" component={HelpCenterStackNavigator} />
+            <Stack.Screen name="WalletStack" component={WalletStackNavigator} />
+            <Stack.Screen name="NotificationsStack" component={NotificationsStackNavigator} />
+            <Stack.Screen name="TrackingStack" component={TrakingStackNavigator} />
         </Stack.Navigator>
     )
 }

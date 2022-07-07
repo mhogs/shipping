@@ -9,7 +9,7 @@ export const RegisterScreen = () => {
 
     return (
         <KeyboardAvoidingView style={styles.root}>
-            <Text>login screen</Text>
+            <Text>signup screen</Text>
         </KeyboardAvoidingView>
     )
 }
@@ -21,7 +21,7 @@ const getStyles = (theme: ThemeType) => {
         root: {
             flex: 1,
             backgroundColor: palette.white[theme.mode].main,
-
+            marginTop:30,
         },
         
     })

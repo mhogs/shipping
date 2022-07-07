@@ -77,14 +77,14 @@ type BottomTabType = {
     name: string,
     icon: any,
     activeIcon: any,
-    route: 'Home' | 'OrdersStack' | 'MessagesStack' | 'ProfileStack'
+    route: 'HomeStack' | 'OrdersStack' | 'MessagesStack' | 'ProfileStack'
 }
 const BottomTabs: BottomTabType[] = [
     {
         name: 'Home',
         icon: HomeIcon,
         activeIcon: HomeIconActive,
-        route: 'Home'
+        route: 'HomeStack'
     },
     {
         name: 'Orders',

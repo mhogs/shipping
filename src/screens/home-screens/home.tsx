@@ -1,13 +1,21 @@
-import React, { FC } from 'react'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import React, { FC, Fragment } from 'react'
 import { View, StyleSheet, Image, StatusBar, Text, TextInput, KeyboardAvoidingView, Pressable } from 'react-native'
 import { add_squar_icon_asset, checkRatesIcon, HelpCenterFeatureIcon, logo_asset, NearByFeatureIcon, notification_asset, OrderFeatureIcon, OtherFeatureIcon, scanIcon, searchIcon, WalletFeatureIcon } from '../../assets'
 import { Space } from '../../components/util'
+import { listToMatrix } from '../../halpers'
+import { RootStackParamList } from '../../navigation/BottomNavigationBar'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 
-export const HomeScreen = () => {
+
+type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+export const HomeScreen = ({ navigation }: HomeScreenProps) => {
+    const { navigate } = navigation
     const { theme } = useTheme()
     const styles = getStyles(theme)
+
     return (
         <>
             <StatusBar backgroundColor={theme.palette.primary[theme.mode].main} />
@@ -55,39 +63,31 @@ export const HomeScreen = () => {
                 </View>
                 <View style={styles.body} >
                     <Text style={styles.featuresText}>Features</Text>
-                    <View style={styles.featuresWraper}>
-                        <Pressable style={styles.feature} >
-                            <Image source={checkRatesIcon} width={24} height={24} />
-                            <Text style={styles.featureName}>Check Rates</Text>
-                        </Pressable>
-                        <Space size={15} />
-                        <Pressable style={styles.feature} >
-                            <Image source={NearByFeatureIcon} width={24} height={24} />
-                            <Text style={styles.featureName}>Nearby Drop</Text>
-                        </Pressable>
-                        <Space size={15} />
-                        <Pressable style={styles.feature} >
-                            <Image source={OrderFeatureIcon} width={24} height={24} />
-                            <Text style={styles.featureName}>Order</Text>
-                        </Pressable>
-                    </View>
-                    <Space size={15} direction= 'vertical'/>
-                    <View style={styles.featuresWraper}>
-                        <Pressable style={styles.feature} >
-                            <Image source={HelpCenterFeatureIcon} width={24} height={24} />
-                            <Text style={styles.featureName}>Help Center</Text>
-                        </Pressable>
-                        <Space size={15} />
-                        <Pressable style={styles.feature} >
-                            <Image source={WalletFeatureIcon} width={24} height={24} />
-                            <Text style={styles.featureName}>Wallet</Text>
-                        </Pressable>
-                        <Space size={15} />
-                        <Pressable style={styles.feature} >
-                            <Image source={OtherFeatureIcon} width={24} height={24} />
-                            <Text style={styles.featureName}>Others</Text>
-                        </Pressable>
-                    </View>
+
+                    {
+                        listToMatrix(features, 3).map((row, row_index) => (
+                            <Fragment key={row_index}>
+                                <View style={styles.featuresWraper}>
+                                    {
+                                        row.map((feature: featureType) => (
+                                            <Fragment key={feature.name}>
+                                                <Pressable
+                                                    style={styles.feature}
+                                                    onPress={() => navigate(feature.route)}
+                                                >
+                                                    <Image source={feature.icon} width={24} height={24} />
+                                                    <Text style={styles.featureName}>{feature.name}</Text>
+                                                </Pressable>
+                                                <Space size={15} />
+                                            </Fragment>
+                                        ))
+                                    }
+                                </View>
+                                <Space size={15} direction='vertical' />
+                            </Fragment>
+                        ))
+                    }
+                    
                 </View>
             </KeyboardAvoidingView>
         </>
@@ -95,6 +95,47 @@ export const HomeScreen = () => {
     )
 }
 
+type featureType = {
+    name: string,
+    icon: any,
+    route: keyof RootStackParamList
+}
+const features = [
+    {
+        name: 'CkeckRates',
+        icon: checkRatesIcon,
+        route: 'CheckRatesStack'
+    },
+    {
+        name: 'Nearby Drop',
+        icon: NearByFeatureIcon,
+        route: 'NearbyDropStack'
+    },
+    {
+        name: 'Order',
+        icon: OrderFeatureIcon,
+        route: 'OrderHistoryStack'
+    },
+    {
+        name: 'Help Center',
+        icon: HelpCenterFeatureIcon,
+        route: 'HelpCenterStack'
+    },
+    {
+        name: 'Wallet',
+        icon: WalletFeatureIcon,
+        route: 'WalletStack'
+    },
+    {
+        name: 'Others',
+        icon: OtherFeatureIcon,
+        route: 'Home'
+    },
+  
+
+
+
+]
 const getStyles = (theme: ThemeType) => {
     const { palette, mode, text } = theme
     return StyleSheet.create({
@@ -194,7 +235,7 @@ const getStyles = (theme: ThemeType) => {
         featuresText: {
             ...text.heading.H3,
             color: palette.black[mode].main,
-            marginBottom:20
+            marginBottom: 20
         },
         featuresWraper: {
             flexDirection: "row",
@@ -207,7 +248,7 @@ const getStyles = (theme: ThemeType) => {
             borderWidth: 1.5,
             borderColor: palette.lightGrey[mode].main,
             alignItems: 'center',
-            borderRadius:12
+            borderRadius: 12
 
         },
         featureName: {

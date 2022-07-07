@@ -11,8 +11,23 @@ import { OrdersStackNavigator } from './OrdersStack';
 import { MessagesStackNavigator } from './MessagesStack';
 import { ProfileStackNavigator } from './ProfileStack';
 import { MyBottomTabBar } from '../components/navigation';
+import { HomeStackNavigator } from './HomeStack';
 
 const Tab = createBottomTabNavigator();
+
+export type RootStackParamList = {
+    Home: undefined;
+    OrdersStack: { userId: string };
+    MessagesStack: { sort: 'latest' | 'top' } | undefined;
+    ProfileStack:{userId: string},
+    CheckRatesStack:undefined,
+    NearbyDropStack:undefined,
+    OrderHistoryStack:{userId: string},
+    HelpCenterStack:undefined,
+    WalletStack:{ userId: string },
+    NotificationsStack:{userId:string},
+    TrackingStack:undefined,
+  };
 
 export function BottomNavigationBar() {
     const { t } = useTranslation('home')
@@ -20,8 +35,8 @@ export function BottomNavigationBar() {
 
         <Tab.Navigator screenOptions={{ headerShown: false }} initialRouteName="Home" tabBar={props => <MyBottomTabBar {...props} />} >
             <Tab.Screen
-                name="Home"
-                component={HomeScreen}
+                name="HomeStack"
+                component={HomeStackNavigator}
             />
             <Tab.Screen
                 name="OrdersStack"

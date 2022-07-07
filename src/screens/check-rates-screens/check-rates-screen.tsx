@@ -3,7 +3,7 @@ import { View,Text } from 'react-native'
 
 export const ChackRatesScreen = () => {
   return (
-    <View style={{flex:1, backgroundColor:"red"}}>
+    <View >
         <Text>
             ceckRates
         </Text>

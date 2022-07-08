@@ -33,7 +33,11 @@ export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
                         </View>
 
                         <View style={styles.editProfileButtun}>
-                            <Pressable style={styles.editProfilePressable}>
+                            <Pressable 
+                            style={styles.editProfilePressable}
+                            onPress={()=>navigate('EditProfile',{userId:"1"})}
+                            android_ripple={{color:theme.palette.grey[theme.mode].main}}
+                            >
                                 <Text style={styles.editProfileText}>Edit Profile</Text>
                             </Pressable>
                         </View>
@@ -63,7 +67,7 @@ export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
 
                                     ))
                                 }
-                                <Space size={30} direction='vertical' />
+                                <Space size={24} direction='vertical' />
                             </Fragment>
                         ))
                     }

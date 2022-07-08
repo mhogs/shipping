@@ -7,8 +7,14 @@ type IconPropsType={
 }
 
 
-export const LeftArrowIcon = ({ color, size=16 }:IconPropsType) => {
+export const LeftArrowIcon = ({ color, size=24 }:IconPropsType) => {
     return (
         <AntDesign name="arrowleft" color={color} size={size}  />
     )
 }
+export const CheckedIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <AntDesign name="checkcircle" color={color} size={size} />
+    )
+}
+

@@ -7,3 +7,4 @@
  export const SecurityIcon= require('./Security.png')
  export const TeamIcon= require('./Team.png')
  export const ShareIcon= require('./Share.png')
+ export const ChangeImageIcon= require('./Change-Image-Button.png')

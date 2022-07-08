@@ -1,21 +1,26 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Pressable, View, Text, Image, StyleSheet } from 'react-native';
 import { useTheme } from '../../state/theming';
 import { ThemeType } from '../../theme';
 import { HomeIcon, HomeIconActive, MessageIcon, MessageIconActive, OrdersIcon, OrdersIconActive, ProfileIcon, ProfileIconActive } from '../../assets';
+import { RootStackParamList } from '../../navigation/BottomNavigationBar';
 
 
 
 
 export function MyBottomTabBar(props: BottomTabBarProps) {
-    const { state, navigation } = props
+    const { state, navigation, descriptors } = props
+    const extraStyle = Object.values(descriptors)[state.index].options.tabBarStyle as any;
+
     const isActiveTab = (tabName: string) => state.routeNames[state.index] === tabName
     const { theme } = useTheme()
     const styles = getStyles(theme)
 
+
+
     return (
-        <View style={styles.root}>
+        <View style={[styles.root, extraStyle]}>
             <View style={styles.menu}>
                 {
                     BottomTabs.map(tab => (
@@ -77,7 +82,7 @@ type BottomTabType = {
     name: string,
     icon: any,
     activeIcon: any,
-    route: 'HomeStack' | 'OrdersStack' | 'MessagesStack' | 'ProfileStack'
+    route: keyof RootStackParamList
 }
 const BottomTabs: BottomTabType[] = [
     {
@@ -105,3 +110,14 @@ const BottomTabs: BottomTabType[] = [
         route: 'ProfileStack'
     }
 ]
+
+export function useHideBottomBar(navigation: any, depth = 1) {
+    useEffect(() => {
+        let rootTabScreen = navigation.getParent()
+        for (let i = 1; i < depth; i++) {
+            rootTabScreen = rootTabScreen.getParent()
+        }
+        rootTabScreen?.setOptions({ tabBarStyle: { display: "none" } });
+        return () => rootTabScreen?.setOptions({ tabBarStyle: undefined });
+    }, [navigation]);
+}

@@ -9,7 +9,7 @@ import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 
 
-type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'HomeStack'>;
 
 export const HomeScreen = ({ navigation }: HomeScreenProps) => {
     const { navigate } = navigation

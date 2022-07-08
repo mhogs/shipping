@@ -21,3 +21,15 @@ export const ProfileStackNavigator = () => {
         </Stack.Navigator>
     )
 }
+
+export type ProfileStackParamList = {
+    MyProfile:undefined
+    ChangePasswordSetting: undefined;
+    LanguageSetting: undefined;
+    NotificationSetting: undefined;
+    FAQ:undefined
+    Policy:undefined
+    ContactUs:undefined
+    Share:undefined
+    UpdateApp:undefined
+  };

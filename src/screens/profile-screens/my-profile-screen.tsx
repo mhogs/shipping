@@ -1,13 +1,14 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React from 'react'
-import { View, Text, StyleSheet, StatusBar, KeyboardAvoidingView, Image, Pressable } from 'react-native'
-import { ProfilePicture } from '../../assets';
-import { RootStackParamList } from '../../navigation/BottomNavigationBar';
+import React, { Fragment } from 'react'
+import { View, Text, StyleSheet, StatusBar, KeyboardAvoidingView, Image, Pressable, ScrollView } from 'react-native'
+import { globeIcon, HelpIcon, lockIcon, MobileIcon, notificationIcon, ProfilePicture, SecurityIcon, ShareIcon, TeamIcon } from '../../assets';
+import { Space } from '../../components/util';
+import { ProfileStackParamList } from '../../navigation/ProfileStack';
 import { useTheme } from '../../state/theming';
 import { ThemeType } from '../../theme'
 
 
-type MyProfileScreenProps = NativeStackScreenProps<RootStackParamList, 'ProfileStack'>;
+type MyProfileScreenProps = NativeStackScreenProps<ProfileStackParamList, 'MyProfile'>;
 export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
     const { navigate } = navigation
     const { theme } = useTheme()
@@ -38,6 +39,35 @@ export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
                         </View>
                     </View>
                 </View>
+                <ScrollView style={styles.body} showsVerticalScrollIndicator={false}>
+                    {
+                        settings.map(setting => (
+                            <Fragment key={setting.title}>
+                                <Text style={styles.sectionTitle}>{setting.title}</Text>
+                                <Space size={20} direction='vertical' />
+                                {
+                                    setting.menu.map(item => (
+                                        <Fragment key={item.name}>
+                                            <View style={styles.settingWraper}>
+                                                <Pressable
+                                                    style={styles.setting}
+                                                    onPress={() => navigate(item.route)}
+                                                    android_ripple={{ color: theme.palette.grey[theme.mode].main, borderless: false }}
+                                                >
+                                                    <Image source={item.icon} width={24} height={24} />
+                                                    <Text style={styles.MenuItemText}>{item.name}</Text>
+                                                </Pressable>
+                                            </View>
+                                            <Space size={15} direction='vertical' />
+                                        </Fragment>
+
+                                    ))
+                                }
+                                <Space size={30} direction='vertical' />
+                            </Fragment>
+                        ))
+                    }
+                </ScrollView>
 
             </KeyboardAvoidingView>
 
@@ -45,6 +75,8 @@ export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
 
     )
 }
+
+
 
 const getStyles = (theme: ThemeType) => {
     const { palette, mode, text } = theme
@@ -101,5 +133,101 @@ const getStyles = (theme: ThemeType) => {
             ...text.regular.P14_Lh180,
             color: palette.white[mode].main
         },
+        body: {
+            padding: 24
+        },
+        sectionTitle: {
+            ...text.heading.H3,
+            color: palette.black[mode].main,
+        },
+        settingWraper: {
+            borderRadius: 12,
+            overflow: 'hidden',
+            borderWidth: 1.5,
+            borderColor: palette.lightGrey[mode].main
+        },
+
+        setting: {
+            flexDirection: 'row',
+            padding: 11,
+
+        },
+        MenuItemText: {
+            ...text.medium.P14_Lh180,
+            color: palette.black[mode].main,
+            marginLeft: 14,
+        }
     })
 }
+
+type menuItemType = {
+    name: string,
+    icon: any,
+    route: keyof ProfileStackParamList
+}
+
+type sectionType = {
+    title: string,
+    menu: menuItemType[]
+}
+
+const settings: sectionType[] = [
+
+    {
+        title: 'Settings',
+        menu: [
+            {
+                name: "Change Password",
+                icon: lockIcon,
+                route: 'ChangePasswordSetting'
+            },
+            {
+                name: "Language",
+                icon: globeIcon,
+                route: 'LanguageSetting'
+            },
+            {
+                name: "Notification",
+                icon: notificationIcon,
+                route: 'NotificationSetting'
+            },
+        ]
+    },
+    {
+        title: 'Ubout Us',
+        menu: [
+            {
+                name: "FAQ",
+                icon: HelpIcon,
+                route: 'FAQ'
+            },
+            {
+                name: "Language",
+                icon: SecurityIcon,
+                route: 'Policy'
+            },
+            {
+                name: "Contact Us",
+                icon: TeamIcon,
+                route: 'ContactUs'
+            },
+        ]
+    },
+    {
+        title: 'Other',
+        menu: [
+            {
+                name: "Share",
+                icon: ShareIcon,
+                route: 'Share'
+            },
+            {
+                name: "Get The Latest Version",
+                icon: MobileIcon,
+                route: 'UpdateApp'
+            },
+        ]
+    }
+
+
+]

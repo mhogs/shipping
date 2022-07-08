@@ -27,4 +27,6 @@ export const HelpCenterFeatureIcon=require('./icons/helpcenter-feature-icon.png'
 export const WalletFeatureIcon=require('./icons/wallet-feature-icon.png')
 export const OtherFeatureIcon=require('./icons/other-feature-icon.png')
 
-export const ProfilePicture=require('./profile/profile_pic.png')
+/** profile */
+export * from './profile'
+

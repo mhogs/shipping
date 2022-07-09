@@ -26,7 +26,7 @@ export const UpdateLanguageScreen = ({ navigation }: UpdateLanguageScreenProps) 
   const { theme } = useTheme()
   const styles = getStyles(theme)
 
-  const [currentLang, setLang] = useState(i18n.language || defaultLang)
+  const [currentLang, setLang] = useState(i18n.language as supportedLangCodeType || defaultLang)
   function updateLang(lang: supportedLangCodeType) {
     changeLanguage(lang)
     setLang(lang)
@@ -39,7 +39,7 @@ export const UpdateLanguageScreen = ({ navigation }: UpdateLanguageScreenProps) 
         <SimpleScreenHeader title="Language" goBack={goBack} />
         <Space direction='vertical' size={30} />
         {
-          getLangsList(i18n.language as supportedLangCodeType).map(lang => (
+          getLangsList(currentLang).map(lang => (
             <Fragment key={lang.code}>
               <MenuItem
                 title={lang.name}
@@ -81,25 +81,26 @@ type LangType = {
 }
 
 function getLangsList(currentLang: supportedLangCodeType): LangType[] {
-
+  console.log(currentLang);
+  
   return [
     {
       name: "العربية",
       code: 'ar',
       icon: <Image source={ArabicIcon} width={24} height={24} />,
-      selected: currentLang === "ar"
+      selected: currentLang.includes("ar")
     },
     {
       name: "Français",
       code: 'fr',
       icon: <Image source={FrenchIcon} width={24} height={24} />,
-      selected: currentLang === "fr",
+      selected: currentLang.includes("fr") ,
     },
     {
       name: "English",
       code: 'en',
       icon: <Image source={EnglishIcon} width={24} height={24} />,
-      selected: currentLang === "en"
+      selected: currentLang.includes("en")
     },
   ]
 }

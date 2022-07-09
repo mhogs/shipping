@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { View, Text, StyleSheet, KeyboardAvoidingView, Image, Pressable, TextInput, ScrollView } from 'react-native'
 import { ChangeImageIcon, ColoredCallIcon, ColoredProfileIcon, lockIcon, ProfilePicture } from '../../assets'
 import { SaveChangesButton } from '../../components/buttons'
-import { CheckedIcon, EyeIcon, LeftArrowIcon, LockOutLine } from '../../components/icons'
+import { CheckedIcon, EyeIcon, LeftArrowIcon, LockOutLineIcon } from '../../components/icons'
 import { MyTextInput } from '../../components/inputs'
 import { useHideBottomBar } from '../../components/navigation'
 import { SimpleScreenHeader, Space } from '../../components/util'
@@ -52,7 +52,7 @@ export const ChangePasswordScreen = ({ navigation }: ChangePasswordScreenProps) 
             <MyTextInput
               label='New Password'
               placeholder='New password'
-              startIcon={<LockOutLine color={theme.palette.grey[theme.mode].main} size={24} />}
+              startIcon={<LockOutLineIcon color={theme.palette.grey[theme.mode].main} size={24} />}
             />
             
             <Space direction='vertical' size={20} />
@@ -60,7 +60,7 @@ export const ChangePasswordScreen = ({ navigation }: ChangePasswordScreenProps) 
             <MyTextInput
               label='Confirm Password'
               placeholder='Confirm your password'
-              startIcon={<LockOutLine color={theme.palette.grey[theme.mode].main} size={24} />}
+              startIcon={<LockOutLineIcon color={theme.palette.grey[theme.mode].main} size={24} />}
              
             />
           </View>

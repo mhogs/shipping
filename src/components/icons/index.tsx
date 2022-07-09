@@ -1,4 +1,4 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons'; 
 
 import React from 'react'
@@ -30,9 +30,14 @@ export const CheckIcon = ({ color, size=24 }:IconPropsType) => {
     )
 }
 
-export const LockOutLine = ({ color, size=24 }:IconPropsType) => {
+export const LockOutLineIcon = ({ color, size=24 }:IconPropsType) => {
     return (
         <MaterialIcons name="lock-outline" color={color} size={size} />
+    )
+}
+export const NotificationMessgaeIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <MaterialCommunityIcons name="message-processing" color={color} size={size} />
     )
 }
 

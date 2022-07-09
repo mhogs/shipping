@@ -21,10 +21,7 @@ export const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
   const { theme } = useTheme()
   const styles = getStyles(theme)
 
-  const { login } = useAuth()
-  useEffect(() => {
-    //login()
-  }, [])
+  
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <KeyboardAvoidingView style={styles.root} >

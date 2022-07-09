@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { useEffect } from 'react'
 import { View, Text, StyleSheet, KeyboardAvoidingView, Image, Pressable, TextInput, ScrollView } from 'react-native'
 import { ChangeImageIcon, ColoredCallIcon, ColoredProfileIcon, ProfilePicture } from '../../assets'
+import { SaveChangesButton } from '../../components/buttons'
 import { CheckedIcon, LeftArrowIcon } from '../../components/icons'
 import { MyTextInput } from '../../components/inputs'
 import { useHideBottomBar } from '../../components/navigation'
@@ -35,6 +36,7 @@ export const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
               <Image source={ChangeImageIcon} />
             </Pressable>
           </View>
+          
           <View style={styles.form} >
             <MyTextInput
               label='Full Name'
@@ -53,17 +55,7 @@ export const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
           </View>
         </View>
 
-        <View style={styles.saveButtonWraper}>
-          <Pressable
-            style={styles.savebutton}
-            onPress={() => { }}
-            android_ripple={{ color: theme.palette.grey[theme.mode].main }}
-          >
-            <Text style={styles.saveButtonText}>
-              Save Changes
-            </Text>
-          </Pressable>
-        </View>
+        <SaveChangesButton text='Save Changes' />
       </KeyboardAvoidingView>
     </ScrollView>
 

@@ -9,4 +9,6 @@ export const add_squar_icon_asset=require("./home/addSquarIcon.png")
 export * from './icons'
 /** profile */
 export * from './profile'
+/** flags */
+export * from './flags'
 

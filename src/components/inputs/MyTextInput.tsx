@@ -1,27 +1,60 @@
-import React from 'react'
-import { View, Image, Text,StyleSheet,TextInput } from 'react-native'
+import React, { useState } from 'react'
+import { View, Image, Text, StyleSheet, TextInput, Pressable, GestureResponderEvent } from 'react-native'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 
+type iconPressActionType = "TOGGLE_SECRET" | "RESET_INPUT" | undefined
 type TextInputProps = {
     label: string,
     placeholder?: string,
     startIcon?: any,
     endIcon?: any,
-    value?: string
-
+    value?: string,
+    secureTextEntry?: boolean,
+    endIconAction?: iconPressActionType,
+    startIconAction?: iconPressActionType
 }
 export const MyTextInput = (props: TextInputProps) => {
-    const { label, placeholder, startIcon, endIcon,value } = props
+    const { label, placeholder, startIcon, endIcon, value, secureTextEntry = false, endIconAction, startIconAction } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
+    const [isSecret, setIsSecret] = useState(secureTextEntry)
+    
+    const onIconPress = (action: iconPressActionType) => {
+        return function (e: GestureResponderEvent) {
+            if (!action) return
+            switch (action) {
+                case "TOGGLE_SECRET":
+                    setIsSecret(prev => !prev);
+                    break;
+                case 'RESET_INPUT':
+                    break
+                default:
+                    break
+            }
+        }
+    }
     return (
         <View>
             <Text style={styles.inputLabel}>{label}</Text>
             <View style={styles.inputWraper}>
-                {startIcon}
-                <TextInput placeholder={placeholder} value={value} style={styles.input} />
-                {endIcon}
+                <Pressable
+                    onPress={onIconPress(startIconAction)}
+                >
+                    {startIcon}
+                </Pressable>
+                <TextInput
+                    style={styles.input}
+                    placeholder={placeholder}
+                    defaultValue={value}
+                    secureTextEntry={isSecret}
+                />
+                <Pressable
+                    onPress={onIconPress(endIconAction)}
+                >
+                    {endIcon}
+                </Pressable>
+
             </View>
         </View>
     )

@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { Fragment } from 'react'
 import { View, Text, StyleSheet, StatusBar, KeyboardAvoidingView, Image, Pressable, ScrollView } from 'react-native'
 import { globeIcon, HelpIcon, lockIcon, MobileIcon, notificationIcon, ProfilePicture, SecurityIcon, ShareIcon, TeamIcon } from '../../assets';
+import { MenuItem } from '../../components/navigation';
 import { Space } from '../../components/util';
 import { ProfileStackParamList } from '../../navigation/ProfileStack';
 import { useTheme } from '../../state/theming';
@@ -52,16 +53,11 @@ export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
                                 {
                                     setting.menu.map(item => (
                                         <Fragment key={item.name}>
-                                            <View style={styles.settingWraper}>
-                                                <Pressable
-                                                    style={styles.setting}
-                                                    onPress={() => navigate(item.route)}
-                                                    android_ripple={{ color: theme.palette.grey[theme.mode].main, borderless: false }}
-                                                >
-                                                    <Image source={item.icon} width={24} height={24} />
-                                                    <Text style={styles.MenuItemText}>{item.name}</Text>
-                                                </Pressable>
-                                            </View>
+                                            <MenuItem
+                                                title={item.name}
+                                                icon={item.icon}
+                                                onPress={() => navigate(item.route)}
+                                            />
                                             <Space size={15} direction='vertical' />
                                         </Fragment>
 
@@ -182,17 +178,17 @@ const settings: sectionType[] = [
         menu: [
             {
                 name: "Change Password",
-                icon: lockIcon,
+                icon: <Image source={lockIcon} width={24} height={24} />,
                 route: 'ChangePasswordSetting'
             },
             {
                 name: "Language",
-                icon: globeIcon,
+                icon: <Image source={globeIcon} width={24} height={24} />,
                 route: 'LanguageSetting'
             },
             {
                 name: "Notification",
-                icon: notificationIcon,
+                icon: <Image source={notificationIcon} width={24} height={24} />,
                 route: 'NotificationSetting'
             },
         ]
@@ -202,17 +198,17 @@ const settings: sectionType[] = [
         menu: [
             {
                 name: "FAQ",
-                icon: HelpIcon,
+                icon: <Image source={HelpIcon} width={24} height={24} />,
                 route: 'FAQ'
             },
             {
                 name: "Language",
-                icon: SecurityIcon,
+                icon: <Image source={SecurityIcon} width={24} height={24} />,
                 route: 'Policy'
             },
             {
                 name: "Contact Us",
-                icon: TeamIcon,
+                icon: <Image source={TeamIcon} width={24} height={24} />,
                 route: 'ContactUs'
             },
         ]
@@ -222,12 +218,12 @@ const settings: sectionType[] = [
         menu: [
             {
                 name: "Share",
-                icon: ShareIcon,
+                icon: <Image source={ShareIcon} width={24} height={24} />,
                 route: 'Share'
             },
             {
                 name: "Get The Latest Version",
-                icon: MobileIcon,
+                icon: <Image source={MobileIcon} width={24} height={24} />,
                 route: 'UpdateApp'
             },
         ]

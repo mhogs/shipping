@@ -24,7 +24,7 @@ export const SimpleScreenHeader = (props:SimpleScreenHeaderProps) => {
                 </Pressable>
             </View>
 
-            <Text style={styles.screenHeaderText}>Edit Profile</Text>
+            <Text style={styles.screenHeaderText}>{title}</Text>
         </View>
     )
 }

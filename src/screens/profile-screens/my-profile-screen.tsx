@@ -27,7 +27,7 @@ export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
                         <View style={styles.info_wraper}>
                             <Image style={styles.profile_pic} width={54} height={54} source={ProfilePicture} />
                             <View style={{ justifyContent: 'center' }}>
-                                <Text style={styles.profile_name}>My balance</Text>
+                                <Text style={styles.profile_name}>Hemza Talha</Text>
                                 <Text style={styles.phone}>0799085706</Text>
                             </View>
                         </View>

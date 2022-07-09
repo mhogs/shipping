@@ -52,15 +52,15 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                     </View>
                     {/**search box */}
                     <View style={styles.searchBox}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Image source={searchIcon} width={24} height={24} />
-                            <TextInput
-                                onFocus={() => navigate("TrackingStack")}
-                                placeholder='Enter track number'
-                                placeholderTextColor={theme.palette.grey[theme.mode][3]}
-                                style={styles.searchInput}
-                            />
-                        </View>
+
+                        <Image source={searchIcon} width={24} height={24} />
+                        <TextInput
+                            onFocus={() => navigate("TrackingStack")}
+                            placeholder='Enter track number'
+                            placeholderTextColor={theme.palette.grey[theme.mode][3]}
+                            style={styles.searchInput}
+                        />
+
                         <Image source={scanIcon} />
                     </View>
 
@@ -229,7 +229,8 @@ const getStyles = (theme: ThemeType) => {
             padding: 14,
         },
         searchInput: {
-            marginLeft: 14,
+            flex: 1,
+            paddingLeft: 14,
             color: palette.grey[mode][3]
         },
         /** Body */

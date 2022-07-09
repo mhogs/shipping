@@ -7,26 +7,25 @@ import { MyTextInput } from '../../components/inputs'
 import { useHideBottomBar } from '../../components/navigation'
 import { SimpleScreenHeader, Space } from '../../components/util'
 import { ProfileStackParamList } from '../../navigation/ProfileStack'
+import { useAuth } from '../../state'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 
 type EditProfileScreenProps = NativeStackScreenProps<ProfileStackParamList, 'EditProfile'>;
 
 export const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
+  // 1 is the depth of this screen relative to the stack
+  useHideBottomBar(navigation, 1)
   const { goBack } = navigation
   const { theme } = useTheme()
   const styles = getStyles(theme)
 
-  /*useEffect(() => {
-    navigation.getParent()?.setOptions({ tabBarStyle: { display: "none" }});
-    return () => navigation.getParent()?.setOptions({ tabBarStyle: undefined });
-  }, [navigation]);*/
-
-  // 1 is the depth of this screen relative to the stack
-  useHideBottomBar(navigation,1)
-
+  const { login } = useAuth()
+  useEffect(() => {
+    //login()
+  }, [])
   return (
-    <ScrollView contentContainerStyle={{flexGrow: 1}}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <KeyboardAvoidingView style={styles.root} >
         <View>
           <SimpleScreenHeader title="Edit Profile" goBack={goBack} />
@@ -82,7 +81,7 @@ const getStyles = (theme: ThemeType) => {
       padding: 24,
       backgroundColor: palette.lightGrey[theme.mode][3],
       justifyContent: 'space-between',
-      
+
     },
     profilePicWraper: {
       position: "relative",

@@ -5,7 +5,6 @@ import {
   StatusBar,
   Pressable,
   useWindowDimensions,
-  KeyboardAvoidingView,
 } from "react-native";
 import React, { useState } from "react";
 
@@ -14,7 +13,6 @@ import { RegisterScreen } from "./register-screen";
 import {
   TabView,
   SceneMap,
-  TabBar,
   SceneRendererProps,
   NavigationState,
 } from "react-native-tab-view";
@@ -22,15 +20,23 @@ import {
 import { useTheme } from "../../state/theming";
 import { ThemeType } from "../../theme";
 import { LeftArrowIcon } from "../../components/icons";
+import { AuthScreenProps } from "../../navigation/AuthStack";
 
+
+/*
 const renderScene = SceneMap({
   login: LoginScreen,
   register: RegisterScreen,
 });
+*/
 
-export const AuthScreen = () => {
+
+
+
+export const AuthScreen = (props: AuthScreenProps) => {
   const { theme } = useTheme();
   const styles = getStyles(theme);
+  const { navigation } = props
 
   const layout = useWindowDimensions();
 
@@ -39,6 +45,23 @@ export const AuthScreen = () => {
     { key: "register", title: "Sign Up" },
     { key: "login", title: "Sign In" },
   ]);
+
+  const renderScene = (props: SceneRendererProps & {
+    route: {
+        key: string;
+        title: string;
+    };
+  }) => {
+    const {route}= props;
+    switch (route.key) {
+      case 'login':
+        return <LoginScreen navigation={navigation} />;
+      case 'register':
+        return <RegisterScreen navigation={navigation} />;
+      default:
+        return null;
+    }
+  };
 
   const _renderTabBar = (
     props: SceneRendererProps & {

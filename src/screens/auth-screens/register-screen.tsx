@@ -8,13 +8,18 @@ import { ProfileIcon, callIcon, googleIcon, appleIcon } from '../../assets'
 import { LockOutLineIcon } from '../../components/icons'
 import { AuthActionButton, SocialLoginButton } from '../../components/buttons'
 import { Devider } from '../../components/util/Devider'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { AuthScreenProps, AuthStackParamList } from '../../navigation/AuthStack'
 
-export const RegisterScreen = () => {
+
+export const RegisterScreen = (props: any) => {
+    const { navigation } = props;
     const { theme } = useTheme()
     const styles = getStyles(theme)
 
     const createAccount = () =>{
-        console.log('creating account')
+        console.log('creating account');
+        navigation.navigate('VerificationScreen',{phone:"+213773768972"})
     }
 
     const googleSignup = () =>{

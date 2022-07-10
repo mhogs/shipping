@@ -202,7 +202,7 @@ const settings: sectionType[] = [
                 route: 'FAQ'
             },
             {
-                name: "Language",
+                name: "Policy & Security",
                 icon: <Image source={SecurityIcon} width={24} height={24} />,
                 route: 'Policy'
             },

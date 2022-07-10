@@ -28,9 +28,9 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
           endIcon={<ThreeDotsIcon size={16} />}
         />
       </View>
-      <ScrollView>
-        <MapView style={styles.map} />
 
+      <MapView style={styles.map} />
+      <View style={{position:"absolute", top:80, backgroundColor:"white", height:"100%"}}>
         <View style={{ padding: 24 }}>
           <View style={styles.searchBox}>
             <Image source={searchIconGrey} width={24} height={24} />
@@ -41,9 +41,6 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
             />
           </View>
         </View>
-
-
-
         <ScrollView contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 24, paddingBottom: 24 }}>
           <LocationItem
             icon={<Image source={LocationIcon} width={22} height={22} />}
@@ -66,7 +63,7 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
             time="3.21 Km"
           />
         </ScrollView>
-      </ScrollView>
+      </View>
 
     </KeyboardAvoidingView>
 

@@ -17,9 +17,10 @@ const supportedLanguages: supportedLangCodeType[] = ['en', 'ar', 'fr']
 export const defaultLang: supportedLangCodeType = "en"
 
 function findBestAvailableLanguage() {
+  const systemLangs = Localization.locales
   return (
-    Localization.locales.find((locale) =>
-      supportedLanguages.find((lng) => lng === locale.split('-')?.[0])
+    systemLangs.map(sys_lang => sys_lang.split('-')[0]).find((locale) =>
+      supportedLanguages.find((lng) => lng === locale)
     ) || defaultLang
   )
 }
@@ -30,10 +31,12 @@ function changeLanguage(lng: supportedLangCodeType) {
 }
 
 function isRTL() {
-  
+
   return i18n.dir() === 'rtl'
 
 }
+
+console!.log({rtl:isRTL()})
 
 function initI18N() {
   AsyncStorage.getItem('lng').then((lng) => {
@@ -44,6 +47,7 @@ function initI18N() {
     i18n.changeLanguage(lng)
   })
 }
+console.log(findBestAvailableLanguage());
 
 i18n.use(initReactI18next).init({
   compatibilityJSON: 'v3',

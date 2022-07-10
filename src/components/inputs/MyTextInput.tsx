@@ -19,7 +19,7 @@ export const MyTextInput = (props: TextInputProps) => {
     const { theme } = useTheme()
     const styles = getStyles(theme)
     const [isSecret, setIsSecret] = useState(secureTextEntry)
-    
+
     const onIconPress = (action: iconPressActionType) => {
         return function (e: GestureResponderEvent) {
             if (!action) return
@@ -36,7 +36,10 @@ export const MyTextInput = (props: TextInputProps) => {
     }
     return (
         <View>
-            <Text style={styles.inputLabel}>{label}</Text>
+            <View style={{flexDirection:"row"}}>
+                <Text style={styles.inputLabel}>{label}</Text>
+            </View>
+
             <View style={styles.inputWraper}>
                 <Pressable
                     onPress={onIconPress(startIconAction)}
@@ -94,6 +97,7 @@ const getStyles = (theme: ThemeType) => {
         input: {
             padding: 13,
             flex: 1,
+            textAlign:"left"
         }
     })
 }

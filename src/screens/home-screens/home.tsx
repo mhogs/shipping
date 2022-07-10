@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC, Fragment } from 'react'
 import { View, StyleSheet, Image, StatusBar, Text, TextInput, KeyboardAvoidingView, Pressable } from 'react-native'
 import { add_squar_icon_asset, checkRatesIcon, HelpCenterFeatureIcon, logo_asset, NearByFeatureIcon, notification_asset, OrderFeatureIcon, OtherFeatureIcon, scanIcon, searchIcon, WalletFeatureIcon } from '../../assets'
+import { SearchInput } from '../../components/inputs'
 import { Space } from '../../components/util'
 import { listToMatrix } from '../../halpers'
 import { RootStackParamList } from '../../navigation/BottomNavigationBar'
@@ -51,8 +52,8 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                         </View>
                     </View>
                     {/**search box */}
+                    
                     <View style={styles.searchBox}>
-
                         <Image source={searchIcon} width={24} height={24} />
                         <TextInput
                             onFocus={() => navigate("TrackingStack")}
@@ -60,7 +61,6 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                             placeholderTextColor={theme.palette.grey[theme.mode][3]}
                             style={styles.searchInput}
                         />
-
                         <Image source={scanIcon} />
                     </View>
 
@@ -154,7 +154,6 @@ const getStyles = (theme: ThemeType) => {
             backgroundColor: palette.primary[theme.mode].main,
             padding: 24
         },
-
         title: {
             flexDirection: 'row',
             alignItems: 'center',

@@ -1,4 +1,4 @@
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons'; 
 
 import React from 'react'
@@ -38,6 +38,11 @@ export const LockOutLineIcon = ({ color, size=24 }:IconPropsType) => {
 export const NotificationMessgaeIcon = ({ color, size=24 }:IconPropsType) => {
     return (
         <MaterialCommunityIcons name="message-processing" color={color} size={size} />
+    )
+}
+export const ThreeDotsIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <Entypo name="dots-three-vertical" color={color} size={size}  />
     )
 }
 

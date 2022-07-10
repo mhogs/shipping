@@ -81,7 +81,7 @@ type LangType = {
 }
 
 function getLangsList(currentLang: supportedLangCodeType): LangType[] {
-  console.log(currentLang);
+  
   
   return [
     {

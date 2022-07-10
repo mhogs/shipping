@@ -9,22 +9,23 @@ type searchBoxProps = {
     placeholder?: string,
     placeholderTextColor?: string,
     extraStyle?: Object,
-    icon?: any
+    startIcon:any,
+    endicon?: any
 }
 export const SearchInput = (props: searchBoxProps) => {
-    const { onFocus, placeholder, placeholderTextColor, extraStyle, icon } = props
+    const { onFocus, placeholder, placeholderTextColor, extraStyle, endicon,startIcon } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
     return (
         <View style={[styles.searchBox,extraStyle]}>
-            <Image source={searchIcon} width={24} height={24} />
+            {startIcon}
             <TextInput
                 onFocus={onFocus && onFocus}
                 placeholder={placeholder}
                 placeholderTextColor={placeholderTextColor}
                 style={[styles.searchInput ]}
             />
-            {icon}
+            {endicon}
         </View>
     )
 }

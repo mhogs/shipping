@@ -33,19 +33,19 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
         <MapView style={styles.map} />
 
         <View style={{ padding: 24 }}>
-          <View style={styles.searchBox}>
-            <Image source={searchIconGrey} width={24} height={24} />
-            <TextInput
-              placeholder='Enter track number'
-              placeholderTextColor={theme.palette.grey[theme.mode][3]}
-              style={styles.searchInput}
-            />
-          </View>
+          <SearchInput
+            startIcon={<Image source={searchIconGrey} width={24} height={24} />}
+            placeholder='Enter track number'
+            placeholderTextColor={theme.palette.grey[theme.mode][3]}
+            extraStyle={styles.searchBox}
+          />
         </View>
+
+
         <View style={{ paddingHorizontal: 24 }}>
 
           {
-            locations.map((location,index) => (
+            locations.map((location, index) => (
               <Fragment key={index}>
                 <LocationItem {...location}
                   onPress={() => setModalVisible(true)}
@@ -54,8 +54,8 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
               </Fragment>
             ))
           }
-         
-          
+
+
         </View>
       </ScrollView>
 

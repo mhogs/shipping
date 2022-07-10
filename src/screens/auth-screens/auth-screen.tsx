@@ -36,8 +36,8 @@ export const AuthScreen = () => {
 
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: "login", title: "Sign In" },
     { key: "register", title: "Sign Up" },
+    { key: "login", title: "Sign In" },
   ]);
 
   const _renderTabBar = (
@@ -94,7 +94,7 @@ export const AuthScreen = () => {
         </View>
         <Text style={styles.title}>Shipping and Track Anytime</Text>
         <Text style={styles.description}>Get great experience with tracky</Text>
-        <KeyboardAvoidingView style={styles.container}>
+        <View style={styles.container}>
           <TabView
             navigationState={{ index, routes }}
             renderTabBar={_renderTabBar}
@@ -103,7 +103,7 @@ export const AuthScreen = () => {
             onIndexChange={setIndex}
             initialLayout={{ width: layout.width }}
           />
-        </KeyboardAvoidingView>
+        </View>
       </View>
     </>
   );

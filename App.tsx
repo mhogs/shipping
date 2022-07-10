@@ -4,12 +4,20 @@ import { NavigationContainer } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Navigation } from './src/navigation';
 import * as SplashScreen from 'expo-splash-screen';
+import ReactNative from 'react-native';
 import { useFonts, Outfit_400Regular, Outfit_500Medium, Outfit_600SemiBold, } from '@expo-google-fonts/outfit';
 import { Image } from 'react-native';
 
 export default function App() {
 
   const appIsReady = useAppLoader()
+
+
+  try {
+    ReactNative.I18nManager.allowRTL(false);
+  } catch (e) {
+    console.log(e);
+  }
 
   if (!appIsReady) {
     return null;

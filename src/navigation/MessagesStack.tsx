@@ -19,3 +19,8 @@ export const MessagesStackNavigator = () => {
         </Stack.Navigator>
     )
 }
+
+export type MessagesStackParamList = {
+    Messages:undefined
+    MessageDetails:{idMessage:string}
+  };

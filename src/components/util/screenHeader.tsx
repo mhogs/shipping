@@ -6,10 +6,11 @@ import { LeftArrowIcon } from '../icons'
 
 type SimpleScreenHeaderProps={
     title:string,
-    goBack:()=>void
+    goBack:()=>void,
+    endIcon?:any
 }
 export const SimpleScreenHeader = (props:SimpleScreenHeaderProps) => {
-    const {title,goBack}= props
+    const {title,endIcon,goBack}= props
     const { theme } = useTheme()
     const styles = getStyles(theme)
     return (
@@ -25,6 +26,10 @@ export const SimpleScreenHeader = (props:SimpleScreenHeaderProps) => {
             </View>
 
             <Text style={styles.screenHeaderText}>{title}</Text>
+            <Pressable>
+              {endIcon}
+            </Pressable>
+            
         </View>
     )
 }

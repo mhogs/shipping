@@ -5,6 +5,7 @@ export const call_asset= require("./auth/call.png")
 export const lock_asset= require("./auth/lock.png")
 export const leftarrow_asset= require("./auth/arrow-left.png")
 export const add_squar_icon_asset=require("./home/addSquarIcon.png")
+export const avatar_asset=require("./avatar.png")
 
 export * from './icons'
 /** profile */

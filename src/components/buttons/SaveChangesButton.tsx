@@ -1,25 +1,27 @@
 import React from 'react'
-import { Pressable, View,StyleSheet,Text } from 'react-native'
+import { Pressable, View,StyleSheet,Text, StyleProp, ViewStyle } from 'react-native'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 
 type SaveChangesButtonProps={
-    text:string,
+    text:string
     onPress?:()=>void
+    bgColor?:string,
+    textColor?:string
 }
 export const SaveChangesButton = (props:SaveChangesButtonProps) => {
-    const {text,onPress} =props
+    const {text,onPress,bgColor,textColor} =props
     const { theme } = useTheme()
     const styles = getStyles(theme)
 
     return (
-        <View style={styles.saveButtonWraper}>
+        <View style={[styles.saveButtonWraper,bgColor?{backgroundColor:bgColor}:{}]}>
             <Pressable
                 style={styles.savebutton}
                 onPress={onPress}
                 android_ripple={{ color: theme.palette.grey[theme.mode].main }}
             >
-                <Text style={styles.saveButtonText}>
+                <Text style={[styles.saveButtonText , textColor?{ color:textColor}:{}]}>
                     {text}
                 </Text>
             </Pressable>
@@ -36,7 +38,9 @@ const getStyles = (theme: ThemeType) => {
         overflow: 'hidden',
         borderRadius: 30,
         backgroundColor: palette.primary[mode].main,
-  
+        borderColor:palette.grey[mode].main,
+        borderWidth:1,
+        
       },
       savebutton: {
         padding: 17.5,

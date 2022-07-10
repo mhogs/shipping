@@ -19,3 +19,8 @@ export const NearByStackNavigator = () => {
         </Stack.Navigator>
     )
 }
+
+export type NearByStackParamList = {
+    NearBy:undefined
+    Directions:undefined
+  };

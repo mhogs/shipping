@@ -3,7 +3,7 @@ import { AuthStackNavigator } from './AuthStack'
 
 
 export const Navigation= ()=>{
-    const user = true;
+    const user = false;
 
     return (
         user? <BottomNavigationBar /> : <AuthStackNavigator/>

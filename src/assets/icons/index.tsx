@@ -14,3 +14,4 @@ export const ProfileIcon=require('./profile-icon.png')
 export const ProfileIconActive=require('./profile-icon-active.png')
 /** other */
 export const LocationIcon=require('./location.png')
+

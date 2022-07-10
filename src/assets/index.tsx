@@ -13,4 +13,5 @@ export * from './profile'
 export * from './flags'
 /** notifications icons */
 export * from './notifications'
-
+/** Auth icons */
+export * from './auth'

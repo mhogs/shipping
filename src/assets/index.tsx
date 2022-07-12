@@ -16,3 +16,5 @@ export * from './flags'
 export * from './notifications'
 /** Auth icons */
 export * from './auth'
+/** orders */
+export * from './orders'

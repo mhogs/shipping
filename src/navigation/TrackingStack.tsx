@@ -1,6 +1,6 @@
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import {  NotificationsScreen, TrackingScreen } from '../screens';
+import { NotificationsScreen, TrackingScreen } from '../screens';
 
 
 const Stack = createNativeStackNavigator();
@@ -19,3 +19,8 @@ export const TrakingStackNavigator = () => {
         </Stack.Navigator>
     )
 }
+
+export type TrackingStackParamList = {
+    Tracking: undefined,
+    TrackingDetails:{packageId:string}
+};

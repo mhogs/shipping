@@ -19,3 +19,7 @@ export const NotificationsStackNavigator = () => {
         </Stack.Navigator>
     )
 }
+
+export type NotificationsStackParamList = {
+    Notifications:undefined
+  };

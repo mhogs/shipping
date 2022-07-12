@@ -35,7 +35,7 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
         <View style={{ padding: 24 }}>
           <SearchInput
             startIcon={<Image source={searchIconGrey} width={24} height={24} />}
-            placeholder='Enter track number'
+            placeholder='Search Location'
             placeholderTextColor={theme.palette.grey[theme.mode][3]}
             extraStyle={styles.searchBox}
           />

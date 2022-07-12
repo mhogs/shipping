@@ -1,0 +1,1 @@
+export const EmptyOrderHistory=require("./empty-order-history.png")

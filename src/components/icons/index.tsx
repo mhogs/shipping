@@ -45,6 +45,17 @@ export const ThreeDotsIcon = ({ color, size=24 }:IconPropsType) => {
         <Entypo name="dots-three-vertical" color={color} size={size}  />
     )
 }
+export const ClockIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <MaterialCommunityIcons name="clock-time-five-outline" color={color} size={size} />
+    )
+}
+export const CloseIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <MaterialCommunityIcons name="close" color={color} size={size} />
+    )
+}
+
 
 
 

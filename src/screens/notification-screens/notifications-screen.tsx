@@ -7,12 +7,13 @@ import { DiscountIcon, MessageNotifIcon, PackageIcon } from '../../assets'
 
 import { NotificationItem, useHideBottomBar } from '../../components/navigation'
 import { Devider, SimpleScreenHeader, Space } from '../../components/util'
+import { NotificationsStackParamList } from '../../navigation/NotificationsStack'
 import { ProfileStackParamList } from '../../navigation/ProfileStack'
 import { useAuth } from '../../state'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 
-type NotificationsScreenProps = NativeStackScreenProps<ProfileStackParamList, 'EditProfile'>;
+type NotificationsScreenProps = NativeStackScreenProps<NotificationsStackParamList, 'Notifications'>;
 
 export const NotificationsScreen = ({ navigation }: NotificationsScreenProps) => {
   // 1 is the depth of this screen relative to the stack

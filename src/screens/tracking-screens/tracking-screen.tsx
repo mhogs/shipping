@@ -1,8 +1,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { Fragment, useEffect, useState } from 'react'
 import { View, Text, StyleSheet, KeyboardAvoidingView, Image, Pressable, TextInput, ScrollView } from 'react-native'
-import { DiscountIcon, EmptyOrderHistory, MessageNotifIcon, PackageIcon } from '../../assets'
+import { DiscountIcon, EmptyOrderHistory, MessageNotifIcon, PackageIcon, scanIcon, searchIconGrey } from '../../assets'
 import { OrderItem } from '../../components/content/order-item'
+import { SearchInput } from '../../components/inputs'
 
 import { NotificationItem, useHideBottomBar } from '../../components/navigation'
 import { Devider, SimpleScreenHeader, Space } from '../../components/util'
@@ -18,6 +19,7 @@ type NotificationsScreenProps = NativeStackScreenProps<TrackingStackParamList, '
 export const TrackingScreen = ({ navigation }: NotificationsScreenProps) => {
   // 1 is the depth of this screen relative to the stack
   useHideBottomBar(navigation, 1)
+  const {navigate}=navigation
   const { goBack } = navigation
   const { theme } = useTheme()
   const styles = getStyles(theme)
@@ -26,6 +28,15 @@ export const TrackingScreen = ({ navigation }: NotificationsScreenProps) => {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.root}>
         <SimpleScreenHeader title="Notifications" goBack={goBack} />
+        {/**search */}
+        <SearchInput
+          startIcon={<Image source={searchIconGrey} width={24} height={24} />}
+          placeholder='Enter track number'
+          placeholderTextColor={theme.palette.grey[theme.mode][3]}
+          endicon={<Image source={scanIcon} />}
+          extraStyle={styles.SearchInput}
+        />
+
         {/** head */}
         <View style={styles.head}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -83,6 +94,10 @@ const getStyles = (theme: ThemeType) => {
       padding: 24,
       backgroundColor: palette.white[theme.mode].main,
 
+    },
+    SearchInput:{
+      backgroundColor: palette.lightGrey[mode][2],
+      marginTop:30,
     },
     head: {
       marginTop: 30,

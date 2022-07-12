@@ -47,7 +47,7 @@ function initI18N() {
     i18n.changeLanguage(lng)
   })
 }
-console.log(findBestAvailableLanguage());
+
 
 i18n.use(initReactI18next).init({
   compatibilityJSON: 'v3',

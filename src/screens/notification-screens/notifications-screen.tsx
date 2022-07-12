@@ -1,7 +1,7 @@
 
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import React, { useEffect } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { View, Text, StyleSheet, KeyboardAvoidingView, Image, Pressable, TextInput, ScrollView } from 'react-native'
 import { DiscountIcon, MessageNotifIcon, PackageIcon } from '../../assets'
 
@@ -21,7 +21,7 @@ export const NotificationsScreen = ({ navigation }: NotificationsScreenProps) =>
   const { goBack } = navigation
   const { theme } = useTheme()
   const styles = getStyles(theme)
-
+  const [notifications, setNotifications] = useState(data)
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
 
@@ -37,7 +37,9 @@ export const NotificationsScreen = ({ navigation }: NotificationsScreenProps) =>
               <Text style={styles.badgeText}>3</Text>
             </View>
           </View>
-          <Pressable>
+          <Pressable 
+          onPress={()=>setNotifications([])}
+          >
             <Text style={styles.clearText}>
               Clear All
             </Text>
@@ -45,26 +47,20 @@ export const NotificationsScreen = ({ navigation }: NotificationsScreenProps) =>
         </View>
         {/** body */}
         <View style={styles.body}>
-          <NotificationItem
-            icon={<Image source={MessageNotifIcon} width={22} height={22} />}
-            title="Kathryn Sent You a Message"
-            description='Tap to see the message'
-            time="2 min ago"
-          />
-          <Devider />
-          <NotificationItem
-            icon={<Image source={PackageIcon} width={22} height={22} />}
-            title="Your Shipping Already Delivered"
-            description='Tap to  see the detail shipping'
-            time="5 min ago"
-          />
-          <Devider />
-          <NotificationItem
-            icon={<Image source={DiscountIcon} width={22} height={22} />}
-            title="Get 20% Discount for First Transaction!"
-            description='For all transaction without requirements'
-            time="1 h ago"
-          />
+          {
+            notifications.map((notif, index) => (
+              <Fragment key={index}>
+                <NotificationItem
+                  icon={notif.icon}
+                  title={notif.title}
+                  description={notif.description}
+                  time={notif.time}
+                />
+                <Devider />
+              </Fragment>
+            ))
+          }
+
         </View>
       </View>
     </ScrollView>
@@ -118,3 +114,25 @@ const getStyles = (theme: ThemeType) => {
     },
   })
 }
+
+const data = [
+  {
+    icon: <Image source={PackageIcon} width={22} height={22} />,
+    title: "Kathryn Sent You a Message",
+    description: 'Tap to see the message',
+    time: "1 h ago",
+  },
+  {
+    icon: <Image source={PackageIcon} width={22} height={22} />,
+    title: "Your Shipping Already Delivered",
+    description: 'Tap to  see the detail shipping',
+    time: "1 h ago",
+  },
+  {
+    icon: <Image source={DiscountIcon} width={22} height={22} />,
+    title: "Get 20% Discount for First Transaction!",
+    description: 'For all transaction without requirements',
+    time: "1 h ago",
+  },
+
+]

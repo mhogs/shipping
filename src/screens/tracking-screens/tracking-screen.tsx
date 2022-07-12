@@ -19,7 +19,7 @@ type NotificationsScreenProps = NativeStackScreenProps<TrackingStackParamList, '
 export const TrackingScreen = ({ navigation }: NotificationsScreenProps) => {
   // 1 is the depth of this screen relative to the stack
   useHideBottomBar(navigation, 1)
-  const {navigate}=navigation
+  const { navigate } = navigation
   const { goBack } = navigation
   const { theme } = useTheme()
   const styles = getStyles(theme)
@@ -35,6 +35,7 @@ export const TrackingScreen = ({ navigation }: NotificationsScreenProps) => {
           placeholderTextColor={theme.palette.grey[theme.mode][3]}
           endicon={<Image source={scanIcon} />}
           extraStyle={styles.SearchInput}
+          autoFocus
         />
 
         {/** head */}
@@ -44,7 +45,9 @@ export const TrackingScreen = ({ navigation }: NotificationsScreenProps) => {
               Tracking History
             </Text>
           </View>
-          <Pressable>
+          <Pressable
+            onPress={() => setOrders([])}
+          >
             <Text style={styles.clearText}>
               Delete All
             </Text>
@@ -95,9 +98,9 @@ const getStyles = (theme: ThemeType) => {
       backgroundColor: palette.white[theme.mode].main,
 
     },
-    SearchInput:{
+    SearchInput: {
       backgroundColor: palette.lightGrey[mode][2],
-      marginTop:30,
+      marginTop: 30,
     },
     head: {
       marginTop: 30,

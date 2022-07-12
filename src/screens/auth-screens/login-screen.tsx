@@ -1,4 +1,5 @@
 import { View, StyleSheet, Image, Text, ScrollView } from 'react-native'
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
@@ -8,8 +9,13 @@ import { callIcon, googleIcon, appleIcon } from '../../assets'
 import { LockOutLineIcon } from '../../components/icons'
 import { AuthActionButton, SocialLoginButton } from '../../components/buttons'
 import { Devider } from '../../components/util/Devider'
+import { AuthScreenProps, AuthStackParamList } from '../../navigation/AuthStack';
 
-export const LoginScreen = () => {
+
+
+export const LoginScreen = (props: any) => {
+    const { navigation } = props;
+
     const { theme } = useTheme()
     const styles = getStyles(theme)
 

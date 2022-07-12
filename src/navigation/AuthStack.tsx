@@ -1,8 +1,16 @@
-import { AuthScreen } from "../screens";
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { AuthScreen, VerifficationScreen, LoginScreen, RegisterScreen, SuccessScreen } from "../screens";
+import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack'
+
+export type AuthStackParamList = {
+    AuthScreen:undefined
+    VerificationScreen:{phone?:string},
+};
+
+export type AuthScreenProps = NativeStackScreenProps<AuthStackParamList, 'AuthScreen'>;
+
+const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 
-const Stack = createNativeStackNavigator();
 
 export const AuthStackNavigator = () => {
   
@@ -14,7 +22,9 @@ export const AuthStackNavigator = () => {
             }}
             initialRouteName='AuthScreen'
         >
-          <Stack.Screen name="AuthScreen" component={AuthScreen} />
+            <Stack.Screen name="AuthScreen" component={AuthScreen} />
+            <Stack.Screen name="VerificationScreen" component={VerifficationScreen} />
+            
         </Stack.Navigator>
     )
 }

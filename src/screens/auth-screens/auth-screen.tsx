@@ -21,6 +21,7 @@ import { useTheme } from "../../state/theming";
 import { ThemeType } from "../../theme";
 import { LeftArrowIcon } from "../../components/icons";
 import { AuthScreenProps } from "../../navigation/AuthStack";
+import { MyTabView } from "../../components/util/mytab-view";
 
 
 /*
@@ -38,14 +39,10 @@ export const AuthScreen = (props: AuthScreenProps) => {
   const styles = getStyles(theme);
   const { navigation } = props
 
-  const layout = useWindowDimensions();
-
-  const [index, setIndex] = useState(0);
-  const [routes] = useState([
+  const authTabRoutes = [
     { key: "register", title: "Sign Up" },
     { key: "login", title: "Sign In" },
-  ]);
-
+  ]
   const renderScene = (props: SceneRendererProps & {
     route: {
         key: string;
@@ -61,39 +58,6 @@ export const AuthScreen = (props: AuthScreenProps) => {
       default:
         return null;
     }
-  };
-
-  const _renderTabBar = (
-    props: SceneRendererProps & {
-      navigationState: NavigationState<{
-        key: string;
-        title: string;
-      }>;
-    }
-  ) => {
-    return (
-      <View style={styles.tapBar}>
-        {props.navigationState.routes.map((route, i) => {
-          return (
-            <Pressable
-              key={i}
-              style={
-                index === i ? styles.tabItemFocused : styles.tabItemNotFocused
-              }
-              onPress={() => setIndex(i)}
-            >
-              <Text
-                style={
-                  index === i ? styles.focusedLabel : styles.nonFocusedLabel
-                }
-              >
-                {route.title}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </View>
-    );
   };
 
   return (
@@ -117,16 +81,8 @@ export const AuthScreen = (props: AuthScreenProps) => {
         </View>
         <Text style={styles.title}>Shipping and Track Anytime</Text>
         <Text style={styles.description}>Get great experience with tracky</Text>
-        <View style={styles.container}>
-          <TabView
-            navigationState={{ index, routes }}
-            renderTabBar={_renderTabBar}
-            renderScene={renderScene}
-            swipeEnabled={false}
-            onIndexChange={setIndex}
-            initialLayout={{ width: layout.width }}
-          />
-        </View>
+
+        <MyTabView enabledSwip={false} tabRoutes={authTabRoutes} sceneRendrer={renderScene} />
       </View>
     </>
   );
@@ -170,44 +126,6 @@ const getStyles = (theme: ThemeType) => {
       marginBottom: 30,
       ...text.regular.P14_Lh130,
       color: palette.grey[mode].main,
-    },
-    container: {
-      flex: 1,
-    },
-
-    tapBar: {
-      display: "flex",
-      flexDirection: "row",
-      alignItems: "center",
-      borderRadius: 25,
-      height: 50,
-      padding: 4,
-      elevation: 0,
-      backgroundColor: palette.lightGrey[theme.mode][3],
-    },
-    tabItemFocused: {
-      flex: 1,
-      borderRadius: 25,
-      height: "100%",
-      backgroundColor: palette.white[theme.mode].main,
-      justifyContent: "center",
-    },
-    tabItemNotFocused: {
-      flex: 1,
-      borderRadius: 25,
-      height: "100%",
-      backgroundColor: "transparent",
-      justifyContent: "center",
-    },
-    focusedLabel: {
-      color: palette.black[mode].main,
-      ...text.medium.P14_Lh130,
-      textAlign: "center",
-    },
-    nonFocusedLabel: {
-      color: palette.grey[mode].main,
-      ...text.medium.P14_Lh130,
-      textAlign: "center",
     },
   });
 };

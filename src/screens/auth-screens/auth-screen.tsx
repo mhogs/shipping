@@ -21,7 +21,7 @@ import { useTheme } from "../../state/theming";
 import { ThemeType } from "../../theme";
 import { LeftArrowIcon } from "../../components/icons";
 import { AuthScreenProps } from "../../navigation/AuthStack";
-import { MyTabView } from "../../components/util/mytab-view";
+import { MyTabView } from "../../components/util";
 
 
 /*

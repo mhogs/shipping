@@ -14,11 +14,11 @@ import { useAuth } from '../../state'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 
-type NotificationsScreenProps = NativeStackScreenProps<TrackingStackParamList, 'Tracking'>;
+type TrackingScreenProps = NativeStackScreenProps<TrackingStackParamList, 'Tracking'>;
 
-export const TrackingScreen = ({ navigation }: NotificationsScreenProps) => {
+export const TrackingScreen = ({ navigation }: TrackingScreenProps) => {
   // 1 is the depth of this screen relative to the stack
-  useHideBottomBar(navigation, 1)
+  useHideBottomBar(navigation, 2)
   const { navigate } = navigation
   const { goBack } = navigation
   const { theme } = useTheme()
@@ -27,7 +27,7 @@ export const TrackingScreen = ({ navigation }: NotificationsScreenProps) => {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.root}>
-        <SimpleScreenHeader title="Notifications" goBack={goBack} />
+        <SimpleScreenHeader title="Track" goBack={goBack} />
         {/**search */}
         <SearchInput
           startIcon={<Image source={searchIconGrey} width={24} height={24} />}
@@ -58,7 +58,11 @@ export const TrackingScreen = ({ navigation }: NotificationsScreenProps) => {
           {
             orders.map((order, index) => (
               <Fragment key={index}>
-                <OrderItem code={order.code} onDelete={() => setOrders(orders.filter((_, i) => i != index))} />
+                <OrderItem
+                  code={order.code}
+                  onPress={() => navigate("TrackingDetails", { packageId: order.code })}
+                  onDelete={() => setOrders(orders.filter((_, i) => i != index))}
+                />
                 <Devider spacing={15} />
               </Fragment>
             ))

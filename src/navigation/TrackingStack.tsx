@@ -1,6 +1,6 @@
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { NotificationsScreen, TrackingScreen } from '../screens';
+import { NotificationsScreen, TrackingDetailsScreen, TrackingScreen } from '../screens';
 
 
 const Stack = createNativeStackNavigator();
@@ -16,6 +16,7 @@ export const TrakingStackNavigator = () => {
             initialRouteName='Tracking'
         >
             <Stack.Screen name="Tracking" component={TrackingScreen} />
+            <Stack.Screen name="TrackingDetails" component={TrackingDetailsScreen} />
         </Stack.Navigator>
     )
 }

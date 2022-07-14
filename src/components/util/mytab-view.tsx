@@ -26,6 +26,7 @@ type MyTabViewType = {
   tabItemNotFocusedStyle?: StyleProp<ViewStyle>,
   focusedLabelstyle?: StyleProp<TextStyle>,
   nonFocusedLabelStyle?: StyleProp<TextStyle>,
+  scrollable?:boolean
   sceneRendrer: (props: SceneRendererProps & {
     route: {
       key: string;
@@ -44,6 +45,7 @@ export const MyTabView = (props: MyTabViewType) => {
     tabItemNotFocusedStyle = undefined,
     focusedLabelstyle = undefined,
     nonFocusedLabelStyle = undefined,
+    scrollable=false,
   } = props
 
 
@@ -64,8 +66,12 @@ export const MyTabView = (props: MyTabViewType) => {
     }
   ) => {
     return (
-      
-        <View style={tapBarstyle ? tapBarstyle : styles.tapBar}>
+      <View style={tapBarstyle ? tapBarstyle : styles.tapBar}>
+        <ScrollView 
+        horizontal={scrollable} 
+        contentContainerStyle={{flexDirection:'row', height:"100%"}}
+        showsHorizontalScrollIndicator={false}
+        >
           {props.navigationState.routes.map((route, i) => {
             return (
               <Pressable
@@ -88,8 +94,11 @@ export const MyTabView = (props: MyTabViewType) => {
               </Pressable>
             );
           })}
-        </View>
-  
+        </ScrollView>
+      </View>
+
+
+
 
     );
   };
@@ -122,7 +131,6 @@ const getStyles = (theme: ThemeType) => {
       flexDirection: "row",
       alignItems: "center",
       borderRadius: 25,
-      height: 50,
       padding: 4,
       elevation: 0,
       backgroundColor: palette.lightGrey[theme.mode][3],
@@ -130,6 +138,7 @@ const getStyles = (theme: ThemeType) => {
     tabItemFocused: {
       flex: 1,
       borderRadius: 25,
+      paddingVertical:12,
       height: "100%",
       backgroundColor: palette.white[theme.mode].main,
       justifyContent: "center",
@@ -137,6 +146,7 @@ const getStyles = (theme: ThemeType) => {
     tabItemNotFocused: {
       flex: 1,
       borderRadius: 25,
+      paddingVertical:12,
       height: "100%",
       backgroundColor: "transparent",
       justifyContent: "center",

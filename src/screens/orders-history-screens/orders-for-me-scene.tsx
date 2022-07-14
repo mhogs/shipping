@@ -44,6 +44,7 @@ export const OrdersFormMeScene = (props: any) => {
                 tabItemNotFocusedStyle={styles.tabItemNotFocused}
                 focusedLabelstyle={styles.focusedLabel}
                 nonFocusedLabelStyle={styles.nonFocusedLabel}
+                scrollable
             />
         </View>
     )
@@ -84,6 +85,7 @@ const getStyles = (theme: ThemeType) => {
             display: "flex", 
             flexDirection: "row",
             alignItems: "center",
+            
         },
         tabItemFocused: {
             borderRadius: 25,

@@ -66,7 +66,7 @@ export const MyTabView = (props: MyTabViewType) => {
     }
   ) => {
     return (
-      <View style={tapBarstyle ? tapBarstyle : styles.tapBar}>
+      <View style={[tapBarstyle ? tapBarstyle : styles.tapBar,{zIndex:10}]}>
         <ScrollView 
         horizontal={scrollable} 
         contentContainerStyle={{flexDirection:'row', height:"100%"}}

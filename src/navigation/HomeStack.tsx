@@ -6,6 +6,7 @@ import { HelpCenterStackNavigator } from './HelpCenterStack';
 import { NearByStackNavigator } from './NearByStack';
 import { NotificationsStackNavigator } from './NotificationsStack';
 import { OrderHistoryStackNavigator } from './OrderHistoryStack';
+import { OrdersStackNavigator } from './OrdersStack';
 import { TrakingStackNavigator } from './TrackingStack';
 import { WalletStackNavigator } from './WalletStack';
 
@@ -27,6 +28,7 @@ export const HomeStackNavigator = () => {
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="CheckRatesStack" component={CheckRatesStackNavigator} />
             <Stack.Screen name="NearbyDropStack" component={NearByStackNavigator} />
+            <Stack.Screen name="OrdersStack" component={OrdersStackNavigator} />
             <Stack.Screen name="OrderHistoryStack" component={OrderHistoryStackNavigator} />
             <Stack.Screen name="HelpCenterStack" component={HelpCenterStackNavigator} />
             <Stack.Screen name="WalletStack" component={WalletStackNavigator} />

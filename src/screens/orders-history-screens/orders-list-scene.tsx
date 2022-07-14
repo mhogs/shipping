@@ -1,6 +1,6 @@
 import { View, StyleSheet, Image, Text, ScrollView } from 'react-native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React from 'react'
+import React, { Fragment } from 'react'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 import { MyTextInput } from '../../components/inputs'
@@ -11,11 +11,15 @@ import { AuthActionButton, SocialLoginButton } from '../../components/buttons'
 import { Devider } from '../../components/util/Devider'
 import { AuthScreenProps, AuthStackParamList } from '../../navigation/AuthStack';
 import { SceneRendererProps } from 'react-native-tab-view';
+import { OrderHistoryItem, orderStateType } from '../../components/content';
 
 
+type OrdersFormMeSceneProps = {
+    orders: orderHistoryType[]
+}
 
-export const OrdersToMeScene = (props: any) => {
-    const { navigation } = props;
+export const OrdersListScene = (props: OrdersFormMeSceneProps) => {
+    const { orders } = props;
 
     const { theme } = useTheme()
     const styles = getStyles(theme)
@@ -30,7 +34,27 @@ export const OrdersToMeScene = (props: any) => {
         { key: "deliverded", title: "Deliverded" },
     ]
 
+    const renderScene = (props: SceneRendererProps & {
+        route: {
+            key: string;
+            title: string;
+        };
+    }) => {
+        const { route } = props;
 
+        switch (route.key) {
+            case 'all':
+                return <OrdersHistoryList orders={orders} />;
+            case 'pending':
+                return <OrdersHistoryList orders={orders.filter(order => order.state === "Pending")} />;
+            case 'on_progress':
+                return <OrdersHistoryList orders={orders.filter(order => order.state === 'On Progress')} />;
+            case 'deliverded':
+                return <OrdersHistoryList orders={orders.filter(order => order.state === 'Delivred')} />;
+            default:
+                return null;
+        }
+    };
 
 
     return (
@@ -44,32 +68,51 @@ export const OrdersToMeScene = (props: any) => {
                 tabItemNotFocusedStyle={styles.tabItemNotFocused}
                 focusedLabelstyle={styles.focusedLabel}
                 nonFocusedLabelStyle={styles.nonFocusedLabel}
+                scrollable
             />
         </View>
     )
 }
 
-const renderScene = (props: SceneRendererProps & {
-    route: {
-        key: string;
-        title: string;
-    };
-}) => {
-    const { route } = props;
+export type orderHistoryType = {
+    title: string
+    description: string,
+    state: orderStateType,
+    fromMe: boolean
+}
+type OrdersHistoryListProps = {
+    orders: orderHistoryType[]
+}
+const OrdersHistoryList = (props: OrdersHistoryListProps) => {
+    const { orders } = props
+    const { theme } = useTheme()
+    const styles = getStyles(theme)
+    return (
+        <ScrollView showsVerticalScrollIndicator={false}>
+            <View>
+                <Space size={20} direction='vertical' />
+                <Text style={styles.resultsText}>
+                    {orders.length} Results
+                </Text>
+                <Space size={20} direction='vertical' />
 
-    switch (route.key) {
-        case 'all':
-            return <View><Text>all</Text></View>;
-        case 'pending':
-            return <View><Text>pending</Text></View>;
-        case 'on_progress':
-            return <View><Text>on_progress</Text></View>;
-        case 'deliverded':
-            return <View><Text>deliverded</Text></View>;
-        default:
-            return null;
-    }
-};
+                {
+                    orders.map((order, index) => (
+                        <Fragment>
+                            <OrderHistoryItem
+                                {...order}
+                            />
+                            <Space size={15} direction='vertical' />
+                        </Fragment>
+                    ))
+                }
+
+            </View>
+        </ScrollView>
+
+    )
+}
+
 
 const getStyles = (theme: ThemeType) => {
     const { palette, mode, text } = theme
@@ -78,12 +121,13 @@ const getStyles = (theme: ThemeType) => {
             flex: 1,
             marginTop: 20,
             backgroundColor: palette.white[theme.mode].main,
-            
+
         },
         tapBar: {
-            display: "flex", 
+            display: "flex",
             flexDirection: "row",
             alignItems: "center",
+
         },
         tabItemFocused: {
             borderRadius: 25,
@@ -115,7 +159,15 @@ const getStyles = (theme: ThemeType) => {
             ...text.medium.P12_Lh130,
             textAlign: "center",
         },
+        resultsText: {
+            ...text.heading.H3,
+            color: palette.black[mode].main
+        }
 
 
     })
 }
+
+
+
+

@@ -119,7 +119,7 @@ const features = [
     {
         name: 'Order',
         icon: OrderFeatureIcon,
-        route: 'OrderHistoryStack'
+        route: 'OrdersStack'
     },
     {
         name: 'Help Center',

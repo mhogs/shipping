@@ -19,8 +19,8 @@ import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 import { LoginScreen } from '../auth-screens/login-screen'
 import { RegisterScreen } from '../auth-screens/register-screen'
-import { OrdersFormMeScene } from './orders-for-me-scene'
-import { OrdersToMeScene } from './orders-to-me-scene'
+import {  OrdersListScene } from './orders-list-scene'
+import { orderHistoryType } from './orders-list'
 
 
 type OrderHistoryScreenProps = NativeStackScreenProps<OrdersHistoryStackParamList, 'MyOrders'>;
@@ -44,9 +44,9 @@ export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
 
     switch (route.key) {
       case 'from_me':
-        return <OrdersFormMeScene navigation={navigation} />;
+        return <OrdersListScene orders={orders.filter(order=>order.fromMe)}  />;
       case 'to_me':
-        return <OrdersToMeScene navigation={navigation} />;
+        return <OrdersListScene orders={orders.filter(order=>!order.fromMe)}  />;
       default:
         return null;
     }
@@ -136,4 +136,54 @@ const getStyles = (theme: ThemeType) => {
   })
 }
 
+const orders:orderHistoryType[] = [
+  {
+      title: "FGHX125463",
+      description: 'hi this is text',
+      state: 'Delivred',
+      fromMe:true,
+  },
+  {
+      title: "FGHX125463",
+      description: 'hi this is text',
+      state: 'On Progress',
+      fromMe:true,
+  },
+  {
+      title: "FGHX125463",
+      description: 'hi this is text',
+      state: 'Pending',
+      fromMe:false,
+  },
+  {
+      title: "FGHX125463",
+      description: 'hi this is text',
+      state: 'Pending',
+      fromMe:false,
+  },
+  {
+    title: "FGHX125463",
+    description: 'hi this is text',
+    state: 'On Progress',
+    fromMe:false,
+},
+{
+    title: "FGHX125463",
+    description: 'hi this is text',
+    state: 'Pending',
+    fromMe:true,
+},
+{
+    title: "FGHX125463",
+    description: 'hi this is text',
+    state: 'Delivred',
+    fromMe:true,
+},
+{
+    title: "FGHX125463",
+    description: 'hi this is text',
+    state: 'Delivred',
+    fromMe:false,
+}
+]
 

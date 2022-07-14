@@ -6,16 +6,19 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC, Fragment } from 'react'
 import { View, StyleSheet, Image, StatusBar, Text, TextInput, KeyboardAvoidingView, Pressable, ScrollView } from 'react-native'
+import { SceneRendererProps } from 'react-native-tab-view'
 import { add_squar_icon_asset, avatar_asset, checkRatesIcon, HelpCenterFeatureIcon, logo_asset, NearByFeatureIcon, notification_asset, OrderFeatureIcon, OtherFeatureIcon, scanIcon, searchIcon, WalletFeatureIcon } from '../../assets'
 import { MessageItem } from '../../components/content'
 import { FilterIcon } from '../../components/icons'
 import { SearchInput } from '../../components/inputs'
-import { Devider, Space } from '../../components/util'
+import { Devider, MyTabView, Space } from '../../components/util'
 import { listToMatrix } from '../../halpers'
 import { RootStackParamList } from '../../navigation/BottomNavigationBar'
 import { OrdersHistoryStackParamList } from '../../navigation/OrderHistoryStack'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
+import { LoginScreen } from '../auth-screens/login-screen'
+import { RegisterScreen } from '../auth-screens/register-screen'
 
 
 type OrderHistoryScreenProps = NativeStackScreenProps<OrdersHistoryStackParamList, 'MyOrders'>;
@@ -24,6 +27,28 @@ export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
   const { navigate } = navigation
   const { theme } = useTheme()
   const styles = getStyles(theme)
+
+  const TabRoutes = [
+    { key: "from_me", title: "From Me" },
+    { key: "to_me", title: "To Me" },
+  ]
+  const renderScene = (props: SceneRendererProps & {
+    route: {
+      key: string;
+      title: string;
+    };
+  }) => {
+    const { route } = props;
+  
+    switch (route.key) {
+      case 'from_me':
+        return <LoginScreen navigation={navigation} />;
+      case 'to_me':
+        return <RegisterScreen navigation={navigation} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <Fragment>
@@ -55,7 +80,7 @@ export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
         </View>
         <ScrollView>
           <View style={styles.body} >
-
+            <MyTabView enabledSwip={false} tabRoutes={TabRoutes} sceneRendrer={renderScene} />
           </View>
         </ScrollView>
 
@@ -72,10 +97,10 @@ const getStyles = (theme: ThemeType) => {
   return StyleSheet.create({
     root: {
       flex: 1,
-      backgroundColor: palette.lightGrey[theme.mode][3],
+      backgroundColor: palette.white[mode].main,
     },
     head: {
-      backgroundColor: palette.primary[theme.mode].main,
+      backgroundColor: palette.primary[mode].main,
       padding: 24
     },
     title: {
@@ -110,53 +135,3 @@ const getStyles = (theme: ThemeType) => {
 }
 
 
-const messages = [
-  {
-    picture: <Image source={avatar_asset} width={22} height={22} />,
-    fullName: "Kathryn Murphy",
-    messageText: "Hai Rizal, I'm on the way to your... ",
-    time: "6:32 Pm",
-  },
-  {
-    picture: <Image source={avatar_asset} width={22} height={22} />,
-    fullName: "Kathryn Murphy",
-    messageText: 'Hai Rizal, I m on the way to your... ',
-    time: "6:32 Pm",
-  },
-  {
-    picture: <Image source={avatar_asset} width={22} height={22} />,
-    fullName: "Kathryn Murphy",
-    messageText: 'Hai Rizal, I m on the way to your... ',
-    time: "6:32 Pm",
-  },
-  {
-    picture: <Image source={avatar_asset} width={22} height={22} />,
-    fullName: "Kathryn Murphy",
-    messageText: 'Hai Rizal, I m on the way to your... ',
-    time: "6:32 Pm",
-  },
-  {
-    picture: <Image source={avatar_asset} width={22} height={22} />,
-    fullName: "Kathryn Murphy",
-    messageText: "Hai Rizal, I'm on the way to your... ",
-    time: "6:32 Pm",
-  },
-  {
-    picture: <Image source={avatar_asset} width={22} height={22} />,
-    fullName: "Kathryn Murphy",
-    messageText: 'Hai Rizal, I m on the way to your... ',
-    time: "6:32 Pm",
-  },
-  {
-    picture: <Image source={avatar_asset} width={22} height={22} />,
-    fullName: "Kathryn Murphy",
-    messageText: 'Hai Rizal, I m on the way to your... ',
-    time: "6:32 Pm",
-  },
-  {
-    picture: <Image source={avatar_asset} width={22} height={22} />,
-    fullName: "Kathryn Murphy",
-    messageText: 'Hai Rizal, I m on the way to your... ',
-    time: "6:32 Pm",
-  }
-]

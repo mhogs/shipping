@@ -5,6 +5,7 @@ import { useTheme } from '../../state/theming';
 import { ThemeType } from '../../theme';
 import { HomeIcon, HomeIconActive, MessageIcon, MessageIconActive, OrdersIcon, OrdersIconActive, ProfileIcon, ProfileIconActive } from '../../assets';
 import { RootStackParamList } from '../../navigation/BottomNavigationBar';
+import { OrdersHistoryStackParamList } from '../../navigation/OrderHistoryStack';
 
 
 
@@ -92,10 +93,10 @@ const BottomTabs: BottomTabType[] = [
         route: 'HomeStack'
     },
     {
-        name: 'Orders',
+        name: 'My Orders',
         icon: OrdersIcon,
         activeIcon: OrdersIconActive,
-        route: 'OrdersStack'
+        route: 'MyOrdersStack'
     },
     {
         name: 'Messages',

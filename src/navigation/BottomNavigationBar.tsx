@@ -12,12 +12,14 @@ import { MessagesStackNavigator } from './MessagesStack';
 import { ProfileStackNavigator } from './ProfileStack';
 import { MyBottomTabBar } from '../components/navigation';
 import { HomeStackNavigator } from './HomeStack';
+import { OrderHistoryStackNavigator } from './OrderHistoryStack';
 
 const Tab = createBottomTabNavigator();
 
 export type RootStackParamList = {
     HomeStack: undefined;
     OrdersStack: { userId: string };
+    MyOrdersStack:undefined
     MessagesStack: { sort: 'latest' | 'top' } | undefined;
     ProfileStack:{userId: string},
     CheckRatesStack:undefined,
@@ -39,8 +41,8 @@ export function BottomNavigationBar() {
                 component={HomeStackNavigator}
             />
             <Tab.Screen
-                name="OrdersStack"
-                component={OrdersStackNavigator}
+                name="MyOrdersStack"
+                component={OrderHistoryStackNavigator}
             />
             <Tab.Screen
                 name="MessagesStack"

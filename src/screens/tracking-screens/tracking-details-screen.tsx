@@ -32,26 +32,30 @@ export const TrackingDetailsScreen = ({ navigation }: TrackingDetailsScreenProps
         mapRegion: {
             latitude: 60,
             longitude: 18,
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
         },
         hasLocationPermissions: false,
         locationResult: null,
         errorMsg: null
     })
 
-
+    
     useEffect(() => {
         async function initLocation() {
             let { status } = await Location.requestForegroundPermissionsAsync();
-            console.log(status);
-
+        
             if (status === 'granted') {
-                let location = await Location.getCurrentPositionAsync({});
+                const location = await Location.getCurrentPositionAsync({});
                 setMapState({
                     ...mapState,
                     locationResult: location,
-                    mapRegion: { latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.005, longitudeDelta: 0.005 },
+                    mapRegion: {
+                        latitude: location.coords.latitude,
+                        longitude: location.coords.longitude,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                    },
                     errorMsg: null,
                     hasLocationPermissions: true
                 });
@@ -67,12 +71,12 @@ export const TrackingDetailsScreen = ({ navigation }: TrackingDetailsScreenProps
             );
         };
         initLocation()
-        console.log(mapState);
+
 
     }, []);
 
     function handleMapRegionChange(mapRegion: Region) {
-        setMapState({ ...mapState, mapRegion });
+        // setMapState({ ...mapState, mapRegion });
     }
 
     return (
@@ -86,16 +90,15 @@ export const TrackingDetailsScreen = ({ navigation }: TrackingDetailsScreenProps
                     <MapView
                         region={mapState.mapRegion}
                         onRegionChange={handleMapRegionChange}
+                        //showsUserLocation={true}
                         style={styles.map}>
-                        {mapState.locationResult &&
+                        {mapState.hasLocationPermissions &&
                             <Marker
                                 coordinate={
                                     {
-                                        latitude: mapState.locationResult.coords.latitude,
-                                        longitude: mapState.locationResult.coords.longitude,
-                                        latitudeDelta: 0.005,
-                                        longitudeDelta: 0.005,
-                                    }
+                                        latitude: mapState?.locationResult?.coords.latitude,
+                                        longitude: mapState?.locationResult?.coords.longitude,
+                                    } as LatLng
                                 }
                             />
                         }

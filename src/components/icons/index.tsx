@@ -1,4 +1,4 @@
-import { AntDesign, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, Entypo, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons'; 
 
 import React from 'react'
@@ -56,6 +56,16 @@ export const CloseIcon = ({ color, size=24 }:IconPropsType) => {
     )
 }
 
+export const FilterIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <Ionicons name="ios-filter-outline" color={color} size={size} />
+    )
+}
+export const SearchIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <Feather name="search" color={color} size={size} />
+    )
+}
 
 
 

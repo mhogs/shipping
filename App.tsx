@@ -26,7 +26,6 @@ export default function App() {
 
 
 const useAppLoader = () => {
-
   let [fontsLoaded] = useFonts({
     Outfit_400Regular,
     Outfit_500Medium,

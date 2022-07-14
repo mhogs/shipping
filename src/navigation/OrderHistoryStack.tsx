@@ -15,9 +15,13 @@ export const OrderHistoryStackNavigator = () => {
             screenOptions={{
                 headerShown: false,
             }}
-            initialRouteName='Order'
+            initialRouteName='MyOrders'
         >
-            <Stack.Screen name="Order" component={OrderHistoryScreen} />
+            <Stack.Screen name="MyOrders" component={OrderHistoryScreen} />
         </Stack.Navigator>
     )
 }
+
+export type OrdersHistoryStackParamList = {
+    MyOrders:undefined
+  };

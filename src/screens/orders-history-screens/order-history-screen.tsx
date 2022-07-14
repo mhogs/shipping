@@ -19,6 +19,8 @@ import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 import { LoginScreen } from '../auth-screens/login-screen'
 import { RegisterScreen } from '../auth-screens/register-screen'
+import { OrdersFormMeScene } from './orders-for-me-scene'
+import { OrdersToMeScene } from './orders-to-me-scene'
 
 
 type OrderHistoryScreenProps = NativeStackScreenProps<OrdersHistoryStackParamList, 'MyOrders'>;
@@ -39,12 +41,12 @@ export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
     };
   }) => {
     const { route } = props;
-  
+
     switch (route.key) {
       case 'from_me':
-        return <LoginScreen navigation={navigation} />;
+        return <OrdersFormMeScene navigation={navigation} />;
       case 'to_me':
-        return <RegisterScreen navigation={navigation} />;
+        return <OrdersToMeScene navigation={navigation} />;
       default:
         return null;
     }
@@ -78,11 +80,11 @@ export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
 
 
         </View>
-        <ScrollView>
-          <View style={styles.body} >
-            <MyTabView enabledSwip={false} tabRoutes={TabRoutes} sceneRendrer={renderScene} />
-          </View>
-        </ScrollView>
+
+        <View style={styles.body} >
+          <MyTabView enabledSwip={false} tabRoutes={TabRoutes} sceneRendrer={renderScene} />
+        </View>
+
 
       </KeyboardAvoidingView>
     </Fragment>

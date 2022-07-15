@@ -5,7 +5,7 @@ import { useTheme } from '../../state'
 import { ThemeType } from '../../theme'
 
 
-export type orderStateType="Pending" | "Delivred" | "On Progress"
+export type orderStateType = "Pending" | "Delivred" | "On Progress"
 type orderItemProps = {
     icon?: any,
     title: string,
@@ -20,35 +20,38 @@ export const OrderHistoryItem = (props: orderItemProps) => {
     return (
         <View style={styles.root}>
             <Pressable
-                style={styles.orderContainer}
+                style={styles.pressable}
                 onPress={onPress}
                 android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
             >
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={styles.orderIconcontainer}>
-                        <Image source={PackageColored} />
+                <View style={styles.orderContainer}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={styles.orderIconcontainer}>
+                            <Image source={PackageColored} />
+                        </View>
+                        <View style={styles.orderDetailsContainer}>
+                            <Text style={styles.orderTitle}>
+                                {title}
+                            </Text>
+                            <Text style={styles.orderBrief}>
+                                {description}
+                            </Text>
+                        </View>
                     </View>
-                    <View style={styles.orderDetailsContainer}>
-                        <Text style={styles.orderTitle}>
-                            {title}
-                        </Text>
-                        <Text style={styles.orderBrief}>
-                            {description}
-                        </Text>
-                    </View>
-                </View>
 
-                <Text style={[styles.orderState,{color:getStateColor(theme, state)}]}>
-                    {state}
-                </Text>
+                    <Text style={[styles.orderState, { color: getStateColor(theme, state) }]}>
+                        {state}
+                    </Text>
+                </View>
             </Pressable>
         </View>
+
 
     )
 }
 
-function getStateColor(theme:ThemeType,state:orderStateType){
-    switch (state){
+function getStateColor(theme: ThemeType, state: orderStateType) {
+    switch (state) {
         case 'Delivred':
             return theme.palette.success[theme.mode].main
         case "On Progress":
@@ -60,17 +63,18 @@ function getStateColor(theme:ThemeType,state:orderStateType){
     }
 }
 
-function getStyles  (theme: ThemeType) {
+function getStyles(theme: ThemeType) {
     const { palette, mode, text } = theme
 
     return StyleSheet.create({
         root: {
             borderRadius: 8,
             overflow: 'hidden',
-
-            padding: 10,
             borderWidth: 1,
             borderColor: palette.lightGrey[mode].main
+        },
+        pressable: {
+            padding: 10,
         },
         orderContainer: {
             paddingVertical: 5,
@@ -81,17 +85,16 @@ function getStyles  (theme: ThemeType) {
         },
         orderIconcontainer: {
             padding: 13,
-            height:50,
-            width:50,
+            height: 50,
+            width: 50,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: palette.lightGrey[mode].main,
             borderRadius: 10,
         },
         orderDetailsContainer: {
-            flex: 1,
-            marginLeft:14,
-            justifyContent:"space-around"
+            marginLeft: 14,
+            justifyContent: "space-around"
         },
         orderTitle: {
             ...text.medium.P14_Lh130,

@@ -90,7 +90,6 @@ const OrdersHistoryList = (props: OrdersHistoryListProps) => {
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View>
-                <Space size={20} direction='vertical' />
                 <Text style={styles.resultsText}>
                     {orders.length} Results
                 </Text>
@@ -98,7 +97,7 @@ const OrdersHistoryList = (props: OrdersHistoryListProps) => {
 
                 {
                     orders.map((order, index) => (
-                        <Fragment>
+                        <Fragment key={index}>
                             <OrderHistoryItem
                                 {...order}
                             />
@@ -127,6 +126,7 @@ const getStyles = (theme: ThemeType) => {
             height:28,
             flexDirection: "row",
             alignItems: "center",
+            marginBottom:20
 
         },
         tabItemFocused: {

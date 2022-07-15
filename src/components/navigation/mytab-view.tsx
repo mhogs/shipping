@@ -127,9 +127,9 @@ const getStyles = (theme: ThemeType) => {
       flex: 1,
     },
     tapBar: {
-      display: "flex",
       flexDirection: "row",
       alignItems: "center",
+      height:50,
       borderRadius: 25,
       padding: 4,
       elevation: 0,

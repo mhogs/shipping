@@ -55,8 +55,8 @@ export const MessagesScreen = ({ navigation }: MessagesScreenProps) => {
         <ScrollView>
           <View style={styles.body} >
             {
-              messages.map(message => (
-                <Fragment>
+              messages.map((message, index) => (
+                <Fragment key={index}>
                   <MessageItem {...message} />
                   <Devider spacing={15} />
                 </Fragment>

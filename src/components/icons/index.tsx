@@ -1,4 +1,4 @@
-import { AntDesign, Entypo, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, Entypo, FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons'; 
 
 import React from 'react'
@@ -29,6 +29,30 @@ export const CheckIcon = ({ color, size=24 }:IconPropsType) => {
         <AntDesign name="check" color={color} size={size} />
     )
 }
+export const PlusIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <AntDesign name="plus" color={color} size={size} />
+    )
+}
+export const MinusIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <AntDesign name="minus" color={color} size={size} />
+    )
+}
+export const WhatsAppIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <FontAwesome name="whatsapp" color={color} size={size} />
+    )
+}
+export const EmailIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <Ionicons name="md-chatbox-ellipses-outline" color={color} size={size} />
+    )
+}
+
+
+
+
 
 export const LockOutLineIcon = ({ color, size=24 }:IconPropsType) => {
     return (

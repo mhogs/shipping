@@ -12,15 +12,15 @@ import { MessageItem } from '../../components/content'
 import { FilterIcon } from '../../components/icons'
 import { SearchInput } from '../../components/inputs'
 import { Devider, MyTabView, Space } from '../../components/util'
-import { listToMatrix } from '../../halpers'
+import { listToMatrix } from '../../helpers'
 import { RootStackParamList } from '../../navigation/BottomNavigationBar'
 import { OrdersHistoryStackParamList } from '../../navigation/OrderHistoryStack'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 import { LoginScreen } from '../auth-screens/login-screen'
 import { RegisterScreen } from '../auth-screens/register-screen'
-import {  OrdersListScene } from './orders-list-scene'
-import { orderHistoryType } from './orders-list'
+import {  orderHistoryType, OrdersListScene } from './orders-list-scene'
+import { useOrdersHistory } from './useOrdersHistory'
 
 
 type OrderHistoryScreenProps = NativeStackScreenProps<OrdersHistoryStackParamList, 'MyOrders'>;
@@ -29,6 +29,7 @@ export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
   const { navigate } = navigation
   const { theme } = useTheme()
   const styles = getStyles(theme)
+  const {data:orders, isLoading}= useOrdersHistory()
 
   const TabRoutes = [
     { key: "from_me", title: "From Me" },
@@ -44,9 +45,9 @@ export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
 
     switch (route.key) {
       case 'from_me':
-        return <OrdersListScene orders={orders.filter(order=>order.fromMe)}  />;
+        return <OrdersListScene loading={isLoading} orders={orders?.filter(order=>order.fromMe)}  />;
       case 'to_me':
-        return <OrdersListScene orders={orders.filter(order=>!order.fromMe)}  />;
+        return <OrdersListScene loading={isLoading} orders={orders?.filter(order=>!order.fromMe)}  />;
       default:
         return null;
     }
@@ -81,7 +82,7 @@ export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
 
         </View>
 
-        <View style={styles.body} >
+        <View style={styles.body}>
           <MyTabView enabledSwip={false} tabRoutes={TabRoutes} sceneRendrer={renderScene} />
         </View>
 
@@ -135,55 +136,4 @@ const getStyles = (theme: ThemeType) => {
 
   })
 }
-
-const orders:orderHistoryType[] = [
-  {
-      title: "FGHX125463",
-      description: 'hi this is text',
-      state: 'Delivred',
-      fromMe:true,
-  },
-  {
-      title: "FGHX125463",
-      description: 'hi this is text',
-      state: 'On Progress',
-      fromMe:true,
-  },
-  {
-      title: "FGHX125463",
-      description: 'hi this is text',
-      state: 'Pending',
-      fromMe:false,
-  },
-  {
-      title: "FGHX125463",
-      description: 'hi this is text',
-      state: 'Pending',
-      fromMe:false,
-  },
-  {
-    title: "FGHX125463",
-    description: 'hi this is text',
-    state: 'On Progress',
-    fromMe:false,
-},
-{
-    title: "FGHX125463",
-    description: 'hi this is text',
-    state: 'Pending',
-    fromMe:true,
-},
-{
-    title: "FGHX125463",
-    description: 'hi this is text',
-    state: 'Delivred',
-    fromMe:true,
-},
-{
-    title: "FGHX125463",
-    description: 'hi this is text',
-    state: 'Delivred',
-    fromMe:false,
-}
-]
 

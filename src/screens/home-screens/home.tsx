@@ -4,7 +4,7 @@ import { View, StyleSheet, Image, StatusBar, Text, TextInput, KeyboardAvoidingVi
 import { add_squar_icon_asset, checkRatesIcon, HelpCenterFeatureIcon, logo_asset, NearByFeatureIcon, notification_asset, OrderFeatureIcon, OtherFeatureIcon, scanIcon, searchIcon, WalletFeatureIcon } from '../../assets'
 import { SearchInput } from '../../components/inputs'
 import { Space } from '../../components/util'
-import { listToMatrix } from '../../halpers'
+import { listToMatrix } from '../../helpers'
 import { RootStackParamList } from '../../navigation/BottomNavigationBar'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
@@ -136,11 +136,8 @@ const features = [
         icon: OtherFeatureIcon,
         route: 'HomeStack'
     },
-
-
-
-
 ]
+
 const getStyles = (theme: ThemeType) => {
     const { palette, mode, text } = theme
     return StyleSheet.create({

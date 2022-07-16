@@ -10,3 +10,8 @@ export const WalletFeatureIcon=require('./wallet-feature-icon.png')
 export const OtherFeatureIcon=require('./other-feature-icon.png')
 /** orders */
 export const PackageColored=require('./package.png')
+/**help center */
+export const dollarIconColored=require('./dollar.png')
+export const insuranceIconColored=require('./Insurance.png')
+export const MobileIconColored=require('./Mobile.png')
+export const trackIconColored=require('./track.png')

@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image, Text, ScrollView } from 'react-native'
+import { View, StyleSheet, Image, Text, ScrollView, ActivityIndicator } from 'react-native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { Fragment } from 'react'
 import { useTheme } from '../../state/theming'
@@ -15,11 +15,12 @@ import { OrderHistoryItem, orderStateType } from '../../components/content';
 
 
 type OrdersFormMeSceneProps = {
-    orders: orderHistoryType[]
+    orders?: orderHistoryType[],
+    loading: boolean
 }
 
 export const OrdersListScene = (props: OrdersFormMeSceneProps) => {
-    const { orders } = props;
+    const { orders,loading } = props;
 
     const { theme } = useTheme()
     const styles = getStyles(theme)
@@ -44,13 +45,13 @@ export const OrdersListScene = (props: OrdersFormMeSceneProps) => {
 
         switch (route.key) {
             case 'all':
-                return <OrdersHistoryList orders={orders} />;
+                return <OrdersHistoryList loading={loading} orders={orders} />;
             case 'pending':
-                return <OrdersHistoryList orders={orders.filter(order => order.state === "Pending")} />;
+                return <OrdersHistoryList loading={loading} orders={orders?.filter(order => order.state === "Pending")} />;
             case 'on_progress':
-                return <OrdersHistoryList orders={orders.filter(order => order.state === 'On Progress')} />;
+                return <OrdersHistoryList loading={loading} orders={orders?.filter(order => order.state === 'On Progress')} />;
             case 'deliverded':
-                return <OrdersHistoryList orders={orders.filter(order => order.state === 'Delivred')} />;
+                return <OrdersHistoryList loading={loading} orders={orders?.filter(order => order.state === 'Delivred')} />;
             default:
                 return null;
         }
@@ -81,22 +82,23 @@ export type orderHistoryType = {
     fromMe: boolean
 }
 type OrdersHistoryListProps = {
-    orders: orderHistoryType[]
+    orders?: orderHistoryType[]
+    loading?: boolean
 }
 const OrdersHistoryList = (props: OrdersHistoryListProps) => {
-    const { orders } = props
+    const { loading, orders } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View>
                 <Text style={styles.resultsText}>
-                    {orders.length} Results
+                    {orders?.length} Results
                 </Text>
                 <Space size={20} direction='vertical' />
 
                 {
-                    orders.map((order, index) => (
+                    orders?.map((order, index) => (
                         <Fragment key={index}>
                             <OrderHistoryItem
                                 {...order}
@@ -105,6 +107,7 @@ const OrdersHistoryList = (props: OrdersHistoryListProps) => {
                         </Fragment>
                     ))
                 }
+                {loading && <ActivityIndicator size="large" color={theme.palette.primary[theme.mode].main} />}
 
             </View>
         </ScrollView>
@@ -123,10 +126,10 @@ const getStyles = (theme: ThemeType) => {
 
         },
         tapBar: {
-            height:28,
+            height: 28,
             flexDirection: "row",
             alignItems: "center",
-            marginBottom:20
+            marginBottom: 20
 
         },
         tabItemFocused: {

@@ -13,9 +13,12 @@ export const HelpCenterStackNavigator = () => {
             screenOptions={{
                 headerShown: false,
             }}
-            initialRouteName='OrderHistory'
+            initialRouteName='Help'
         >
-            <Stack.Screen name="OrderHistory" component={HelpCenterScreen} />
+            <Stack.Screen name="Help" component={HelpCenterScreen} />
         </Stack.Navigator>
     )
 }
+export type HelpCenterStackParamList = {
+    Help:undefined
+  };

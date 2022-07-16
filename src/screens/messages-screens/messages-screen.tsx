@@ -7,7 +7,7 @@ import { add_squar_icon_asset, avatar_asset, checkRatesIcon, HelpCenterFeatureIc
 import { MessageItem } from '../../components/content'
 import { SearchInput } from '../../components/inputs'
 import { Devider, Space } from '../../components/util'
-import { listToMatrix } from '../../halpers'
+import { listToMatrix } from '../../helpers'
 import { RootStackParamList } from '../../navigation/BottomNavigationBar'
 import { MessagesStackParamList } from '../../navigation/MessagesStack'
 import { useTheme } from '../../state/theming'

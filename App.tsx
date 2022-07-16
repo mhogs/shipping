@@ -7,6 +7,9 @@ import * as SplashScreen from 'expo-splash-screen';
 import { I18nManager } from 'react-native';
 import { useFonts, Outfit_400Regular, Outfit_500Medium, Outfit_600SemiBold, } from '@expo-google-fonts/outfit';
 import { Image } from 'react-native';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
 
 export default function App() {
 
@@ -17,8 +20,11 @@ export default function App() {
   }
 
   return (
+
     <NavigationContainer>
-      <Navigation />
+      <QueryClientProvider client={queryClient}>
+        <Navigation />
+      </QueryClientProvider>
     </NavigationContainer>
 
   );

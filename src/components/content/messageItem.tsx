@@ -16,7 +16,7 @@ export const MessageItem = (props: MessageItemProps) => {
     const { theme } = useTheme()
     const styles = getStyles(theme)
     return (
-        <View style={{borderRadius:8, overflow:'hidden'}}>
+        <View style={{ borderRadius: 8, overflow: 'hidden' }}>
             <Pressable
                 style={styles.notificationContainer}
                 onPress={onPress}
@@ -24,7 +24,7 @@ export const MessageItem = (props: MessageItemProps) => {
             >
                 <View style={{ flexDirection: 'row' }}>
                     <View style={styles.locationIconcontainer}>
-                        {picture}
+                        <Image source={{ uri: picture }} style={{ width: 44, height: 44 }} />
                     </View>
                     <View style={styles.notificationDetailsContainer}>
                         <Text style={styles.notificatioTitle}>
@@ -54,8 +54,8 @@ const getStyles = (theme: ThemeType) => {
     return StyleSheet.create({
 
         notificationContainer: {
-            paddingVertical:5,
-            paddingHorizontal:2,
+            paddingVertical: 5,
+            paddingHorizontal: 2,
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "flex-start"

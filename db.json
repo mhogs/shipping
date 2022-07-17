@@ -1,5 +1,4 @@
 {
-    
     "orders": [
         {
             "title": "FGHX125463",
@@ -48,6 +47,56 @@
             "description": "hi this is text",
             "state": "Delivred",
             "fromMe": false
+        }
+    ],
+    "messages": [
+        {
+            "picture": "https://cdn-icons-png.flaticon.com/512/219/219958.png",
+            "fullName": "Kathryn Murphy",
+            "messageText": "Hai Rizal, I'm on the way to your... ",
+            "time": "6:32 Pm"
+        },
+        {
+            "picture": "https://cdn-icons-png.flaticon.com/512/219/219958.png",
+            "fullName": "Kathryn Murphy",
+            "messageText": "Hai Rizal, I'm on the way to your... ",
+            "time": "6:32 Pm"
+        },
+        {
+            "picture": "https://cdn-icons-png.flaticon.com/512/219/219958.png",
+            "fullName": "Kathryn Murphy",
+            "messageText": "Hai Rizal, I'm on the way to your... ",
+            "time": "6:32 Pm"
+        },
+        {
+            "picture": "https://cdn-icons-png.flaticon.com/512/219/219958.png",
+            "fullName": "Kathryn Murphy",
+            "messageText": "Hai Rizal, I'm on the way to your... ",
+            "time": "6:32 Pm"
+        },
+        {
+            "picture": "https://cdn-icons-png.flaticon.com/512/219/219958.png",
+            "fullName": "Kathryn Murphy",
+            "messageText": "Hai Rizal, I'm on the way to your... ",
+            "time": "6:32 Pm"
+        },
+        {
+            "picture": "https://cdn-icons-png.flaticon.com/512/219/219958.png",
+            "fullName": "Kathryn Murphy",
+            "messageText": "Hai Rizal, I'm on the way to your... ",
+            "time": "6:32 Pm"
+        },
+        {
+            "picture": "https://cdn-icons-png.flaticon.com/512/219/219958.png",
+            "fullName": "Kathryn Murphy",
+            "messageText": "Hai Rizal, I'm on the way to your... ",
+            "time": "6:32 Pm"
+        },
+        {
+            "picture": "https://cdn-icons-png.flaticon.com/512/219/219958.png",
+            "fullName": "Kathryn Murphy",
+            "messageText": "Hai Rizal, I'm on the way to your... ",
+            "time": "6:32 Pm"
         }
     ]
 }

@@ -20,3 +20,4 @@ export const MasterCardIcon=require('./Mastercard-Icon.png')
 /** others */
 export const CargoIconColored=require('./Cargo.png')
 export const CargoExpressIconColored=require('./Cargo-express.png')
+export const AddIconcolored=require('./Add.png')

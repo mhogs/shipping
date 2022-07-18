@@ -1,0 +1,1 @@
+export const sucessfulPaymentImage =require("./sucessfulPayment.png")

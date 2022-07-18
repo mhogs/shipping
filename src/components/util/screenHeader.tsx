@@ -42,7 +42,8 @@ const getStyles = (theme: ThemeType) => {
       screenHeader: {
         width: '100%',
         flexDirection: "row",
-        alignItems: "center"
+        alignItems: "center",
+        paddingBottom:20
       },
       backButton: {
         padding: 12,

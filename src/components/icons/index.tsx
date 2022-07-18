@@ -1,4 +1,4 @@
-import { AntDesign, Entypo, FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, Entypo, FontAwesome, FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons'; 
 
 import React from 'react'
@@ -45,6 +45,13 @@ export const MinusIcon = ({ color, size=24 }:IconPropsType) => {
         <AntDesign name="minus" color={color} size={size} />
     )
 }
+export const Arrowdown = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <AntDesign name="down" color={color} size={size} />
+    )
+}
+
+
 export const WhatsAppIcon = ({ color, size=24 }:IconPropsType) => {
     return (
         <FontAwesome name="whatsapp" color={color} size={size} />
@@ -55,6 +62,7 @@ export const EmailIcon = ({ color, size=24 }:IconPropsType) => {
         <Ionicons name="md-chatbox-ellipses-outline" color={color} size={size} />
     )
 }
+
 
 
 
@@ -96,6 +104,12 @@ export const SearchIcon = ({ color, size=24 }:IconPropsType) => {
         <Feather name="search" color={color} size={size} />
     )
 }
+export const CircleIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <FontAwesome5 name="circle" color={color} size={size} />
+    )
+}
+
 
 
 

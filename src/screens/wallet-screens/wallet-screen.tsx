@@ -9,12 +9,13 @@ import { PlusIcon } from '../../components/icons'
 
 import { useHideBottomBar } from '../../components/navigation'
 import { SimpleScreenHeader, Space } from '../../components/util'
-import { NotificationsStackParamList } from '../../navigation/NotificationsStack'
+import { WalletStackParamList } from '../../navigation/WalletStack'
+
 
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 
-type WalletScreenProps = NativeStackScreenProps<NotificationsStackParamList, 'Notifications'>;
+type WalletScreenProps = NativeStackScreenProps<WalletStackParamList, "Wallet">;
 
 export const WalletScreen = ({ navigation }: WalletScreenProps) => {
   // 1 is the depth of this screen relative to the stack
@@ -24,20 +25,26 @@ export const WalletScreen = ({ navigation }: WalletScreenProps) => {
   const styles = getStyles(theme)
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View style={styles.root}>
-        <SimpleScreenHeader title="Wallet" goBack={goBack} />
+
+    <View style={styles.root}>
+      <SimpleScreenHeader title="Wallet" goBack={goBack} />
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
+
         {/** head */}
         <MyBalnce
           bgColor={theme.palette.primary[theme.mode].main}
           balanceColor={theme.palette.white[theme.mode].main}
+          titleColor={theme.palette.lightGrey[theme.mode].main}
           topUpColor={theme.palette.white[theme.mode].main}
+          rippleColor={theme.palette.primary[theme.mode][3]}
+          onTopUpPress={() => navigation.navigate("TopUp")}
         />
         <View style={styles.paymentMethodesHeader}>
           <Text style={styles.sectionHeaderText}>
             Payment Methode
           </Text>
-          <Pressable android_ripple={{ color: theme.palette.grey[theme.mode][3] }}>
+          <Pressable
+            android_ripple={{ color: theme.palette.grey[theme.mode][3] }}>
             <PlusIcon color={theme.palette.primary[theme.mode].main} />
           </Pressable>
         </View>
@@ -46,6 +53,7 @@ export const WalletScreen = ({ navigation }: WalletScreenProps) => {
           <Text style={styles.sectionHeaderText}>
             Transaction History
           </Text>
+          <Space size={20} direction='vertical' />
 
           {Array(4).fill(0).map((_, index) => (
             <Fragment key={index}>
@@ -60,8 +68,9 @@ export const WalletScreen = ({ navigation }: WalletScreenProps) => {
 
           ))}
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
+
 
 
 
@@ -81,13 +90,13 @@ const getStyles = (theme: ThemeType) => {
       marginTop: 30,
       marginBottom: 20,
       flexDirection: "row",
-      alignItems: "center",
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      alignItems: "center"
     },
     sectionHeaderText: {
       ...text.heading.H3,
       color: palette.black[mode].main,
-      marginBottom: 20
+
     },
     /**card */
     paymentCardWraper: {

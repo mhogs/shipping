@@ -29,7 +29,7 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
           endIcon={<ThreeDotsIcon size={16} />}
         />
       </View>
-      <ScrollView style={{ backgroundColor: "white", marginVertical: 16 }}>
+      <ScrollView style={{ backgroundColor: "white", }}>
         <MapView style={styles.map} />
 
         <View style={{ padding: 24 }}>
@@ -125,7 +125,6 @@ const getStyles = (theme: ThemeType) => {
       backgroundColor: palette.white[theme.mode][3],
     },
     map: {
-      marginTop: 24,
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height / 2.5,
     },
@@ -143,12 +142,12 @@ const getStyles = (theme: ThemeType) => {
       flex: 1,
       color: palette.grey[mode][3]
     },
+
+    /**modal */
+
     modalContainer: {
       flex: 1,
-
-
     },
-    /**modal */
     modalContent: {
       padding: 24,
       height: "70%",

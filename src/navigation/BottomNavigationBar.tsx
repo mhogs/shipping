@@ -17,6 +17,7 @@ import { OrderHistoryStackNavigator } from './OrderHistoryStack';
 const Tab = createBottomTabNavigator();
 
 export type RootStackParamList = {
+    Home:undefined;
     HomeStack: undefined;
     OrdersStack: { userId: string };
     MyOrdersStack:undefined

@@ -25,9 +25,10 @@ export const TrackingScreen = ({ navigation }: TrackingScreenProps) => {
   const styles = getStyles(theme)
   const [orders, setOrders] = useState(ordersHistory)
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View style={styles.root}>
-        <SimpleScreenHeader title="Track" goBack={goBack} />
+
+    <View style={styles.root}>
+      <SimpleScreenHeader title="Track" goBack={goBack} />
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         {/**search */}
         <SearchInput
           startIcon={<Image source={searchIconGrey} width={24} height={24} />}
@@ -36,6 +37,7 @@ export const TrackingScreen = ({ navigation }: TrackingScreenProps) => {
           endicon={<Image source={scanIcon} />}
           extraStyle={styles.SearchInput}
           autoFocus
+          
         />
 
         {/** head */}
@@ -85,8 +87,9 @@ export const TrackingScreen = ({ navigation }: TrackingScreenProps) => {
 
 
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
+
 
 
 
@@ -104,7 +107,6 @@ const getStyles = (theme: ThemeType) => {
     },
     SearchInput: {
       backgroundColor: palette.lightGrey[mode][2],
-      marginTop: 30,
     },
     head: {
       marginTop: 30,

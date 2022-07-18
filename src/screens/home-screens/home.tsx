@@ -40,6 +40,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                         </Pressable>
                     </View>
                     {/** balance banner */}
+                    <Space direction="vertical" size={30} />
                     <MyBalnce/>
                     {/**search box */}
                     <Space size={20} direction="vertical" />

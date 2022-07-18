@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { WalletScreen } from '../screens';
+import { TopUpScreen, WalletScreen } from '../screens';
 
 
 
@@ -13,9 +13,16 @@ export const WalletStackNavigator = () => {
             screenOptions={{
                 headerShown: false,
             }}
-            initialRouteName='OrderHistory'
+            initialRouteName='Wallet'
         >
-            <Stack.Screen name="OrderHistory" component={WalletScreen} />
+            <Stack.Screen name="Wallet" component={WalletScreen} />
+            <Stack.Screen name="TopUp" component={TopUpScreen} />
         </Stack.Navigator>
     )
 }
+
+
+export type WalletStackParamList = {
+    Wallet:undefined
+    TopUp:undefined
+  };

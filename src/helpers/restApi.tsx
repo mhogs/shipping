@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios, { AxiosRequestHeaders, AxiosResponse } from "axios";
 import { endPointType, userType } from "./types";
 
-const BACKEND_BASE_URL = "http://192.168.3.36:3000"
+const BACKEND_BASE_URL = "http://192.168.43.161:3000"
 const USER_KEY = "current_user"
 export async function getHeaders(): Promise<AxiosRequestHeaders | undefined> {
     const user_str = await AsyncStorage.getItem(USER_KEY)

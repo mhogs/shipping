@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC, Fragment } from 'react'
 import { View, StyleSheet, Image, StatusBar, Text, TextInput, KeyboardAvoidingView, Pressable } from 'react-native'
 import { add_squar_icon_asset, checkRatesIcon, HelpCenterFeatureIcon, logo_asset, NearByFeatureIcon, notification_asset, OrderFeatureIcon, OtherFeatureIcon, scanIcon, searchIcon, WalletFeatureIcon } from '../../assets'
+import { MyBalnce } from '../../components/content'
 import { SearchInput } from '../../components/inputs'
 import { Space } from '../../components/util'
 import { listToMatrix } from '../../helpers'
@@ -39,18 +40,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                         </Pressable>
                     </View>
                     {/** balance banner */}
-                    <View style={styles.balanceBaner}>
-                        <View>
-                            <Text style={styles.balancetitle}>My balance</Text>
-                            <Text style={styles.balanceAmount}>$ 3.356.00</Text>
-                        </View>
-                        <View style={styles.addBalanceWraper}>
-                            <Text style={styles.addBalanceText}>Top up</Text>
-                            <View>
-                                <Image width={24} height={24} source={add_squar_icon_asset} />
-                            </View>
-                        </View>
-                    </View>
+                    <MyBalnce/>
                     {/**search box */}
                     <Space size={20} direction="vertical" />
                     <SearchInput

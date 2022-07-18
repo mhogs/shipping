@@ -34,6 +34,12 @@ export const PlusIcon = ({ color, size=24 }:IconPropsType) => {
         <AntDesign name="plus" color={color} size={size} />
     )
 }
+export const PlusSquareIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <AntDesign name="plussquare" color={color} size={size} />
+    )
+}
+
 export const MinusIcon = ({ color, size=24 }:IconPropsType) => {
     return (
         <AntDesign name="minus" color={color} size={size} />

@@ -18,7 +18,7 @@ export const MessageItem = (props: MessageItemProps) => {
     return (
         <View style={{ borderRadius: 8, overflow: 'hidden' }}>
             <Pressable
-                style={styles.notificationContainer}
+                style={styles.messageContainer}
                 onPress={onPress}
                 android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
             >
@@ -26,7 +26,7 @@ export const MessageItem = (props: MessageItemProps) => {
                     <View style={styles.locationIconcontainer}>
                         <Image source={{ uri: picture }} style={{ width: 44, height: 44 }} />
                     </View>
-                    <View style={styles.notificationDetailsContainer}>
+                    <View style={styles.messageDetailsContainer}>
                         <Text style={styles.notificatioTitle}>
                             {fullName}
                         </Text>
@@ -53,7 +53,7 @@ const getStyles = (theme: ThemeType) => {
     const marginH = 14
     return StyleSheet.create({
 
-        notificationContainer: {
+        messageContainer: {
             paddingVertical: 5,
             paddingHorizontal: 2,
             flexDirection: "row",
@@ -67,7 +67,7 @@ const getStyles = (theme: ThemeType) => {
             justifyContent: 'center',
             alignItems: 'center'
         },
-        notificationDetailsContainer: {
+        messageDetailsContainer: {
 
             marginHorizontal: marginH,
             maxWidth: width - (marginH * 2 + iconWidth + notifTimewidth) - 10

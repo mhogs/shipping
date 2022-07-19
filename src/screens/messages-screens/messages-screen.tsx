@@ -33,11 +33,11 @@ export const MessagesScreen = ({ navigation }: MessagesScreenProps) => {
             <Text style={styles.logo_text}  >Messages</Text>
 
             <Pressable
-              style={styles.notification_wraper}
+              style={styles.message_wraper}
               onPress={() => navigate('NotificationsStack', { userId: "1" })}
             >
-              <View style={styles.notification_icon}>
-                <View style={styles.notification_indicator} />
+              <View style={styles.message_icon}>
+                <View style={styles.message_indicator} />
                 <Image source={notification_asset} />
               </View>
             </Pressable>
@@ -46,7 +46,7 @@ export const MessagesScreen = ({ navigation }: MessagesScreenProps) => {
           {/**search box */}
           <Space size={20} direction="vertical" />
           <SearchInput
-            startIcon={<Image source={searchIcon} width={24} height={24} />}
+            startIcon={<Image source={searchIcon} />}
             placeholder='Search Messages'
             placeholderTextColor={theme.palette.grey[theme.mode][3]}
           />
@@ -58,7 +58,7 @@ export const MessagesScreen = ({ navigation }: MessagesScreenProps) => {
             {messages &&
               messages.map((message, index) => (
                 <Fragment key={index}>
-                  <MessageItem {...message} />
+                  <MessageItem {...message} onPress={()=>navigate("MessageDetails")} />
                   <Devider spacing={15} />
                 </Fragment>
               ))
@@ -100,7 +100,7 @@ const getStyles = (theme: ThemeType) => {
       color: palette.white[mode].main,
       marginLeft: 10
     },
-    notification_wraper: {
+    message_wraper: {
       justifyContent: 'center',
       alignItems: 'center',
       width: 44,
@@ -109,10 +109,10 @@ const getStyles = (theme: ThemeType) => {
       borderWidth: 1,
       borderColor: 'rgba(255,255,255,0.2)',
     },
-    notification_icon: {
+    message_icon: {
       position: 'relative',
     },
-    notification_indicator: {
+    message_indicator: {
       position: 'absolute',
       width: 8,
       height: 8,

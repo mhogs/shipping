@@ -1,4 +1,4 @@
-import { AntDesign, Entypo, FontAwesome, FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, Entypo, Feather, FontAwesome, FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons'; 
 
 import React from 'react'
@@ -63,8 +63,11 @@ export const EmailIcon = ({ color, size=24 }:IconPropsType) => {
     )
 }
 
-
-
+export const PhoneCallIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <MaterialIcons name="phone" color={color} size={size} />
+    )
+}
 
 
 
@@ -109,6 +112,7 @@ export const CircleIcon = ({ color, size=24 }:IconPropsType) => {
         <FontAwesome5 name="circle" color={color} size={size} />
     )
 }
+
 
 
 

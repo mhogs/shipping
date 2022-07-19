@@ -4,8 +4,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { OrderStackParamList } from '../../navigation/OrdersStack';
 import { useHideBottomBar } from '../../components/navigation';
 import { SceneRendererProps, TabView } from 'react-native-tab-view';
-import { SenderDetailsScreen } from './sender-details-screen';
-import { OrderDetailsScreen } from './order-details-screen';
+import { OrderDetailsScreen, SenderDetailsScreen } from './steps'
 
 
 type OrderScreenProps = NativeStackScreenProps<OrderStackParamList, 'order'>;

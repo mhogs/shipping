@@ -1,12 +1,12 @@
 import { View, StyleSheet, Image, StatusBar } from 'react-native'
 import React from 'react'
-import { useTheme } from '../../state';
-import { ThemeType } from '../../theme';
-import { SimpleScreenHeader, Space } from '../../components/util';
+import { useTheme } from '../../../state';
+import { ThemeType } from '../../../theme';
+import { SimpleScreenHeader, Space } from '../../../components/util';
 import { ScrollView } from 'react-native-gesture-handler';
-import { MyTextAreaInput, MyTextInput } from '../../components/inputs';
-import { callIcon, locationIcon, ProfileIcon } from '../../assets';
-import { AuthActionButton } from '../../components/buttons';
+import { MyTextAreaInput, MyTextInput } from '../../../components/inputs';
+import { callIcon, locationIcon, ProfileIcon } from '../../../assets';
+import { AuthActionButton } from '../../../components/buttons';
 
 
 export const SenderDetailsScreen = ({navigation, switchIndex}: any) => {

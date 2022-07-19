@@ -17,6 +17,7 @@ export const MobileIconColored=require('./Mobile.png')
 export const trackIconColored=require('./track.png')
 /**cards */
 export const MasterCardIcon=require('./Mastercard-Icon.png')
+export const trackyBalanceIcon=require('./tracky-balance.png')
 /** others */
 export const CargoIconColored=require('./Cargo.png')
 export const CargoExpressIconColored=require('./Cargo-express.png')

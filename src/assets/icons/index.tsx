@@ -14,6 +14,15 @@ export const ProfileIcon=require('./profile-icon.png')
 export const ProfileIconActive=require('./profile-icon-active.png')
 /** other */
 export const LocationIcon=require('./location.png')
+export const packageIcon=require('./package.png')
+export const noteIcon=require('./note.png')
+export const arrowDownIcon=require('./arrow-down.png')
+export const infoCircleIcon=require('./info-circle.png')
+export const regularIcon=require('./package-filled.png')
+export const cargoIcon=require('./cargo.png')
+export const expressIcon=require('./express.png')
+
+
 /**chat */
 export const SendIcon=require('./send.png')
 

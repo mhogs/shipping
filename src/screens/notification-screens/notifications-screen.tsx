@@ -23,47 +23,49 @@ export const NotificationsScreen = ({ navigation }: NotificationsScreenProps) =>
   const styles = getStyles(theme)
   const [notifications, setNotifications] = useState(data)
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-
-      <View style={styles.root}>
-        <SimpleScreenHeader title="Notifications" goBack={goBack} />
-        {/** head */}
-        <View style={styles.head}>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={styles.headTitle}>
-              Recent
-            </Text>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>3</Text>
+    <View style={styles.root}>
+      <SimpleScreenHeader title="Notifications" goBack={goBack} />
+      <ScrollView showsVerticalScrollIndicator={false}  contentContainerStyle={{ flexGrow: 1 }}>
+        <View >
+          {/** head */}
+          <View style={styles.head}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text style={styles.headTitle}>
+                Recent
+              </Text>
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>{notifications.length}</Text>
+              </View>
             </View>
+            <Pressable
+              onPress={() => setNotifications([])}
+            >
+              <Text style={styles.clearText}>
+                Clear All
+              </Text>
+            </Pressable>
           </View>
-          <Pressable 
-          onPress={()=>setNotifications([])}
-          >
-            <Text style={styles.clearText}>
-              Clear All
-            </Text>
-          </Pressable>
-        </View>
-        {/** body */}
-        <View style={styles.body}>
-          {
-            notifications.map((notif, index) => (
-              <Fragment key={index}>
-                <NotificationItem
-                  icon={notif.icon}
-                  title={notif.title}
-                  description={notif.description}
-                  time={notif.time}
-                />
-                <Devider />
-              </Fragment>
-            ))
-          }
+          {/** body */}
+          <View style={styles.body}>
+            {
+              notifications.map((notif, index) => (
+                <Fragment key={index}>
+                  <NotificationItem
+                    icon={notif.icon}
+                    title={notif.title}
+                    description={notif.description}
+                    time={notif.time}
+                  />
+                  <Devider />
+                </Fragment>
+              ))
+            }
 
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
+
 
 
 
@@ -80,7 +82,6 @@ const getStyles = (theme: ThemeType) => {
 
     },
     head: {
-      marginTop: 30,
       flexDirection: "row",
       justifyContent: 'space-between'
     },
@@ -116,6 +117,42 @@ const getStyles = (theme: ThemeType) => {
 }
 
 const data = [
+  {
+    icon: <Image source={PackageIcon} width={22} height={22} />,
+    title: "Kathryn Sent You a Message",
+    description: 'Tap to see the message',
+    time: "1 h ago",
+  },
+  {
+    icon: <Image source={PackageIcon} width={22} height={22} />,
+    title: "Your Shipping Already Delivered",
+    description: 'Tap to  see the detail shipping',
+    time: "1 h ago",
+  },
+  {
+    icon: <Image source={DiscountIcon} width={22} height={22} />,
+    title: "Get 20% Discount for First Transaction!",
+    description: 'For all transaction without requirements',
+    time: "1 h ago",
+  },
+  {
+    icon: <Image source={PackageIcon} width={22} height={22} />,
+    title: "Kathryn Sent You a Message",
+    description: 'Tap to see the message',
+    time: "1 h ago",
+  },
+  {
+    icon: <Image source={PackageIcon} width={22} height={22} />,
+    title: "Your Shipping Already Delivered",
+    description: 'Tap to  see the detail shipping',
+    time: "1 h ago",
+  },
+  {
+    icon: <Image source={DiscountIcon} width={22} height={22} />,
+    title: "Get 20% Discount for First Transaction!",
+    description: 'For all transaction without requirements',
+    time: "1 h ago",
+  },
   {
     icon: <Image source={PackageIcon} width={22} height={22} />,
     title: "Kathryn Sent You a Message",

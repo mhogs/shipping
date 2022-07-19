@@ -23,4 +23,6 @@ export const cargoIcon=require('./cargo.png')
 export const expressIcon=require('./express.png')
 
 
+/**chat */
+export const SendIcon=require('./send.png')
 

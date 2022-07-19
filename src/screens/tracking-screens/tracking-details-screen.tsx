@@ -40,11 +40,11 @@ export const TrackingDetailsScreen = ({ navigation }: TrackingDetailsScreenProps
         errorMsg: null
     })
 
-    
+
     useEffect(() => {
         async function initLocation() {
             let { status } = await Location.requestForegroundPermissionsAsync();
-        
+
             if (status === 'granted') {
                 const location = await Location.getCurrentPositionAsync({});
                 setMapState({
@@ -80,12 +80,12 @@ export const TrackingDetailsScreen = ({ navigation }: TrackingDetailsScreenProps
     }
 
     return (
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-            <View style={styles.root}>
-                <View style={{ paddingHorizontal: 24 }}>
-                    <SimpleScreenHeader title="Detail Location" goBack={goBack} />
-                </View>
 
+        <View style={styles.root}>
+            <View style={{ paddingHorizontal: 24 }}>
+                <SimpleScreenHeader title="Detail Location" goBack={goBack} />
+            </View>
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <View style={styles.body}>
                     <MapView
                         region={mapState.mapRegion}
@@ -102,11 +102,11 @@ export const TrackingDetailsScreen = ({ navigation }: TrackingDetailsScreenProps
                                 }
                             />
                         }
-
                     </MapView>
                 </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </View>
+
 
 
 
@@ -128,7 +128,6 @@ const getStyles = (theme: ThemeType) => {
         },
 
         body: {
-            marginTop: 22,
             flex: 1
         },
 

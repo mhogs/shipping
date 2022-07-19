@@ -12,7 +12,6 @@ export async function getHeaders(): Promise<AxiosRequestHeaders | undefined> {
         return {
             "Authorization": `JWT ${cuurentUser.token}`
         }
-    
 }
 
 

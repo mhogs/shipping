@@ -1,4 +1,4 @@
-import { AntDesign, Entypo, FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, Entypo, Feather, FontAwesome, FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons'; 
 
 import React from 'react'
@@ -34,11 +34,24 @@ export const PlusIcon = ({ color, size=24 }:IconPropsType) => {
         <AntDesign name="plus" color={color} size={size} />
     )
 }
+export const PlusSquareIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <AntDesign name="plussquare" color={color} size={size} />
+    )
+}
+
 export const MinusIcon = ({ color, size=24 }:IconPropsType) => {
     return (
         <AntDesign name="minus" color={color} size={size} />
     )
 }
+export const Arrowdown = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <AntDesign name="down" color={color} size={size} />
+    )
+}
+
+
 export const WhatsAppIcon = ({ color, size=24 }:IconPropsType) => {
     return (
         <FontAwesome name="whatsapp" color={color} size={size} />
@@ -50,7 +63,11 @@ export const EmailIcon = ({ color, size=24 }:IconPropsType) => {
     )
 }
 
-
+export const PhoneCallIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <MaterialIcons name="phone" color={color} size={size} />
+    )
+}
 
 
 
@@ -90,6 +107,23 @@ export const SearchIcon = ({ color, size=24 }:IconPropsType) => {
         <Feather name="search" color={color} size={size} />
     )
 }
+export const CircleIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <FontAwesome5 name="circle" color={color} size={size} />
+    )
+}
+export const SendIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <Ionicons name="send" color={color} size={size} />
+    )
+}
+export const AttachmentIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <MaterialIcons name="attachment"  color={color} size={size} />
+    )
+}
+
+
 
 
 

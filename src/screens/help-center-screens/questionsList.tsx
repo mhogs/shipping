@@ -1,58 +1,44 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
 import { ScrollView } from 'react-native-gesture-handler';
 import { MinusIcon, PlusIcon } from '../../components/icons';
 import { Devider, Space } from '../../components/util';
 import { useTheme } from '../../state';
 import { ThemeType } from '../../theme';
+import {  useQuestions } from './useQuestions';
 
-const SECTIONS = [
-    {
-        title: 'Why my track is not showing?',
-        content: 'library you can easily transition the background color between the active and inactive state or add animations.',
-    },
-    {
-        title: 'How to place order?',
-        content: 'library you can easily transition the background color between the active and inactive state or add animations.',
-    },
-    {
-        title: 'Tracky insurance terms',
-        content: 'library you can easily transition the background color between the active and inactive state or add animations.',
-    },
-    {
-        title: 'How to do track?',
-        content: 'library you can easily transition the background color between the active and inactive state or add animations.',
-    },
-];
+
 
 export function QuestionsListView() {
-    const [activeSections, setActiveSections] = useState<any[]>([])
+    const [activeQuestions, setActiveQuestions] = useState<number[]>([])
     const { theme } = useTheme()
     const styles = getStyles(theme)
 
+    const { data: questions, isLoading, isError, error } = useQuestions()
 
-    const _IsActive = (section: any) => {
-        if (!activeSections.length) return false
-        return Boolean(activeSections.filter(item => SECTIONS[item].title === section.title).length)
+    const _IsActive = (question: any) => {
+        if (!questions) return false
+        if (!activeQuestions?.length) return false
+        return Boolean(activeQuestions.filter(index => questions[index].title === question.title).length)
 
     }
 
-    const _renderHeader = (section: any) => {
+    const _renderHeader = (question: any) => {
         return (
             <View style={styles.questionHeader}>
-                <Text style={styles.questionHeaderText}>{section.title}</Text>
-                {_IsActive(section) ? <MinusIcon color={theme.palette.primary[theme.mode].main} /> : <PlusIcon color={theme.palette.primary[theme.mode].main} />}
+                <Text style={styles.questionHeaderText}>{question.title}</Text>
+                {_IsActive(question) ? <MinusIcon color={theme.palette.primary[theme.mode].main} /> : <PlusIcon color={theme.palette.primary[theme.mode].main} />}
             </View>
         );
     };
 
 
-    const _renderContent = (section: any) => {
+    const _renderContent = (question: any) => {
         return (
             <View style={{ marginTop: 14 }}>
                 <Text style={styles.mutedText}>
-                    {section.content}
+                    {question.content}
                 </Text>
                 <Devider spacing={10} />
                 <View style={styles.reviewContainer}>
@@ -81,23 +67,26 @@ export function QuestionsListView() {
         );
     };
 
-    const _updateSections = (sections: any[]) => {
-        setActiveSections(sections);
+    const _updateSections = (questions: any[]) => {
+        setActiveQuestions(questions);
     };
 
 
     return (
         <View>
-            <Accordion
-                sections={SECTIONS}
-                activeSections={activeSections}
-                renderHeader={_renderHeader}
-                renderContent={_renderContent}
-                onChange={_updateSections}
-                underlayColor={theme.palette.lightGrey[theme.mode].main}
-                touchableComponent={Pressable}
-                sectionContainerStyle={styles.sectionContainerStyle}
-            />
+            {questions?.length &&
+                <Accordion
+                    sections={questions}
+                    activeSections={activeQuestions}
+                    renderHeader={_renderHeader}
+                    renderContent={_renderContent}
+                    onChange={_updateSections}
+                    underlayColor={theme.palette.lightGrey[theme.mode].main}
+                    touchableComponent={Pressable}
+                    sectionContainerStyle={styles.sectionContainerStyle}
+                />
+            }
+            {isLoading && <ActivityIndicator size="large" color={theme.palette.primary[theme.mode].main} />}
             <View style={{ alignItems: "center" }}>
                 <Pressable
                     style={{ paddingHorizontal: 10, paddingVertical: 5 }}

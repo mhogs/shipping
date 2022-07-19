@@ -18,3 +18,5 @@ export * from './notifications'
 export * from './auth'
 /** orders */
 export * from './orders'
+/** wallet */
+export * from './wallet'

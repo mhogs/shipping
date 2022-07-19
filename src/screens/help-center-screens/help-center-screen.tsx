@@ -23,17 +23,15 @@ export const HelpCenterScreen = ({ navigation }: HelpCenterScreenProps) => {
   const styles = getStyles(theme)
   const [modalVisible, setModalVisible] = useState(false);
   return (
+    <KeyboardAvoidingView style={styles.root} >
+      <SimpleScreenHeader
+        title='Help Center'
+        goBack={() => navigation.goBack()}
+        endIcon={<ThreeDotsIcon size={16} />}
+      />
+      <ScrollView showsVerticalScrollIndicator={false} >
 
-    <ScrollView>
 
-      <KeyboardAvoidingView style={styles.root} >
-
-        <SimpleScreenHeader
-          title='Help Center'
-          goBack={() => navigation.goBack()}
-          endIcon={<ThreeDotsIcon size={16} />}
-        />
-        <Space direction='vertical' size={30} />
         <SearchInput
           startIcon={<Image source={searchIconGrey} width={24} height={24} />}
           placeholder='Tap to search faq'
@@ -86,23 +84,23 @@ export const HelpCenterScreen = ({ navigation }: HelpCenterScreenProps) => {
               textColor={theme.palette.white[theme.mode].main}
               bgColor="#33BD46"
               icon={<WhatsAppIcon color={theme.palette.white[theme.mode].main} />}
-              onClick={()=>{}}
+              onClick={() => { }}
             />
             <Space direction='vertical' size={15} />
-             <SocialLoginButton
+            <SocialLoginButton
               label='Contact With Email'
               textColor={theme.palette.black[theme.mode].main}
               borderColor={theme.palette.grey[theme.mode].main}
               icon={<EmailIcon color={theme.palette.primary[theme.mode].main} />}
-              onClick={()=>{}}
+              onClick={() => { }}
             />
           </View>
         </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
 
-      </KeyboardAvoidingView>
 
 
-    </ScrollView>
 
   )
 }

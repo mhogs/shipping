@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useCallback, useEffect } from 'react'
 import { View, StyleSheet, Text, Pressable, Image, TextStyle, KeyboardAvoidingView, Platform } from 'react-native';
-import { Actions, ActionsProps, AvatarProps, Bubble, BubbleProps, Composer, ComposerProps, GiftedChat, IMessage, InputToolbar, InputToolbarProps, LeftRightStyle, MessageImageProps, Send, SendProps, Time, TimeProps } from 'react-native-gifted-chat'
+import { Actions, ActionsProps, AvatarProps, Bubble, BubbleProps, Composer, ComposerProps, GiftedChat, IMessage, InputToolbar, InputToolbarProps, LeftRightStyle, Message, MessageImage, MessageImageProps, MessageProps, MessageText, MessageTextProps, Send, SendProps, Time, TimeProps } from 'react-native-gifted-chat'
 import { AttachmentIcon, LeftArrowIcon, PhoneCallIcon, SendIcon, ThreeDotsIcon } from '../../components/icons';
 import { useHideBottomBar } from '../../components/navigation';
 import { Space } from '../../components/util';
@@ -19,7 +19,7 @@ export const ChatScreen = ({ navigation }: ChatScreenScreenProps) => {
     const { theme } = useTheme()
     const styles = getStyles(theme)
     const [messages, setMessages] = useState<IMessage[]>([]);
-    
+
     useEffect(() => {
         setMessages([
             {
@@ -31,8 +31,8 @@ export const ChatScreen = ({ navigation }: ChatScreenScreenProps) => {
                     name: 'Loqman',
                     avatar: 'https://placeimg.com/140/140/any',
                 },
-                image:'https://placeimg.com/140/140/any'
-                
+                image: 'https://placeimg.com/140/140/any'
+
             },
             {
                 _id: 2,
@@ -43,7 +43,7 @@ export const ChatScreen = ({ navigation }: ChatScreenScreenProps) => {
                     name: 'Node',
                     avatar: 'https://placeimg.com/140/140/any',
                 },
-                image:'https://placeimg.com/140/140/any'
+                image: 'https://placeimg.com/140/140/any'
             },
         ])
     }, [])
@@ -115,12 +115,14 @@ export const ChatScreen = ({ navigation }: ChatScreenScreenProps) => {
                         style={styles.chatAvatar}
                     />
                 )}
+                
+                renderMessageImage={(props) => customtImage(props, theme)}
                 renderInputToolbar={(toolbarProps) => customtInputToolbar(toolbarProps, theme)}
                 renderComposer={(props) => customtComposer(props, theme)}
                 renderSend={(props) => customtSend(props, theme)}
                 renderActions={(props) => customtAction(props, theme)}
                 renderChatFooter={() => <View style={{ height: 24 }} />}
-                
+
             />
 
         </View>
@@ -262,6 +264,17 @@ const customtComposer = (props: ComposerProps, theme: ThemeType) => {
                 marginTop: 0,
                 flexGrow: 1,
             }}
+        />
+    );
+};
+
+const customtImage = (props: MessageImageProps<IMessage>, theme: ThemeType) => {
+    const { palette, mode } = theme
+    return (
+        <MessageImage
+            {...props}
+            imageStyle={{}}
+
         />
     );
 };

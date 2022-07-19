@@ -5,17 +5,19 @@ import { ThemeType } from '../../theme'
 
 type iconPressActionType = "TOGGLE_SECRET" | "RESET_INPUT" | undefined
 type TextInputProps = {
-    label: string,
+    label?: string,
     placeholder?: string,
+    editable?: boolean,
     startIcon?: any,
     endIcon?: any,
     value?: string,
     secureTextEntry?: boolean,
     endIconAction?: iconPressActionType,
-    startIconAction?: iconPressActionType
+    startIconAction?: iconPressActionType,
+    isNumeric?: boolean,
 }
 export const MyTextInput = (props: TextInputProps) => {
-    const { label, placeholder, startIcon, endIcon, value, secureTextEntry = false, endIconAction, startIconAction } = props
+    const { label, placeholder, editable=true, isNumeric=false, startIcon, endIcon, value, secureTextEntry = false, endIconAction, startIconAction } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
     const [isSecret, setIsSecret] = useState(secureTextEntry)
@@ -36,24 +38,31 @@ export const MyTextInput = (props: TextInputProps) => {
     }
     return (
         <View>
-            <View style={{flexDirection:"row"}}>
-                <Text style={styles.inputLabel}>{label}</Text>
-            </View>
+            {label?
+                <View style={{flexDirection:"row"}}>
+                    <Text style={styles.inputLabel}> {label}</Text>
+                </View> : null
+            }
 
             <View style={styles.inputWraper}>
                 <Pressable
                     onPress={onIconPress(startIconAction)}
-                >
+                    style={startIcon? { paddingLeft:13 } : null}
+                    >
                     {startIcon}
-                </Pressable>
+                </Pressable> 
+                
                 <TextInput
                     style={styles.input}
                     placeholder={placeholder}
                     defaultValue={value}
                     secureTextEntry={isSecret}
+                    editable={editable}
+                    keyboardType={isNumeric? "numeric": undefined }
                 />
                 <Pressable
                     onPress={onIconPress(endIconAction)}
+                    style={endIcon? { paddingRight:13 } : null}
                 >
                     {endIcon}
                 </Pressable>
@@ -88,16 +97,15 @@ const getStyles = (theme: ThemeType) => {
             marginTop: 10,
             flexDirection: 'row',
             alignItems: 'center',
-            paddingLeft: 14,
-            paddingRight: 14,
             borderWidth: 1.5,
             borderColor: palette.lightGrey[mode].main,
             borderRadius: 12
         },
         input: {
-            padding: 13,
+            paddingHorizontal: 8,
+            paddingVertical: 13,
             flex: 1,
-            textAlign:"left"
+            textAlign:"left",
         }
     })
 }

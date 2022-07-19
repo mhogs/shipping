@@ -6,7 +6,6 @@ import { ThemeType } from "../../theme";
 
 import {
   TabView,
-  SceneMap,
   SceneRendererProps,
   NavigationState,
 } from "react-native-tab-view";

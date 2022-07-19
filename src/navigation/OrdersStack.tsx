@@ -1,4 +1,4 @@
-import { OrderFormScreen } from "../screens";
+import { OrderScreen } from "../screens";
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 
@@ -12,9 +12,13 @@ export const OrdersStackNavigator = () => {
             screenOptions={{
                 headerShown:false,
             }}
-            initialRouteName='OrdersForm'
+            initialRouteName='order'
         >
-          <Stack.Screen name="OrdersForm" component={OrderFormScreen} />
+          <Stack.Screen name="order" component={OrderScreen} />
         </Stack.Navigator>
     )
 }
+
+export type OrderStackParamList = {
+    order:undefined,
+};

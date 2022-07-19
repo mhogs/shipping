@@ -3,6 +3,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { View, StyleSheet, Text, Pressable, Image } from 'react-native';
 import { AvatarProps, GiftedChat, IMessage } from 'react-native-gifted-chat'
 import { LeftArrowIcon, PhoneCallIcon, ThreeDotsIcon } from '../../components/icons';
+import { useHideBottomBar } from '../../components/navigation';
 import { Space } from '../../components/util';
 import { MessagesStackParamList } from '../../navigation/MessagesStack';
 import { useTheme } from '../../state';
@@ -14,6 +15,7 @@ type ChatScreenScreenProps = NativeStackScreenProps<MessagesStackParamList, "Mes
 
 export const ChatScreen = ({ navigation }: ChatScreenScreenProps) => {
     const { goBack } = navigation
+    useHideBottomBar(navigation,1)
     const { theme } = useTheme()
     const styles = getStyles(theme)
     const [messages, setMessages] = useState<any>([]);

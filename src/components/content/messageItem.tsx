@@ -24,7 +24,7 @@ export const MessageItem = (props: MessageItemProps) => {
             >
                 <View style={{ flexDirection: 'row' }}>
                     <View style={styles.locationIconcontainer}>
-                        <Image source={{ uri: picture }} style={{ width: 44, height: 44 }} />
+                        <Image source={{ uri: picture }} style={{ width: 44, height: 44, borderRadius:44 }} />
                     </View>
                     <View style={styles.messageDetailsContainer}>
                         <Text style={styles.notificatioTitle}>

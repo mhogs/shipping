@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useCallback, useEffect } from 'react'
-import { View, StyleSheet, Text, Pressable, Image, TextStyle } from 'react-native';
-import { Actions, ActionsProps, AvatarProps, Bubble, BubbleProps, Composer, ComposerProps, GiftedChat, IMessage, InputToolbar, InputToolbarProps, LeftRightStyle, Send, SendProps, Time, TimeProps } from 'react-native-gifted-chat'
+import { View, StyleSheet, Text, Pressable, Image, TextStyle, KeyboardAvoidingView, Platform } from 'react-native';
+import { Actions, ActionsProps, AvatarProps, Bubble, BubbleProps, Composer, ComposerProps, GiftedChat, IMessage, InputToolbar, InputToolbarProps, LeftRightStyle, MessageImageProps, Send, SendProps, Time, TimeProps } from 'react-native-gifted-chat'
 import { AttachmentIcon, LeftArrowIcon, PhoneCallIcon, SendIcon, ThreeDotsIcon } from '../../components/icons';
 import { useHideBottomBar } from '../../components/navigation';
 import { Space } from '../../components/util';
@@ -9,7 +9,7 @@ import { MessagesStackParamList } from '../../navigation/MessagesStack';
 import { useTheme } from '../../state';
 import { ThemeType } from '../../theme';
 
-
+const INPUT_HEIGHT = 44
 
 type ChatScreenScreenProps = NativeStackScreenProps<MessagesStackParamList, "MessageDetails">;
 
@@ -18,8 +18,8 @@ export const ChatScreen = ({ navigation }: ChatScreenScreenProps) => {
     useHideBottomBar(navigation, 1)
     const { theme } = useTheme()
     const styles = getStyles(theme)
-    const [messages, setMessages] = useState<any>([]);
-
+    const [messages, setMessages] = useState<IMessage[]>([]);
+    
     useEffect(() => {
         setMessages([
             {
@@ -31,6 +31,8 @@ export const ChatScreen = ({ navigation }: ChatScreenScreenProps) => {
                     name: 'Loqman',
                     avatar: 'https://placeimg.com/140/140/any',
                 },
+                image:'https://placeimg.com/140/140/any'
+                
             },
             {
                 _id: 2,
@@ -41,6 +43,7 @@ export const ChatScreen = ({ navigation }: ChatScreenScreenProps) => {
                     name: 'Node',
                     avatar: 'https://placeimg.com/140/140/any',
                 },
+                image:'https://placeimg.com/140/140/any'
             },
         ])
     }, [])
@@ -116,7 +119,10 @@ export const ChatScreen = ({ navigation }: ChatScreenScreenProps) => {
                 renderComposer={(props) => customtComposer(props, theme)}
                 renderSend={(props) => customtSend(props, theme)}
                 renderActions={(props) => customtAction(props, theme)}
+                renderChatFooter={() => <View style={{ height: 24 }} />}
+                
             />
+
         </View>
 
     )
@@ -209,7 +215,6 @@ const customtSend = (props: SendProps<IMessage>, theme: ThemeType) => {
         <Send
             {...props}
             containerStyle={{
-                height: 44,
                 justifyContent: "center",
                 marginLeft: 10
             }}>
@@ -227,11 +232,11 @@ const customtAction = (props: ActionsProps, theme: ThemeType) => {
             icon={() => <AttachmentIcon color={palette.grey[mode].main} />}
             containerStyle={{
                 backgroundColor: palette.lightGrey[mode].main,
-                borderTopLeftRadius:10,
-                borderBottomLeftRadius:10,
+                borderTopLeftRadius: 10,
+                borderBottomLeftRadius: 10,
                 marginBottom: 0,
                 marginLeft: 0,
-                height: 44,
+                height: INPUT_HEIGHT,
                 justifyContent: "center",
                 alignItems: "center",
                 width: 50,
@@ -246,17 +251,16 @@ const customtComposer = (props: ComposerProps, theme: ThemeType) => {
     return (
         <Composer
             {...props}
-            composerHeight={44}
+            composerHeight={INPUT_HEIGHT}
             placeholderTextColor={theme.palette.grey[mode].main}
             textInputStyle={{
                 backgroundColor: palette.lightGrey[mode].main,
-                borderTopRightRadius:10,
-                borderBottomRightRadius:10,
+                borderTopRightRadius: 10,
+                borderBottomRightRadius: 10,
                 marginLeft: 0,
                 marginBottom: 0,
                 marginTop: 0,
                 flexGrow: 1,
-                height: 44
             }}
         />
     );

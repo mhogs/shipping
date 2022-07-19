@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useCallback, useEffect } from 'react'
-import { View, StyleSheet, Text, Pressable, Image } from 'react-native';
-import { AvatarProps, GiftedChat, IMessage } from 'react-native-gifted-chat'
-import { LeftArrowIcon, PhoneCallIcon, ThreeDotsIcon } from '../../components/icons';
+import { View, StyleSheet, Text, Pressable, Image, TextStyle } from 'react-native';
+import { Actions, ActionsProps, AvatarProps, Bubble, BubbleProps, Composer, ComposerProps, GiftedChat, IMessage, InputToolbar, InputToolbarProps, LeftRightStyle, Send, SendProps, Time, TimeProps } from 'react-native-gifted-chat'
+import { AttachmentIcon, LeftArrowIcon, PhoneCallIcon, SendIcon, ThreeDotsIcon } from '../../components/icons';
 import { useHideBottomBar } from '../../components/navigation';
 import { Space } from '../../components/util';
 import { MessagesStackParamList } from '../../navigation/MessagesStack';
@@ -15,7 +15,7 @@ type ChatScreenScreenProps = NativeStackScreenProps<MessagesStackParamList, "Mes
 
 export const ChatScreen = ({ navigation }: ChatScreenScreenProps) => {
     const { goBack } = navigation
-    useHideBottomBar(navigation,1)
+    useHideBottomBar(navigation, 1)
     const { theme } = useTheme()
     const styles = getStyles(theme)
     const [messages, setMessages] = useState<any>([]);
@@ -46,8 +46,6 @@ export const ChatScreen = ({ navigation }: ChatScreenScreenProps) => {
     }, [])
 
     const onSend = useCallback((messages: IMessage[] = []) => {
-        console.log(messages);
-
         setMessages((previousMessages: any) => GiftedChat.append(previousMessages, messages))
     }, [])
 
@@ -105,20 +103,19 @@ export const ChatScreen = ({ navigation }: ChatScreenScreenProps) => {
             <GiftedChat
                 messages={messages}
                 onSend={messages => onSend(messages)}
-                placeholder="Type your message"
+                placeholder="Type your message "
                 alwaysShowSend
-                
+                user={{ _id: 1, name: 'Bz', }}
+
                 renderAvatar={(av) => (
                     <Image source={{ uri: av.currentMessage?.user.avatar as string | undefined }}
                         style={styles.chatAvatar}
                     />
                 )}
-
-                user={{
-                    _id: 1,
-                    name: 'Bz',
-
-                }}
+                renderInputToolbar={(toolbarProps) => customtInputToolbar(toolbarProps, theme)}
+                renderComposer={(props) => customtComposer(props, theme)}
+                renderSend={(props) => customtSend(props, theme)}
+                renderActions={(props) => customtAction(props, theme)}
             />
         </View>
 
@@ -131,7 +128,6 @@ const getStyles = (theme: ThemeType) => {
         root: {
             flex: 1,
             backgroundColor: palette.white[mode].main
-
         },
         chatHeader: {
             flexDirection: "row",
@@ -182,11 +178,90 @@ const getStyles = (theme: ThemeType) => {
             height: 24,
             borderRadius: 24
         },
-       
-
-
     })
 }
+
+
+const customtInputToolbar = (props: InputToolbarProps<IMessage>, theme: ThemeType) => {
+    const { palette, mode } = theme
+
+    return (
+        <InputToolbar
+            {...props}
+            containerStyle={{
+                backgroundColor: "white",
+                borderTopWidth: 1,
+                borderTopColor: palette.lightGrey[mode].main,
+
+            }}
+            primaryStyle={{
+                paddingHorizontal: 24,
+                paddingVertical: 12,
+                alignItems: "stretch",
+            }}
+        />
+    );
+};
+
+const customtSend = (props: SendProps<IMessage>, theme: ThemeType) => {
+    const { palette, mode } = theme
+    return (
+        <Send
+            {...props}
+            containerStyle={{
+                height: 44,
+                justifyContent: "center",
+                marginLeft: 10
+            }}>
+            <SendIcon color={palette.primary[mode].main} />
+        </Send>
+
+    );
+};
+const customtAction = (props: ActionsProps, theme: ThemeType) => {
+    const { palette, mode } = theme
+
+    return (
+        <Actions
+            {...props}
+            icon={() => <AttachmentIcon color={palette.grey[mode].main} />}
+            containerStyle={{
+                backgroundColor: palette.lightGrey[mode].main,
+                borderTopLeftRadius:10,
+                borderBottomLeftRadius:10,
+                marginBottom: 0,
+                marginLeft: 0,
+                height: 44,
+                justifyContent: "center",
+                alignItems: "center",
+                width: 50,
+            }}
+        />
+    );
+};
+
+const customtComposer = (props: ComposerProps, theme: ThemeType) => {
+    const { palette, mode } = theme
+
+    return (
+        <Composer
+            {...props}
+            composerHeight={44}
+            placeholderTextColor={theme.palette.grey[mode].main}
+            textInputStyle={{
+                backgroundColor: palette.lightGrey[mode].main,
+                borderTopRightRadius:10,
+                borderBottomRightRadius:10,
+                marginLeft: 0,
+                marginBottom: 0,
+                marginTop: 0,
+                flexGrow: 1,
+                height: 44
+            }}
+        />
+    );
+};
+
 
 
 

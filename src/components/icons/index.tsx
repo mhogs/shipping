@@ -112,6 +112,16 @@ export const CircleIcon = ({ color, size=24 }:IconPropsType) => {
         <FontAwesome5 name="circle" color={color} size={size} />
     )
 }
+export const SendIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <Ionicons name="send" color={color} size={size} />
+    )
+}
+export const AttachmentIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <MaterialIcons name="attachment"  color={color} size={size} />
+    )
+}
 
 
 

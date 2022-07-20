@@ -2,7 +2,7 @@ import React, { Fragment } from "react"
 import { Modal, Image, View, Text, StyleSheet, Pressable } from "react-native"
 import { useTheme } from '../../state';
 import { ThemeType } from '../../theme';
-import { Space } from "../../components/util";
+import { Devider, Space } from "../../components/util";
 import { ServiceItem } from "../../components/content/service-item";
 import { cargoIcon, expressIcon, regularIcon, doubleArrowIcon } from "../../assets";
 
@@ -63,7 +63,9 @@ export const CheckRatesModal = (props: CheckRatesModalProps) => {
                                 <Text style={styles.type}>Destination</Text>
                             </View>
                         </View>
-                        <Space direction='vertical' size={20} />
+                        <Space direction='vertical' size={15} />
+                        <Devider />
+                        <Space direction='vertical' size={15} />
                         <View  style={styles.servicesListe}>
                             {
                                 data.services?.map((item, index)=>{

@@ -21,12 +21,6 @@ export const CheckRatesStackNavigator = () => {
     )
 }
 
-<<<<<<< HEAD
 export type CkeckRatesParamList = {
     CkeckRates:undefined,
 };
-=======
-export type CheckRatesParamList = {
-    CkeckRates:undefined
-  };
->>>>>>> c294f7e985877912897595730a14460a9e11db66

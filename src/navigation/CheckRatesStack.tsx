@@ -20,3 +20,7 @@ export const CheckRatesStackNavigator = () => {
         </Stack.Navigator>
     )
 }
+
+export type CheckRatesParamList = {
+    CkeckRates:undefined
+  };

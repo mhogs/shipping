@@ -122,7 +122,17 @@ export const AttachmentIcon = ({ color, size=24 }:IconPropsType) => {
         <MaterialIcons name="attachment"  color={color} size={size} />
     )
 }
+export const LocationIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <Ionicons name="md-location-sharp"  color={color} size={size} />
+    )
+}
 
+export const MyLocationIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <MaterialIcons name="my-location"  color={color} size={size} />
+    )
+}
 
 
 

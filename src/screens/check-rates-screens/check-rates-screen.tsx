@@ -2,7 +2,7 @@
 
 
 import { View, StyleSheet, StatusBar, Image, Text } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useTheme } from '../../state';
 import { ThemeType } from '../../theme';
 import { SimpleScreenHeader, Space } from '../../components/util';

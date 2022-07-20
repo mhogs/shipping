@@ -16,7 +16,7 @@ import { WalletStackParamList } from '../../navigation/WalletStack'
 
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
-import { PaymentMethodeModal, PaymentSuccessfulModal } from './modals'
+import { PaymentMethodeModal, PaymentSuccessfulModal } from '../../components/modals'
 
 type TopUpScreenProps = NativeStackScreenProps<WalletStackParamList & RootStackParamList, 'TopUp'>;
 

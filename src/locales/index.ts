@@ -36,7 +36,6 @@ function isRTL() {
 
 }
 
-console!.log({rtl:isRTL()})
 
 function initI18N() {
   AsyncStorage.getItem('lng').then((lng) => {

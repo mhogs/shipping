@@ -1,11 +1,11 @@
 import React, { Fragment } from "react"
 import { Modal, Pressable, ScrollView,Image, View ,Text,StyleSheet} from "react-native"
-import { AddIconcolored } from "../../../assets"
-import { SaveChangesButton } from "../../../components/buttons"
-import { PaymentCard } from "../../../components/content"
-import { Space } from "../../../components/util"
-import { useTheme } from "../../../state"
-import { ThemeType } from "../../../theme"
+import { AddIconcolored } from "../../assets"
+import { SaveChangesButton } from "../buttons"
+import { PaymentCard } from "../content"
+import { ModalTopBarIndicator, Space } from "../util"
+import { useTheme } from "../../state"
+import { ThemeType } from "../../theme"
 
 
 type PaymentMethodeModalProps = {
@@ -35,7 +35,7 @@ export const PaymentMethodeModal = (props: PaymentMethodeModalProps) => {
                 <View style={styles.modalContent}>
                     <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "space-between" }} showsVerticalScrollIndicator={false}  >
                         <View>
-                            <View style={styles.modalTopBa} />
+                        <ModalTopBarIndicator/>
                             <Text style={styles.ModalHeaderText}>
                                 Payment Method
                             </Text>
@@ -85,14 +85,7 @@ const getStyles = (theme: ThemeType) => {
             height: "50%",
             backgroundColor: palette.white[mode].main
         },
-        modalTopBa: {
-            width: 60,
-            height: 6,
-            backgroundColor: palette.lightGrey[mode].main,
-            borderRadius: 10,
-            marginBottom: 30,
-            alignSelf: "center"
-        },
+        
         ModalHeaderText: {
             ...text.heading.H2,
             color: palette.black[mode].main,

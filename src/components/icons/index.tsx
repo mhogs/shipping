@@ -50,6 +50,11 @@ export const Arrowdown = ({ color, size=24 }:IconPropsType) => {
         <AntDesign name="down" color={color} size={size} />
     )
 }
+export const StarIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <AntDesign name="star" color={color} size={size} />
+    )
+}
 
 
 export const WhatsAppIcon = ({ color, size=24 }:IconPropsType) => {
@@ -62,6 +67,17 @@ export const EmailIcon = ({ color, size=24 }:IconPropsType) => {
         <Ionicons name="md-chatbox-ellipses-outline" color={color} size={size} />
     )
 }
+export const ChatlIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <Ionicons name="chatbox-ellipses" color={color} size={size} />
+    )
+}
+export const InfoIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <MaterialIcons name="info" color={color} size={size} />
+    )
+}
+
 
 export const PhoneCallIcon = ({ color, size=24 }:IconPropsType) => {
     return (
@@ -133,6 +149,8 @@ export const MyLocationIcon = ({ color, size=24 }:IconPropsType) => {
         <MaterialIcons name="my-location"  color={color} size={size} />
     )
 }
+
+
 
 
 

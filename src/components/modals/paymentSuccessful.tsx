@@ -1,9 +1,9 @@
 import React from "react"
 import { Modal, Pressable, ScrollView, View, Image, Text, StyleSheet } from "react-native"
-import { sucessfulPaymentImage } from "../../../assets"
-import { SaveChangesButton } from "../../../components/buttons"
-import { useTheme } from "../../../state"
-import { ThemeType } from "../../../theme"
+import { sucessfulPaymentImage } from "../../assets"
+import { SaveChangesButton } from "../buttons"
+import { useTheme } from "../../state"
+import { ThemeType } from "../../theme"
 
 
 type PaymentSuccessfulModalProps = {

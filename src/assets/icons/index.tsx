@@ -26,3 +26,8 @@ export const expressIcon=require('./express.png')
 /**chat */
 export const SendIcon=require('./send.png')
 
+
+/** checkRates */
+export const gpsIcon=require('./gps.png')
+export const boxSearchIcon=require('./box-search.png')
+export const doubleArrowIcon=require('./double-arrow.png')

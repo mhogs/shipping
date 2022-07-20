@@ -8,7 +8,7 @@ type serviceItemProps = {
     title: string,
     description?: string,
     price: string
-    onPress: (s : string) => void
+    onPress?: (s : string) => void
 }
 
 export const ServiceItem = (props: serviceItemProps) => {
@@ -26,7 +26,9 @@ export const ServiceItem = (props: serviceItemProps) => {
         >
             <Pressable
                 style={{ padding: 10, }}
-                onPress={() => onPress(title)}
+                onPress={() => {
+                    onPress? onPress(title) : null
+                }}
                 android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
             >
                 <View style={{

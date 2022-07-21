@@ -9,9 +9,9 @@ import { SimpleScreenHeader, Space } from '../../components/util';
 import { AuthActionButton } from '../../components/buttons';
 import { CheckRatesModal } from './check-rates-modal';
 import { useHideBottomBar } from '../../components/navigation';
-import { CkeckRatesParamList } from '../../navigation/CheckRatesStack';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { GooglePlacesInput, MyTextInput } from '../../components/inputs';
+import { CkeckRatesParamList } from '../../navigation/CheckRatesStack';
 import { boxSearchIcon, gpsIcon } from '../../assets';
 
 type ChackRatesScreenProps = NativeStackScreenProps<CkeckRatesParamList, 'CkeckRates'>;
@@ -26,8 +26,6 @@ export const ChackRatesScreen = (props : ChackRatesScreenProps) => {
     const [destination, setDestination] = useState(null);
 
     const checkRate = ()=>{
-      console.log(pickupLocation)
-      console.log(destination)
       setModal(true)
     }
 

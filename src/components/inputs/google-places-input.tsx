@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import { GooglePlaceData, GooglePlacesAutocomplete, GooglePlacesAutocompleteRef } from 'react-native-google-places-autocomplete';
-import { gpsIcon } from '../../assets';
+
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 
@@ -21,7 +21,7 @@ export const GooglePlacesInput = (props: GooglePlacesInputProps) => {
     
     const setPlace= (value: any) => {
         onChange? onChange(value): null;
-        console.log(value);
+        
     }
 
     const clear = ()=> {
@@ -70,9 +70,11 @@ export const GooglePlacesInput = (props: GooglePlacesInputProps) => {
             query={{
                 key: 'AIzaSyBeg9OGJfQWY0CWyRh8PfW2ERQbsP-yEwc',
                 language: 'en',
+                components: 'country:dz'
             }}
             renderRow={renderListItem}
             renderRightButton={renderIcon}
+            
             styles={styles}
         />
             

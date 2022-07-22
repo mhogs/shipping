@@ -1,22 +1,21 @@
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { Fragment, useState } from 'react'
-import { View, Text, Image, ScrollView, KeyboardAvoidingView, StyleSheet, Dimensions, TextInput, Modal, Pressable } from 'react-native'
-import MapView from 'react-native-maps';
-import { insuranceIconColored, LocationIcon, MobileIconColored, searchIcon, searchIconGrey, trackIconColored } from '../../assets';
-import { SaveChangesButton, SocialLoginButton } from '../../components/buttons';
-import { LocationItem } from '../../components/content';
-import { EmailIcon, PlusIcon, ThreeDotsIcon, WhatsAppIcon } from '../../components/icons';
+import { View, Text, Image, ScrollView, KeyboardAvoidingView, StyleSheet, Pressable } from 'react-native'
+import { insuranceIconColored, MobileIconColored, searchIconGrey, trackIconColored } from '../../assets';
+import {  SocialLoginButton } from '../../components/buttons';
+import { EmailIcon, ThreeDotsIcon, WhatsAppIcon } from '../../components/icons';
 import { SearchInput } from '../../components/inputs';
 import { useHideBottomBar } from '../../components/navigation';
-import { Devider, SimpleScreenHeader, Space } from '../../components/util'
+import {  SimpleScreenHeader, Space } from '../../components/util'
 import { listToMatrix } from '../../helpers';
 import { HelpCenterStackParamList } from '../../navigation/HelpCenterStack';
+import { MessagesStackParamList } from '../../navigation/MessagesStack';
 import { useTheme } from '../../state';
 import { ThemeType } from '../../theme';
 import { QuestionsListView } from './questionsList';
 
-type HelpCenterScreenProps = NativeStackScreenProps<HelpCenterStackParamList, 'Help'>;
+type HelpCenterScreenProps =NativeStackScreenProps<HelpCenterStackParamList & MessagesStackParamList, 'Help'>;
 export const HelpCenterScreen = ({ navigation }: HelpCenterScreenProps) => {
   useHideBottomBar(navigation, 2)
   const { theme } = useTheme()
@@ -33,7 +32,7 @@ export const HelpCenterScreen = ({ navigation }: HelpCenterScreenProps) => {
 
 
         <SearchInput
-          startIcon={<Image source={searchIconGrey} width={24} height={24} />}
+          startIcon={<Image source={searchIconGrey}  />}
           placeholder='Tap to search faq'
           placeholderTextColor={theme.palette.grey[theme.mode][3]}
           extraStyle={styles.searchBox}
@@ -44,7 +43,7 @@ export const HelpCenterScreen = ({ navigation }: HelpCenterScreenProps) => {
           </Text>
           <View>
             {
-              listToMatrix(categories, 2).map((row, index) => (
+              listToMatrix(helpCentercategories, 2).map((row, index) => (
                 <Fragment key={index}>
                   <View style={styles.row}>
                     {
@@ -53,10 +52,11 @@ export const HelpCenterScreen = ({ navigation }: HelpCenterScreenProps) => {
                           <View style={styles.category}>
                             <Pressable
                               style={styles.categoryPressable}
-                              onPress={() => { }}
+                              onPress={() => navigation.navigate("HelpCategory",{name:category.name})}
+
                               android_ripple={{ color: theme.palette.grey[theme.mode][3], borderless: false }}
                             >
-                              <Image source={category.icon} width={24} height={24} />
+                              <Image source={category.icon} />
                               <Text style={styles.categoryName}>{category.name}</Text>
                             </Pressable>
                           </View>
@@ -74,7 +74,7 @@ export const HelpCenterScreen = ({ navigation }: HelpCenterScreenProps) => {
           <Text style={styles.sectionTitle} >
             Popular Searched
           </Text>
-          <QuestionsListView />
+          <QuestionsListView navigation={navigation} />
           <Text style={styles.customerServiceText} >
             Contact Customer Service
           </Text>
@@ -157,7 +157,7 @@ const getStyles = (theme: ThemeType) => {
   })
 }
 
-const categories = [
+export const helpCentercategories = [
   {
     name: 'Insurance',
     icon: insuranceIconColored,

@@ -1,16 +1,22 @@
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
 import { ScrollView } from 'react-native-gesture-handler';
 import { MinusIcon, PlusIcon } from '../../components/icons';
 import { Devider, Space } from '../../components/util';
+import { HelpCenterStackParamList } from '../../navigation/HelpCenterStack';
+import { MessagesStackParamList } from '../../navigation/MessagesStack';
 import { useTheme } from '../../state';
 import { ThemeType } from '../../theme';
-import {  useQuestions } from './useQuestions';
+import { useQuestions } from './useQuestions';
 
 
-
-export function QuestionsListView() {
+type QuestionsListViewProps = {
+    navigation: any
+}
+export function QuestionsListView(props: QuestionsListViewProps) {
+    const { navigation } = props
     const [activeQuestions, setActiveQuestions] = useState<number[]>([])
     const { theme } = useTheme()
     const styles = getStyles(theme)
@@ -28,7 +34,11 @@ export function QuestionsListView() {
         return (
             <View style={styles.questionHeader}>
                 <Text style={styles.questionHeaderText}>{question.title}</Text>
-                {_IsActive(question) ? <MinusIcon color={theme.palette.primary[theme.mode].main} /> : <PlusIcon color={theme.palette.primary[theme.mode].main} />}
+                {_IsActive(question) ?
+                    <MinusIcon color={theme.palette.primary[theme.mode].main} />
+                    :
+                    <PlusIcon color={theme.palette.primary[theme.mode].main} />
+                }
             </View>
         );
     };
@@ -56,6 +66,7 @@ export function QuestionsListView() {
                         <Space size={15} />
                         <Pressable
                             android_ripple={{ color: theme.palette.grey[theme.mode][3], borderless: true }}
+                            onPress={() => {}}
                         >
                             <Text style={styles.reviewButtonsText}>
                                 No
@@ -82,7 +93,7 @@ export function QuestionsListView() {
                     renderContent={_renderContent}
                     onChange={_updateSections}
                     underlayColor={theme.palette.lightGrey[theme.mode].main}
-                    touchableComponent={Pressable}
+                    touchableComponent={Pressable as any}
                     sectionContainerStyle={styles.sectionContainerStyle}
                 />
             }

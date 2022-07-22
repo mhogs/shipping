@@ -6,7 +6,6 @@ import MapView, { LatLng, Marker, Region } from 'react-native-maps'
 
 import { useHideBottomBar } from '../../components/navigation'
 import { Devider, ModalTopBarIndicator, MyMarkerIcon, SimpleScreenHeader, Space } from '../../components/util'
-import { TrackingStackParamList } from '../../navigation/TrackingStack'
 import { useAuth } from '../../state'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
@@ -16,6 +15,7 @@ import { comingIcon } from '../../assets'
 import { AdresseItem, DriverItem } from '../../components/content'
 import { SaveChangesButton } from '../../components/buttons'
 import { TrackingDetailsModal } from './modals'
+import { TrackingStackParamList } from '../../navigation/TrackingStack'
 
 type MapstateType = {
     mapRegion: Region,
@@ -131,14 +131,20 @@ export const TrackingDetailsScreen = ({ navigation }: TrackingDetailsScreenProps
                             />
                         </Marker>
                     </MapView>
-                    <TrackingDetailsModal visible={modalOpen} onBtnPress={() => { }} closeModal={()=>setModalOpen(false)} />
+                    
                     <Pressable
                         style={styles.detailsBtn}
-                        onPress={()=>setModalOpen(true)}
-                        android_ripple={{color:theme.palette.grey[theme.mode][3]}}
+                        onPress={() => setModalOpen(true)}
+                        android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
                     >
                         <Text style={styles.detailsBtnText}>Check Details</Text>
                     </Pressable>
+                    {/**modal */}
+                    <TrackingDetailsModal
+                        visible={modalOpen}
+                        onBtnPress={() => navigate("Scan")}
+                        closeModal={() => setModalOpen(false)}
+                    />
 
                 </View>
             </ScrollView>
@@ -168,14 +174,14 @@ const getStyles = (theme: ThemeType) => {
             position: "absolute",
             bottom: 24,
             right: 24,
-            paddingHorizontal:14,
-            paddingVertical:10,
-            backgroundColor:palette.primary[mode].main,
-            borderRadius:16
+            paddingHorizontal: 14,
+            paddingVertical: 10,
+            backgroundColor: palette.primary[mode].main,
+            borderRadius: 16
         },
-        detailsBtnText:{
+        detailsBtnText: {
             ...text.medium.P14_Lh130,
-            color:palette.white[mode].main
+            color: palette.white[mode].main
         }
     })
 }

@@ -87,7 +87,7 @@ export const TrackingDetailsModal = (props: TrackingDetailsModalProps) => {
                             <Space size={30} direction="vertical" />
 
                         </View>
-                        <SaveChangesButton text='Mark as Done' />
+                        <SaveChangesButton onPress={onBtnPress} text='Scan code' />
                     </ScrollView>
                 </View>
 

@@ -16,7 +16,7 @@ import { WalletStackParamList } from '../../navigation/WalletStack'
 
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
-import { PaymentMethodeModal, PaymentSuccessfulModal } from '../../components/modals'
+import { PaymentMethodeModal, OperationSuccessfulModal } from '../../components/modals'
 
 type TopUpScreenProps = NativeStackScreenProps<WalletStackParamList & RootStackParamList, 'TopUp'>;
 
@@ -79,7 +79,7 @@ export const TopUpScreen = ({ navigation }: TopUpScreenProps) => {
                     closeModal={() => setModals({ ...modals, paymentMethodes: false })}
                     onBtnPress={() => setModals({ ...modals, onPaymentSuccess: true })}
                 />
-                <PaymentSuccessfulModal
+                <OperationSuccessfulModal
                     visible={modals.onPaymentSuccess}
                     closeModal={() => setModals({ ...modals, onPaymentSuccess: false })}
                     onBtnPress={()=>navigation.navigate("Home")}

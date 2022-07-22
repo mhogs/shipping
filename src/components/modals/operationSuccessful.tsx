@@ -6,13 +6,17 @@ import { useTheme } from "../../state"
 import { ThemeType } from "../../theme"
 
 
-type PaymentSuccessfulModalProps = {
+type OperationSuccessfulModalProps = {
     visible: boolean
+    image: any
+    title: string,
+    sub_title?: string
+    buttonText?: string,
     closeModal: () => void
     onBtnPress?: () => void
 }
-export const PaymentSuccessfulModal = (props: PaymentSuccessfulModalProps) => {
-    const { visible, closeModal, onBtnPress } = props
+export const OperationSuccessfulModal = (props: OperationSuccessfulModalProps) => {
+    const { visible, image, title, sub_title, buttonText, closeModal, onBtnPress } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
     return (
@@ -34,18 +38,17 @@ export const PaymentSuccessfulModal = (props: PaymentSuccessfulModalProps) => {
                         <View>
                             <View style={styles.modalTopBa} />
                             <View style={{ alignItems: "center", }}>
-                                <Image source={sucessfulPaymentImage} />
+                                <Image source={image} />
                                 <Text style={styles.headerText}>
-                                    Top Up Successfully
+                                    {title}
                                 </Text>
                                 <Text style={styles.subheaderText}>
-                                    Congratulation! your balance already added,
-                                    and please check your balance.
+                                    {sub_title}
                                 </Text>
                             </View>
                         </View>
 
-                        <SaveChangesButton onPress={onBtnPress} text='Go to Home' />
+                        {buttonText && <SaveChangesButton onPress={onBtnPress} text={buttonText} />}
                     </ScrollView>
                 </View>
 
@@ -63,7 +66,7 @@ const getStyles = (theme: ThemeType) => {
         root: { flex: 1 },
         modalContainer: {
             flexGrow: 1,
-            justifyContent:"space-between"
+            justifyContent: "space-between"
         },
         modalContent: {
             paddingHorizontal: 24,
@@ -98,8 +101,8 @@ const getStyles = (theme: ThemeType) => {
         subheaderText: {
             ...text.regular.P14_Lh180,
             color: palette.grey[mode].main,
-            textAlign:"center",
-            marginBottom:10
+            textAlign: "center",
+            marginBottom: 10
         }
 
     })

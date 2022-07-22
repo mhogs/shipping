@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { HelpCenterScreen } from '../screens';
+import { HelpCenterCategoryScreen, HelpCenterScreen } from '../screens';
 
 
 
@@ -16,9 +16,11 @@ export const HelpCenterStackNavigator = () => {
             initialRouteName='Help'
         >
             <Stack.Screen name="Help" component={HelpCenterScreen} />
+            <Stack.Screen name="HelpCategory" component={HelpCenterCategoryScreen} />
         </Stack.Navigator>
     )
 }
 export type HelpCenterStackParamList = {
-    Help:undefined
+    Help:undefined,
+    HelpCategory:{name:string,}
   };

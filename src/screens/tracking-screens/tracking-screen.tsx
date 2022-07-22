@@ -31,7 +31,7 @@ export const TrackingScreen = ({ navigation }: TrackingScreenProps) => {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         {/**search */}
         <SearchInput
-          startIcon={<Image source={searchIconGrey} width={24} height={24} />}
+          startIcon={<Image source={searchIconGrey}  />}
           placeholder='Enter track number'
           placeholderTextColor={theme.palette.grey[theme.mode][3]}
           endicon={<Image source={scanIcon} />}

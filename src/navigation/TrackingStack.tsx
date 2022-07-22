@@ -1,6 +1,6 @@
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { NotificationsScreen, TrackingDetailsScreen, TrackingScreen } from '../screens';
+import { CodeScanScreen, TrackingDetailsScreen, TrackingScreen } from '../screens';
 
 
 const Stack = createNativeStackNavigator();
@@ -17,11 +17,13 @@ export const TrakingStackNavigator = () => {
         >
             <Stack.Screen name="Tracking" component={TrackingScreen} />
             <Stack.Screen name="TrackingDetails" component={TrackingDetailsScreen} />
+            <Stack.Screen name="Scan" component={CodeScanScreen} />
         </Stack.Navigator>
     )
 }
 
 export type TrackingStackParamList = {
     Tracking: undefined,
-    TrackingDetails:{packageId:string}
+    TrackingDetails:{packageId:string},
+    Scan:undefined
 };

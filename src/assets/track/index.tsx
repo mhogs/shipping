@@ -1,0 +1,1 @@
+export const scanSuccessful=require("./scanSuccessful.png")

@@ -21,6 +21,7 @@ export const MyBalnce = (props: MyBalnceProps) => {
         titleColor=theme.palette.grey[theme.mode].main,
         topUpColor = theme.palette.primary[theme.mode].main,
         rippleColor = theme.palette.grey[theme.mode][3],
+        
         onTopUpPress,
     } = props
 
@@ -73,7 +74,8 @@ const getStyles = (theme: ThemeType) => {
         },
         addBalanceWraper: {
             flexDirection: 'row',
-            alignItems: 'center'
+            alignItems: 'center',
+           
         },
         balancetitle: {
             ...text.regular.P12_Lh180,

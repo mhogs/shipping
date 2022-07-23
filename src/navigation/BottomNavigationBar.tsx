@@ -4,7 +4,7 @@ import { Octicons } from '@expo/vector-icons';
 
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { changeLanguage, useTranslation } from '../locales';
-import { HomeScreen, OrderFormScreen } from '../screens';
+import { HomeScreen } from '../screens';
 import { ThemeType } from '../theme';
 import { useTheme } from '../state/theming';
 import { OrdersStackNavigator } from './OrdersStack';
@@ -30,6 +30,7 @@ export type RootStackParamList = {
     WalletStack:{ userId: string },
     NotificationsStack:{userId:string},
     TrackingStack:undefined,
+    TopUp:undefined
   };
 
 export function BottomNavigationBar() {

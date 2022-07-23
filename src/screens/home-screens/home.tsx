@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import React, { FC, Fragment } from 'react'
-import { View, StyleSheet, Image, StatusBar, Text, TextInput, KeyboardAvoidingView, Pressable } from 'react-native'
-import { add_squar_icon_asset, checkRatesIcon, HelpCenterFeatureIcon, logo_asset, NearByFeatureIcon, notification_asset, OrderFeatureIcon, OtherFeatureIcon, scanIcon, searchIcon, WalletFeatureIcon } from '../../assets'
+import React, { Fragment } from 'react'
+import { View, StyleSheet, Image, StatusBar, Text, KeyboardAvoidingView, Pressable } from 'react-native'
+import { checkRatesIcon, HelpCenterFeatureIcon, logo_asset, NearByFeatureIcon, notification_asset, OrderFeatureIcon, OtherFeatureIcon, scanIcon, searchIcon, WalletFeatureIcon } from '../../assets'
 import { MyBalnce } from '../../components/content'
 import { SearchInput } from '../../components/inputs'
 import { Space } from '../../components/util'
@@ -26,7 +26,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                     {/** title */}
                     <View style={styles.title}>
                         <View style={styles.logo_wraper}>
-                            <Image width={28} height={28} source={logo_asset} />
+                            <Image source={logo_asset} />
                             <Text style={styles.logo_text}  >Tracky</Text>
                         </View>
                         <Pressable
@@ -41,17 +41,17 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                     </View>
                     {/** balance banner */}
                     <Space direction="vertical" size={30} />
-                    <MyBalnce/>
+                    <MyBalnce onTopUpPress={() => navigation.navigate("TopUp")}/>
                     {/**search box */}
                     <Space size={20} direction="vertical" />
                     <SearchInput
-                        startIcon={<Image source={searchIcon} width={24} height={24} />}
+                        startIcon={<Image source={searchIcon} />}
                         placeholder='Enter track number'
                         placeholderTextColor={theme.palette.grey[theme.mode][3]}
                         onFocus={() => navigate("TrackingStack")}
                         endicon={<Image source={scanIcon} />}
                     />
-                    
+
 
                 </View>
                 <View style={styles.body} >
@@ -70,7 +70,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                                                         onPress={() => navigate(feature.route)}
                                                         android_ripple={{ color: theme.palette.grey[theme.mode][3], borderless: false }}
                                                     >
-                                                        <Image source={feature.icon} width={24} height={24} />
+                                                        <Image source={feature.icon} />
                                                         <Text style={styles.featureName}>{feature.name}</Text>
                                                     </Pressable>
                                                 </View>

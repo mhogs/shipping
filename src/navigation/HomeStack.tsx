@@ -1,6 +1,6 @@
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { HomeScreen } from '../screens';
+import { HomeScreen, TopUpScreen } from '../screens';
 import { CheckRatesStackNavigator } from './CheckRatesStack';
 import { HelpCenterStackNavigator } from './HelpCenterStack';
 import { NearByStackNavigator } from './NearByStack';
@@ -31,9 +31,11 @@ export const HomeStackNavigator = () => {
             <Stack.Screen name="OrdersStack" component={OrdersStackNavigator} />
             <Stack.Screen name="OrderHistoryStack" component={OrderHistoryStackNavigator} />
             <Stack.Screen name="HelpCenterStack" component={HelpCenterStackNavigator} />
-            <Stack.Screen name="WalletStack" component={WalletStackNavigator} />
+            <Stack.Screen name="WalletStack" component={WalletStackNavigator} /> 
+            <Stack.Screen name="TopUp" component={TopUpScreen} />
             <Stack.Screen name="NotificationsStack" component={NotificationsStackNavigator} />
             <Stack.Screen name="TrackingStack" component={TrakingStackNavigator} />
+           
         </Stack.Navigator>
     )
 }

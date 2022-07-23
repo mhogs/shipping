@@ -7,6 +7,10 @@ export const leftarrow_asset= require("./auth/arrow-left.png")
 export const add_squar_icon_asset=require("./home/addSquarIcon.png")
 export const avatar_asset=require("./avatar.png")
 
+export const onboarding1=require("./onboarding-1.png")
+export const onboarding2=require("./onboarding-2.png")
+export const onboarding3=require("./onboarding-3.png")
+
 export * from './icons'
 /** profile */
 export * from './profile'

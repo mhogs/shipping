@@ -70,7 +70,7 @@ export const AuthScreen = (props: AuthScreenProps) => {
       <View style={styles.root}>
         <View style={styles.header}>
           <Pressable
-            onPress={() => console.log("back")}
+            onPress={() => navigation.goBack()}
             style={styles.back_wraper}
           >
             <LeftArrowIcon

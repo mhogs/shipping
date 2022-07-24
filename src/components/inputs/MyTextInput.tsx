@@ -15,10 +15,28 @@ type TextInputProps = {
     endIconAction?: iconPressActionType,
     startIconAction?: iconPressActionType,
     isNumeric?: boolean,
-    onChangeText?:(text:string)=>void
+    onChangeText?: (text: string) => void,
+    onBlur?: (e: any) => void,
+    touched?:boolean
+    error?:string
 }
 export const MyTextInput = (props: TextInputProps) => {
-    const { label, placeholder, editable=true, isNumeric=false, startIcon, endIcon, value, secureTextEntry = false, endIconAction, startIconAction,onChangeText } = props
+    const {
+        label,
+        placeholder,
+        editable = true,
+        isNumeric = false,
+        startIcon,
+        endIcon,
+        value,
+        secureTextEntry = false,
+        endIconAction,
+        startIconAction,
+        onChangeText,
+        onBlur,
+        error,
+        touched
+    } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
     const [isSecret, setIsSecret] = useState(secureTextEntry)
@@ -39,37 +57,40 @@ export const MyTextInput = (props: TextInputProps) => {
     }
     return (
         <View>
-            {label?
-                <View style={{flexDirection:"row"}}>
+            {label ?
+                <View style={{ flexDirection: "row" }}>
                     <Text style={styles.inputLabel}> {label}</Text>
                 </View> : null
             }
 
-            <View style={styles.inputWraper}>
+            <View style={[styles.inputWraper,(touched && error)?{ borderColor:theme.palette.danger[theme.mode].main}:{}]}>
                 <Pressable
                     onPress={onIconPress(startIconAction)}
-                    style={startIcon? { paddingLeft:13 } : null}
-                    >
+                    style={startIcon ? { paddingLeft: 13 } : null}
+                >
                     {startIcon}
-                </Pressable> 
-                
+                </Pressable>
+
                 <TextInput
                     style={styles.input}
+                    value={value}
                     placeholder={placeholder}
                     defaultValue={value}
                     secureTextEntry={isSecret}
                     editable={editable}
-                    keyboardType={isNumeric? "numeric": undefined }
-                    onChangeText={text =>onChangeText && onChangeText(text)}
+                    keyboardType={isNumeric ? "numeric" : undefined}
+                    onChangeText={text => onChangeText && onChangeText(text)}
+                    onBlur={onBlur}
                 />
                 <Pressable
                     onPress={onIconPress(endIconAction)}
-                    style={endIcon? { paddingRight:13 } : null}
+                    style={endIcon ? { paddingRight: 13 } : null}
                 >
                     {endIcon}
                 </Pressable>
 
             </View>
+            { touched && error && <Text style={styles.errorText}>- {error}</Text>}
         </View>
     )
 }
@@ -107,7 +128,14 @@ const getStyles = (theme: ThemeType) => {
             paddingHorizontal: 8,
             paddingVertical: 13,
             flex: 1,
-            textAlign:"left",
+            textAlign: "left",
+        },
+        errorText:{
+            fontSize:10,
+            marginLeft:8,
+            color:palette.danger[mode].main,
+            position:"absolute",
+            bottom:-16
         }
     })
 }

@@ -2,8 +2,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import axios, { AxiosError } from "axios"
 import { currentUserType, ProfileRequestData, ProfileResponseData, RefreshRequestDataType, RefreshResponseDataType, RequestOtpParmsType, SendOtpParmsType, SignInRequestDataType, SignInResponseDataType, SignUpRequestDataType, SignUpResponseDataType, userType } from "../@types"
 import { BACKEND_BASE_URL, USER_STORAGE_KEY } from "../constants"
-import { getAuthHeaders, getUserFromStorage } from "../helpers"
-
+import { getAuthHeaders, getUserFromStorage, showErrorToast } from "../helpers"
+import Toast from 'react-native-toast-message';
 
 export class AuthService {
     static async SignUp(data: SignUpRequestDataType): Promise<SignUpResponseDataType> {
@@ -14,7 +14,9 @@ export class AuthService {
 
             return res.data
         } catch (err: any) {
-            throw Error(err.message);
+            const errDetail = err.response?.data?.detail
+            showErrorToast(errDetail)
+            throw Error(errDetail);
         }
     }
     static async SignIN(data: SignInRequestDataType): Promise<SignInResponseDataType> {
@@ -24,7 +26,9 @@ export class AuthService {
             await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(res.data))
             return res.data
         } catch (err: any) {
-            throw Error(err.message);
+            const errDetail = err.response?.data?.detail
+            showErrorToast(errDetail)
+            throw Error(errDetail);
         }
     }
 
@@ -39,12 +43,21 @@ export class AuthService {
             return { ...data, ...response.data }
 
         } catch (err: any) {
-            throw Error(err.message);
+            const errDetail = err.response?.data?.detail
+            showErrorToast(errDetail)
+            throw Error(errDetail);
         }
     }
 
     static async SignOut(): Promise<void> {
-        await AsyncStorage.removeItem(USER_STORAGE_KEY)
+        try {
+            await AsyncStorage.removeItem(USER_STORAGE_KEY)
+        } catch (err: any) {
+            const errDetail = err.response?.data?.detail
+            showErrorToast(errDetail)
+            throw Error(errDetail);
+        }
+
     }
 
     static async RefreshToken(): Promise<RefreshResponseDataType> {
@@ -55,7 +68,9 @@ export class AuthService {
         try {
             return (await axios.post(url, data)).data
         } catch (err: any) {
-            throw Error(err.message);
+            const errDetail = err.response?.data?.detail
+            showErrorToast(errDetail)
+            throw Error(errDetail);
         }
     }
 
@@ -66,7 +81,9 @@ export class AuthService {
         try {
             return (await axios.get(url)).data
         } catch (err: any) {
-            throw Error(err.message);
+            const errDetail = err.response?.data?.detail
+            showErrorToast(errDetail)
+            throw Error(errDetail);
         }
     }
 
@@ -75,7 +92,9 @@ export class AuthService {
         try {
             return (await axios.get(url)).data
         } catch (err: any) {
-            throw Error(err.message);
+            const errDetail = err.response?.data?.detail
+            showErrorToast(errDetail)
+            throw Error(errDetail);
         }
     }
 

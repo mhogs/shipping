@@ -9,7 +9,7 @@ import { useFonts, Outfit_400Regular, Outfit_500Medium, Outfit_600SemiBold, } fr
 import { Image } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './src/state';
-
+import Toast, { ToastProps } from 'react-native-toast-message';
 const queryClient = new QueryClient();
 
 export default function App() {
@@ -19,13 +19,15 @@ export default function App() {
   if (!appIsReady) {
     return null;
   }
-
+  let v:ToastProps
+  
   return (
 
     <NavigationContainer>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <Navigation />
+          <Toast />
         </AuthProvider>
       </QueryClientProvider>
     </NavigationContainer>

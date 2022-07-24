@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-toast-message";
 import { currentUserType, userType } from "../@types";
 import { USER_STORAGE_KEY } from "../constants";
 
@@ -27,6 +28,14 @@ export async function getAuthHeaders() {
     return {
         Authorization: `JWT ${user?.access}`
     }
+}
+export function showErrorToast(message: any) {
+    Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: message,
+        visibilityTime: 7000
+    });
 }
 
 

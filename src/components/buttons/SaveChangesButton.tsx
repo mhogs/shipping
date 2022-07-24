@@ -8,7 +8,8 @@ type SaveChangesButtonProps = {
   onPress?: () => void
   bgColor?: string,
   textColor?: string,
-  pending?: boolean
+  pending?: boolean,
+  disabled?: boolean
 }
 export const SaveChangesButton = (props: SaveChangesButtonProps) => {
   const { theme } = useTheme()
@@ -17,14 +18,17 @@ export const SaveChangesButton = (props: SaveChangesButtonProps) => {
     onPress,
     bgColor = theme.palette.primary[theme.mode].main,
     textColor = theme.palette.white[theme.mode].main,
-    pending = false } = props
+    pending = false,
+    disabled
+  } = props
+
 
   const styles = getStyles(theme)
 
   return (
-    <View style={[styles.saveButtonWraper, { backgroundColor: bgColor }]}>
+    <View style={[styles.saveButtonWraper, { backgroundColor: disabled?theme.palette.grey[theme.mode].main: bgColor }]}>
       <Pressable
-        disabled={pending}
+        disabled={disabled}
         style={styles.savebutton}
         onPress={onPress}
         android_ripple={{ color: theme.palette.grey[theme.mode].main }}
@@ -32,7 +36,7 @@ export const SaveChangesButton = (props: SaveChangesButtonProps) => {
         {pending ?
           <ActivityIndicator color={textColor} size="small" />
           :
-          <Text style={[styles.saveButtonText,  { color: textColor }]}>
+          <Text style={[styles.saveButtonText, { color: textColor }]}>
             {text}
           </Text>
         }

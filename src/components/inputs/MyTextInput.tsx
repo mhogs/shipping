@@ -15,9 +15,10 @@ type TextInputProps = {
     endIconAction?: iconPressActionType,
     startIconAction?: iconPressActionType,
     isNumeric?: boolean,
+    onChangeText?:(text:string)=>void
 }
 export const MyTextInput = (props: TextInputProps) => {
-    const { label, placeholder, editable=true, isNumeric=false, startIcon, endIcon, value, secureTextEntry = false, endIconAction, startIconAction } = props
+    const { label, placeholder, editable=true, isNumeric=false, startIcon, endIcon, value, secureTextEntry = false, endIconAction, startIconAction,onChangeText } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
     const [isSecret, setIsSecret] = useState(secureTextEntry)
@@ -59,6 +60,7 @@ export const MyTextInput = (props: TextInputProps) => {
                     secureTextEntry={isSecret}
                     editable={editable}
                     keyboardType={isNumeric? "numeric": undefined }
+                    onChangeText={text =>onChangeText && onChangeText(text)}
                 />
                 <Pressable
                     onPress={onIconPress(endIconAction)}

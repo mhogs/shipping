@@ -77,6 +77,11 @@ export const InfoIcon = ({ color, size=24 }:IconPropsType) => {
         <MaterialIcons name="info" color={color} size={size} />
     )
 }
+export const SignoutIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <AntDesign name="logout" color={color} size={size} />
+    )
+}
 
 
 export const PhoneCallIcon = ({ color, size=24 }:IconPropsType) => {

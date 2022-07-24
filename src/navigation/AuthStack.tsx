@@ -3,7 +3,7 @@ import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navig
 
 export type AuthStackParamList = {
     AuthScreen:undefined,
-    VerificationScreen:{phone?:string},
+    VerificationScreen:{phone:string,password:string},
     OnboardingScreen: undefined,
 };
 

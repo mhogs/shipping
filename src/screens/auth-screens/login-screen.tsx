@@ -1,15 +1,17 @@
 import { View, StyleSheet, Image, Text, ScrollView } from 'react-native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React from 'react'
+import React, { useState } from 'react'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 import { MyTextInput } from '../../components/inputs'
 import { Space } from '../../components/util'
 import { callIcon, googleIcon, appleIcon } from '../../assets'
 import { LockOutLineIcon } from '../../components/icons'
-import { AuthActionButton, SocialLoginButton } from '../../components/buttons'
+import { AuthActionButton, SaveChangesButton, SocialLoginButton } from '../../components/buttons'
 import { Devider } from '../../components/util/Devider'
 import { AuthScreenProps, AuthStackParamList } from '../../navigation/AuthStack';
+import { SignInRequestDataType } from '../../@types';
+import { useAuthentication } from '../../state';
 
 
 
@@ -18,18 +20,11 @@ export const LoginScreen = (props: any) => {
 
     const { theme } = useTheme()
     const styles = getStyles(theme)
-
-    const signin = () =>{
-        console.log('sign-in')
-    }
-
-    const googleSignin = () =>{
-        console.log('google sign-in')
-    }
-
-    const appleSignin = () =>{
-        console.log('apple sign-in')
-    }
+    const {signIn, serverState}=useAuthentication()
+    const [data, setData] = useState<SignInRequestDataType>({
+        phonenumber: "",
+        password: ""
+    })
 
     return (
         <ScrollView showsVerticalScrollIndicator={false} style={styles.root}>
@@ -38,6 +33,7 @@ export const LoginScreen = (props: any) => {
                     label='Phone Number'
                     placeholder='Enter your number'
                     startIcon={<Image source={callIcon} />}
+                    onChangeText={(text)=>setData(prev=>({...prev,phonenumber:text}))}
                 />
                 <Space direction='vertical' size={20} />
                 <MyTextInput
@@ -45,13 +41,15 @@ export const LoginScreen = (props: any) => {
                     placeholder='Enter your password'
                     secureTextEntry={true}
                     startIcon={<LockOutLineIcon color={theme.palette.grey[theme.mode].main} size={24} />}
+                    onChangeText={(text)=>setData(prev=>({...prev,password:text}))}
                 />
             </View>
 
             <Space direction='vertical' size={40} />
-            <AuthActionButton 
-                label='Sign In'
-                onClick={signin}
+            <SaveChangesButton 
+                text='Sign In'
+                onPress={()=>signIn(data)}
+                pending={serverState.isLoading}
             />
             <Space direction='vertical' size={40} />
 
@@ -65,7 +63,7 @@ export const LoginScreen = (props: any) => {
                 label={'Sign Up with Google'}
                 bgColor={theme.palette.white[theme.mode].main}
                 textColor={theme.palette.black[theme.mode].main}
-                onClick={googleSignin}
+                onClick={()=>{}}
                 icon={<Image source={googleIcon} />}             
             />
             <Space direction='vertical' size={15} />
@@ -73,7 +71,7 @@ export const LoginScreen = (props: any) => {
                 label={'Sign Up with Apple'}
                 bgColor={theme.palette.black[theme.mode].main}
                 textColor={theme.palette.white[theme.mode].main}
-                onClick={appleSignin}
+                onClick={()=>{}}
                 icon={<Image source={appleIcon} />}             
             />
 

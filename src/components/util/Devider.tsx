@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { useTheme } from '../../state'
+import { useTheme } from '../../state/theming'
 
 type DeviderProps = {
     spacing?: number,

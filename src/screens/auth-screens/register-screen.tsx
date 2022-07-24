@@ -1,49 +1,64 @@
-import { View, StyleSheet, Image, Text, ScrollView } from 'react-native'
-import React from 'react'
+import { View, StyleSheet, Image, Text, ScrollView, ActivityIndicator } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 import { MyTextInput } from '../../components/inputs'
-import { Space } from '../../components/util'
+import { LoadingView, Space } from '../../components/util'
 import { ProfileIcon, callIcon, googleIcon, appleIcon } from '../../assets'
 import { LockOutLineIcon } from '../../components/icons'
-import { AuthActionButton, SocialLoginButton } from '../../components/buttons'
+import { AuthActionButton, SaveChangesButton, SocialLoginButton } from '../../components/buttons'
 import { Devider } from '../../components/util/Devider'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { AuthScreenProps, AuthStackParamList } from '../../navigation/AuthStack'
+import { useAuthentication } from '../../state'
+import { SignUpRequestDataType } from '../../@types'
 
 
-export const RegisterScreen = (props: any) => {
+export const RegisterScreen = (props: AuthScreenProps) => {
     const { navigation } = props;
     const { theme } = useTheme()
     const styles = getStyles(theme)
+    const { signUp, serverState } = useAuthentication()
+    
+    const [data, setData] = useState<SignUpRequestDataType>({
+        first_name: "",
+        last_name: "",
+        phonenumber: "",
+        password: ""
+    })
+    
 
-    const createAccount = () =>{
-        console.log('creating account');
-        navigation.navigate('VerificationScreen',{phone:"+213773768972"})
-    }
+    /** go to otp confirm screen when recieving sms */
+    useEffect(() => {
+        if (serverState.otp_recieved && data.phonenumber && data.password )
+            navigation.navigate("VerificationScreen", { phone: data.phonenumber,password:data.password })
+    }, [serverState.otp_recieved])
 
-    const googleSignup = () =>{
-        console.log('google sign-in')
-    }
-
-    const appleSignup = () =>{
-        console.log('apple sign-in')
-    }
-
-
+   
+    
     return (
         <ScrollView showsVerticalScrollIndicator={false} style={styles.root}>
             <View style={styles.form}>
+                
                 <MyTextInput
-                    label='Full Name'
-                    placeholder='Enter your name'
+                    label='First Name'
+                    placeholder='Enter your first name'
                     startIcon={<Image source={ProfileIcon} />}
+                    onChangeText={(text) => setData({ ...data, first_name: text })}
+                />
+                <Space direction='vertical' size={20} />
+                <MyTextInput
+                    label='Last Name'
+                    placeholder='Enter your last name'
+                    startIcon={<Image source={ProfileIcon} />}
+                    onChangeText={(text) => setData({ ...data, last_name: text })}
                 />
                 <Space direction='vertical' size={20} />
                 <MyTextInput
                     label='Phone Number'
                     placeholder='Enter your number'
                     startIcon={<Image source={callIcon} />}
+                    onChangeText={(text) => setData({ ...data, phonenumber: text })}
                 />
                 <Space direction='vertical' size={20} />
                 <MyTextInput
@@ -51,13 +66,18 @@ export const RegisterScreen = (props: any) => {
                     placeholder='Enter your password'
                     secureTextEntry={true}
                     startIcon={<LockOutLineIcon color={theme.palette.grey[theme.mode].main} size={24} />}
+                    onChangeText={(text) => setData({ ...data, password: text })}
                 />
             </View>
             <Space direction='vertical' size={40} />
-            <AuthActionButton 
-                label='Create Account'
-                onClick={createAccount}
+            <SaveChangesButton
+                text='Create Account'
+                onPress={() => {
+                    signUp(data)
+                }}
+                pending={serverState.isLoading}
             />
+
             <Space direction='vertical' size={40} />
 
             <Devider />
@@ -66,20 +86,20 @@ export const RegisterScreen = (props: any) => {
             <Text style={styles.otherOptions}>Or Sign In With</Text>
             <Space direction='vertical' size={15} />
 
-            <SocialLoginButton 
+            <SocialLoginButton
                 label={'Sign Up with Google'}
                 bgColor={theme.palette.white[theme.mode].main}
                 textColor={theme.palette.black[theme.mode].main}
-                onClick={googleSignup}
-                icon={<Image source={googleIcon} />}             
+                onClick={() => { }}
+                icon={<Image source={googleIcon} />}
             />
             <Space direction='vertical' size={15} />
-            <SocialLoginButton 
+            <SocialLoginButton
                 label={'Sign Up with Apple'}
                 bgColor={theme.palette.black[theme.mode].main}
                 textColor={theme.palette.white[theme.mode].main}
-                onClick={appleSignup}
-                icon={<Image source={appleIcon} />}             
+                onClick={() => { }}
+                icon={<Image source={appleIcon} />}
             />
         </ScrollView>
     )
@@ -93,14 +113,14 @@ const getStyles = (theme: ThemeType) => {
             flex: 1,
             backgroundColor: palette.white[theme.mode].main,
         },
-        form:{
-            marginTop:30,
+        form: {
+            marginTop: 30,
         },
-        otherOptions:{
-            textAlign:'center',
+        otherOptions: {
+            textAlign: 'center',
             ...text.regular.P14_Lh180,
             color: palette.grey[theme.mode].main,
         },
-        
+
     })
 }

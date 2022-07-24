@@ -2,9 +2,11 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { Fragment } from 'react'
 import { View, Text, StyleSheet, StatusBar, KeyboardAvoidingView, Image, Pressable, ScrollView } from 'react-native'
 import { globeIcon, HelpIcon, lockIcon, MobileIcon, notificationIcon, ProfilePicture, SecurityIcon, ShareIcon, TeamIcon } from '../../assets';
+import { SignoutIcon } from '../../components/icons';
 import { MenuItem } from '../../components/navigation';
 import { Space } from '../../components/util';
 import { ProfileStackParamList } from '../../navigation/ProfileStack';
+import { useAuthentication } from '../../state';
 import { useTheme } from '../../state/theming';
 import { ThemeType } from '../../theme'
 
@@ -12,6 +14,7 @@ import { ThemeType } from '../../theme'
 type MyProfileScreenProps = NativeStackScreenProps<ProfileStackParamList, 'MyProfile'>;
 export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
     const { navigate } = navigation
+    const {signOut, serverState} =useAuthentication()
     const { theme } = useTheme()
     const styles = getStyles(theme)
     return (
@@ -22,11 +25,19 @@ export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
                     {/** title */}
                     <View style={styles.title_wraper}>
                         <Text style={styles.title}  >My Profile</Text>
+                        <Pressable
+                        onPress={()=>signOut()}
+                        style={{padding:4}}
+                        android_ripple={{color:theme.palette.primary[theme.mode][3],borderless:true }}
+                        >
+                           <SignoutIcon color={theme.palette.lightGrey[theme.mode].main} /> 
+                        </Pressable>
+                        
                     </View>
                     {/** profile  */}
                     <View style={styles.profile_wraper}>
                         <View style={styles.info_wraper}>
-                            <Image style={styles.profile_pic} width={54} height={54} source={ProfilePicture} />
+                            <Image style={styles.profile_pic} source={ProfilePicture} />
                             <View style={{ justifyContent: 'center' }}>
                                 <Text style={styles.profile_name}>Hemza Talha</Text>
                                 <Text style={styles.phone}>0799085706</Text>
@@ -91,6 +102,9 @@ const getStyles = (theme: ThemeType) => {
         },
         title_wraper: {
             marginTop: 6,
+            flexDirection:"row",
+            justifyContent:"space-between",
+            alignItems:"center"
         },
         title: {
             ...text.heading.H1,
@@ -178,17 +192,17 @@ const settings: sectionType[] = [
         menu: [
             {
                 name: "Change Password",
-                icon: <Image source={lockIcon} width={24} height={24} />,
+                icon: <Image source={lockIcon}  />,
                 route: 'ChangePasswordSetting'
             },
             {
                 name: "Language",
-                icon: <Image source={globeIcon} width={24} height={24} />,
+                icon: <Image source={globeIcon}  />,
                 route: 'LanguageSetting'
             },
             {
                 name: "Notification",
-                icon: <Image source={notificationIcon} width={24} height={24} />,
+                icon: <Image source={notificationIcon}  />,
                 route: 'NotificationSetting'
             },
         ]
@@ -198,17 +212,17 @@ const settings: sectionType[] = [
         menu: [
             {
                 name: "FAQ",
-                icon: <Image source={HelpIcon} width={24} height={24} />,
+                icon: <Image source={HelpIcon}  />,
                 route: 'FAQ'
             },
             {
                 name: "Policy & Security",
-                icon: <Image source={SecurityIcon} width={24} height={24} />,
+                icon: <Image source={SecurityIcon}  />,
                 route: 'Policy'
             },
             {
                 name: "Contact Us",
-                icon: <Image source={TeamIcon} width={24} height={24} />,
+                icon: <Image source={TeamIcon}  />,
                 route: 'ContactUs'
             },
         ]
@@ -218,12 +232,12 @@ const settings: sectionType[] = [
         menu: [
             {
                 name: "Share",
-                icon: <Image source={ShareIcon} width={24} height={24} />,
+                icon: <Image source={ShareIcon}  />,
                 route: 'Share'
             },
             {
                 name: "Get The Latest Version",
-                icon: <Image source={MobileIcon} width={24} height={24} />,
+                icon: <Image source={MobileIcon}  />,
                 route: 'UpdateApp'
             },
         ]

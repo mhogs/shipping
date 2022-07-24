@@ -16,7 +16,7 @@ export const SliderDots = ({lenght, active} : SliderDotsProps) => {
         <View style={[styles.container]}>
         {
             Array(lenght).fill(0).map((_, index) => (
-                <View style= {active === index? styles.activeDot : styles.dot }></View>
+                <View key={index} style= {active === index? styles.activeDot : styles.dot }></View>
             ))
         }
         </View>

@@ -1,11 +1,12 @@
 import { BottomNavigationBar } from './BottomNavigationBar'
 import { AuthStackNavigator } from './AuthStack'
+import { useAuthentication } from '../state'
 
 
 export const Navigation= ()=>{
-    const user = false;
+    const {currentUser}=useAuthentication() 
 
     return (
-        user? <BottomNavigationBar /> : <AuthStackNavigator/>
+        currentUser !==null ? <BottomNavigationBar /> : <AuthStackNavigator/>
     )
 }

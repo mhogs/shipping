@@ -1,5 +1,6 @@
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { useMutation } from '@tanstack/react-query'
 import React, { useEffect } from 'react'
 import { View, Text, StyleSheet, KeyboardAvoidingView, Image, Pressable, TextInput, ScrollView } from 'react-native'
 import { ChangeImageIcon, ColoredCallIcon, ColoredProfileIcon, lockIcon, ProfilePicture } from '../../assets'
@@ -9,9 +10,20 @@ import { MyTextInput } from '../../components/inputs'
 import { useHideBottomBar } from '../../components/navigation'
 import { SimpleScreenHeader, Space } from '../../components/util'
 import { ProfileStackParamList } from '../../navigation/ProfileStack'
-import { useAuth } from '../../state'
+import { AuthService } from '../../services'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
+import * as yup from 'yup';
+import { Formik } from 'formik'
+import { changePasswordRequestType } from '../../@types'
+
+const changePasswordSchema = yup.object().shape({
+  current_password: yup.string().required("password is required").min(8, "phone must be at least 8 characters long !"),
+  new_password: yup.string().required("password is required").min(8, "phone must be at least 8 characters long !"),
+  re_new_password: yup.string().required("password is required").min(8, "phone must be at least 8 characters long !").oneOf([yup.ref('new_password'), ""], 'Passwords must match'),
+});
+
+
 
 type ChangePasswordScreenProps = NativeStackScreenProps<ProfileStackParamList, 'ChangePasswordSetting'>;
 
@@ -21,54 +33,100 @@ export const ChangePasswordScreen = ({ navigation }: ChangePasswordScreenProps) 
   const { goBack } = navigation
   const { theme } = useTheme()
   const styles = getStyles(theme)
+  const { mutate: change_password, isLoading: submiting } = useMutation(AuthService.changePassword, {
+    onSuccess: (data) => {
 
-  const { login } = useAuth()
-  useEffect(() => {
-    //login()
-  }, [])
+    },
+    onError: (err: any) => {
+
+    },
+  })
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <KeyboardAvoidingView style={styles.root} >
-        <View>
-          <SimpleScreenHeader title="Edit Profile" goBack={goBack} />
+    <Formik
+      initialValues={{
+        current_password: "",
+        new_password: "",
+        re_new_password: "",
+      } as changePasswordRequestType}
+      onSubmit={
+        values => change_password(values)
+      }
+      validationSchema={changePasswordSchema}
+      initialErrors={{ current_password: 'Current password is required' }}
+    >
 
-          <View style={styles.form} >
+      {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid }) => (
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <KeyboardAvoidingView style={styles.root} >
             <View>
-              <MyTextInput
-                label='Current Password'
-                value='123456789'
-                startIcon={<Image source={lockIcon} />}
-                endIcon={<EyeIcon color={theme.palette.grey[theme.mode].main} />}
-                endIconAction="TOGGLE_SECRET"
-                secureTextEntry={true}
-              />
-              <Text style={styles.forgetText}>
-                Forgot Password
-              </Text>
+              <SimpleScreenHeader title="Edit Profile" goBack={goBack} />
+
+              <View style={styles.form} >
+                <View>
+                  <MyTextInput
+                    label='Current Password'
+                    startIcon={<Image source={lockIcon} />}
+                    endIcon={<EyeIcon color={theme.palette.grey[theme.mode].main} />}
+                    endIconAction="TOGGLE_SECRET"
+                    secureTextEntry={true}
+                    value={values.current_password}
+                    onChangeText={handleChange('current_password')}
+                    onBlur={handleBlur('current_password')}
+                    touched={touched.current_password}
+                    error={errors.current_password}
+                  />
+                  <Text style={styles.forgetText}>
+                    Forgot Password
+                  </Text>
+                </View>
+                <Space direction='vertical' size={30} />
+
+
+                <MyTextInput
+                  label='New Password'
+                  placeholder='New password'
+                  startIcon={<LockOutLineIcon color={theme.palette.grey[theme.mode].main} size={24} />}
+                  endIcon={<EyeIcon color={theme.palette.grey[theme.mode].main} />}
+                  endIconAction="TOGGLE_SECRET"
+                  secureTextEntry={true}
+                  value={values.new_password}
+                  onChangeText={handleChange('new_password')}
+                  onBlur={handleBlur('new_password')}
+                  touched={touched.new_password}
+                  error={errors.new_password}
+                />
+
+                <Space direction='vertical' size={20} />
+
+                <MyTextInput
+                  label='Confirm Password'
+                  placeholder='Confirm your password'
+                  startIcon={<LockOutLineIcon color={theme.palette.grey[theme.mode].main} size={24} />}
+                  endIcon={<EyeIcon color={theme.palette.grey[theme.mode].main} />}
+                  endIconAction="TOGGLE_SECRET"
+                  secureTextEntry={true}
+                  value={values.re_new_password}
+                  onChangeText={handleChange('re_new_password')}
+                  onBlur={handleBlur('re_new_password')}
+                  touched={touched.re_new_password}
+                  error={errors.re_new_password}
+                />
+                <Space direction='vertical' size={30} />
+              </View>
             </View>
-            <Space direction='vertical' size={30} />
 
-
-            <MyTextInput
-              label='New Password'
-              placeholder='New password'
-              startIcon={<LockOutLineIcon color={theme.palette.grey[theme.mode].main} size={24} />}
+            <SaveChangesButton
+              text='Change Password'
+              disabled={submiting || !isValid}
+              pending={submiting}
+              onPress={handleSubmit}
             />
-            
-            <Space direction='vertical' size={20} />
+          </KeyboardAvoidingView>
+        </ScrollView>
+      )}
+    </Formik>
 
-            <MyTextInput
-              label='Confirm Password'
-              placeholder='Confirm your password'
-              startIcon={<LockOutLineIcon color={theme.palette.grey[theme.mode].main} size={24} />}
-             
-            />
-          </View>
-        </View>
 
-       <SaveChangesButton text='Change Password' />
-      </KeyboardAvoidingView>
-    </ScrollView>
 
 
 
@@ -114,3 +172,4 @@ const getStyles = (theme: ThemeType) => {
 
   })
 }
+

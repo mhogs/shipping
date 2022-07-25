@@ -8,100 +8,137 @@ import { ProfileIcon, callIcon, googleIcon, appleIcon } from '../../assets'
 import { LockOutLineIcon } from '../../components/icons'
 import { AuthActionButton, SaveChangesButton, SocialLoginButton } from '../../components/buttons'
 import { Devider } from '../../components/util/Devider'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { AuthScreenProps, AuthStackParamList } from '../../navigation/AuthStack'
+import { AuthScreenProps } from '../../navigation/AuthStack'
 import { useAuthentication } from '../../state'
 import { SignUpRequestDataType } from '../../@types'
+import { Formik } from 'formik'
+import * as yup from 'yup';
 
+const SignupSchema = yup.object().shape({
+    first_name: yup.string().required("phone is required").min(3, "first name must be at least 3 characters long !"),
+    last_name: yup.string().required("phone is required").min(3, "last name must be at least 3 characters long !"),
+    phonenumber: yup.string().required("phone is required").min(10, "phone must be at least 10 digits long !"),
+    password: yup.string().required("password is required").min(8, "password must be at least 8 characters long"),
+});
 
 export const RegisterScreen = (props: AuthScreenProps) => {
     const { navigation } = props;
     const { theme } = useTheme()
     const styles = getStyles(theme)
     const { signUp, serverState } = useAuthentication()
-    
-    const [data, setData] = useState<SignUpRequestDataType>({
-        first_name: "",
-        last_name: "",
-        phonenumber: "",
-        password: ""
-    })
-    
+    const [params, setParams] = useState({ phone: "", password: "" })
 
     /** go to otp confirm screen when recieving sms */
     useEffect(() => {
-        if (serverState.otp_recieved && data.phonenumber && data.password )
-            navigation.navigate("VerificationScreen", { phone: data.phonenumber,password:data.password })
+        if (serverState.otp_recieved && params.phone && params.password)
+            navigation.navigate("VerificationScreen", { phone: params.phone, password: params.password })
     }, [serverState.otp_recieved])
 
-   
-    
+
+
     return (
-        <ScrollView showsVerticalScrollIndicator={false} style={styles.root}>
-            <View style={styles.form}>
-                
-                <MyTextInput
-                    label='First Name'
-                    placeholder='Enter your first name'
-                    startIcon={<Image source={ProfileIcon} />}
-                    onChangeText={(text) => setData({ ...data, first_name: text })}
-                />
-                <Space direction='vertical' size={20} />
-                <MyTextInput
-                    label='Last Name'
-                    placeholder='Enter your last name'
-                    startIcon={<Image source={ProfileIcon} />}
-                    onChangeText={(text) => setData({ ...data, last_name: text })}
-                />
-                <Space direction='vertical' size={20} />
-                <MyTextInput
-                    label='Phone Number'
-                    placeholder='Enter your number'
-                    startIcon={<Image source={callIcon} />}
-                    onChangeText={(text) => setData({ ...data, phonenumber: text })}
-                />
-                <Space direction='vertical' size={20} />
-                <MyTextInput
-                    label='Password'
-                    placeholder='Enter your password'
-                    secureTextEntry={true}
-                    startIcon={<LockOutLineIcon color={theme.palette.grey[theme.mode].main} size={24} />}
-                    onChangeText={(text) => setData({ ...data, password: text })}
-                />
-            </View>
-            <Space direction='vertical' size={40} />
-            <SaveChangesButton
-                text='Create Account'
-                onPress={() => {
-                    signUp(data)
-                }}
-                pending={serverState.isLoading}
-            />
+        <Formik
+            initialValues={{
+                first_name: "",
+                last_name: "",
+                phonenumber: "",
+                password: ""
+            } as SignUpRequestDataType}
 
-            <Space direction='vertical' size={40} />
+            onSubmit={values => {
+                signUp(values)
+                setParams({ phone: values.phonenumber, password: values.password })
+            }}
+            validationSchema={SignupSchema}
+            initialErrors={ { first_name: 'First name is required' }}
+        >
+            {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid }) => (
+                <ScrollView showsVerticalScrollIndicator={false} style={styles.root}>
+                    <View style={styles.form}>
 
-            <Devider />
+                        <MyTextInput
+                            label='First Name'
+                            placeholder='Enter your first name'
+                            startIcon={<Image source={ProfileIcon} />}
+                            value={values.first_name}
+                            onChangeText={handleChange('first_name')}
+                            onBlur={handleBlur('first_name')}
+                            touched={touched.first_name}
+                            error={errors.first_name}
+                        />
+                        <Space direction='vertical' size={20} />
+                        <MyTextInput
+                            label='Last Name'
+                            placeholder='Enter your last name'
+                            startIcon={<Image source={ProfileIcon} />}
+                            value={values.last_name}
+                            onChangeText={handleChange('last_name')}
+                            onBlur={handleBlur('last_name')}
+                            touched={touched.last_name}
+                            error={errors.last_name}
+                        />
+                        <Space direction='vertical' size={20} />
+                        <MyTextInput
+                            label='Phone Number'
+                            placeholder='Enter your number'
+                            startIcon={<Image source={callIcon} />}
+                            value={values.phonenumber}
+                            onChangeText={handleChange('phonenumber')}
+                            onBlur={handleBlur('phonenumber')}
+                            touched={touched.phonenumber}
+                            error={errors.phonenumber}
+                        />
+                        <Space direction='vertical' size={20} />
+                        <MyTextInput
+                            label='Password'
+                            placeholder='Enter your password'
+                            secureTextEntry={true}
+                            startIcon={<LockOutLineIcon color={theme.palette.grey[theme.mode].main} size={24} />}
+                            value={values.password}
+                            onChangeText={handleChange('password')}
+                            onBlur={handleBlur('password')}
+                            touched={touched.password}
+                            error={errors.password}
+                        />
+                    </View>
+                    <Space direction='vertical' size={40} />
+                    <SaveChangesButton
+                        text='Create Account'
+                        onPress={handleSubmit}
+                        pending={serverState.isLoading}
+                        disabled={serverState.isLoading || !isValid }
+                    />
 
-            <Space direction='vertical' size={15} />
-            <Text style={styles.otherOptions}>Or Sign In With</Text>
-            <Space direction='vertical' size={15} />
+                    <Space direction='vertical' size={40} />
 
-            <SocialLoginButton
-                label={'Sign Up with Google'}
-                bgColor={theme.palette.white[theme.mode].main}
-                textColor={theme.palette.black[theme.mode].main}
-                onClick={() => { }}
-                icon={<Image source={googleIcon} />}
-            />
-            <Space direction='vertical' size={15} />
-            <SocialLoginButton
-                label={'Sign Up with Apple'}
-                bgColor={theme.palette.black[theme.mode].main}
-                textColor={theme.palette.white[theme.mode].main}
-                onClick={() => { }}
-                icon={<Image source={appleIcon} />}
-            />
-        </ScrollView>
+                    <Devider />
+
+                    <Space direction='vertical' size={15} />
+                    <Text style={styles.otherOptions}>Or Sign In With</Text>
+                    <Space direction='vertical' size={15} />
+
+                    <SocialLoginButton
+                        label={'Sign Up with Google'}
+                        bgColor={theme.palette.white[theme.mode].main}
+                        textColor={theme.palette.black[theme.mode].main}
+                        onClick={() => { }}
+                        icon={<Image source={googleIcon} />}
+                    />
+                    <Space direction='vertical' size={15} />
+                    <SocialLoginButton
+                        label={'Sign Up with Apple'}
+                        bgColor={theme.palette.black[theme.mode].main}
+                        textColor={theme.palette.white[theme.mode].main}
+                        onClick={() => { }}
+                        icon={<Image source={appleIcon} />}
+                    />
+                </ScrollView>
+            )}
+
+
+        </Formik>
+
+
     )
 }
 

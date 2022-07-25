@@ -28,10 +28,13 @@ export const LoginScreen = (props: any) => {
 
     return (
         <Formik
-            initialValues={{ phonenumber: '', password: "" }}
+            initialValues={{
+                phonenumber: '',
+                password: ""
+            } as SignInRequestDataType}
             onSubmit={values => signIn(values)}
             validationSchema={SigninSchema}
-            initialErrors={{ phonenumber: 'phone is required', password: "password is required" }}
+            initialErrors={{ phonenumber: 'phone is required' }}
         >
 
             {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid }) => (

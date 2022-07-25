@@ -29,14 +29,43 @@ export async function getAuthHeaders() {
         Authorization: `JWT ${user?.access}`
     }
 }
-export function showErrorToast(message: any) {
+export function showErrorToast(status: string, detail: string) {
     Toast.show({
         type: 'error',
-        text1: 'Error',
-        text2: message,
-        visibilityTime: 7000
+        text1: status,
+        text2: detail,
     });
 }
+export function showsuccessToast(message:string) {
+    Toast.show({
+        type: 'success',
+        text1: "Ok",
+        text2: message,
+    });
+}
+
+export function extractErrorMessage(errorResponse: any): { status: string, detail: string } {
+    const errorData = errorResponse.response?.data
+    const errorStatus: "400" | "404" | "301" | "500" = errorResponse.response?.status
+    const ERRORS_STATUS_MAP = {
+        "400": "Bad Request",
+        "404": "Not Found",
+        "301": "Unautherized",
+        "500": "Server Error"
+    }
+    let errMessage = ""
+    if (errorData !== undefined) {
+        errMessage = errorData.detail
+        if (!errMessage) {
+            errMessage = Object.values(errorData).map((item: any) => {
+                if (typeof (item) === "string") return item
+                if (item.length) return item[0]
+            })[0]
+        }
+    }
+    return { status: ERRORS_STATUS_MAP[errorStatus], detail: errMessage }
+}
+
 
 
 

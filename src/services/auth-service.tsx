@@ -1,8 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import axios, { AxiosError } from "axios"
-import { currentUserType, ProfileRequestData, ProfileResponseData, RefreshRequestDataType, RefreshResponseDataType, RequestOtpParmsType, SendOtpParmsType, SignInRequestDataType, SignInResponseDataType, SignUpRequestDataType, SignUpResponseDataType, userType } from "../@types"
+import { changePasswordRequestType, currentUserType, ProfileRequestData, ProfileResponseData, RefreshRequestDataType, RefreshResponseDataType, RequestOtpParmsType, SendOtpParmsType, SignInRequestDataType, SignInResponseDataType, SignUpRequestDataType, SignUpResponseDataType, userType } from "../@types"
 import { BACKEND_BASE_URL, USER_STORAGE_KEY } from "../constants"
-import { getAuthHeaders, getUserFromStorage, showErrorToast } from "../helpers"
+import { extractErrorMessage, getAuthHeaders, getUserFromStorage, showErrorToast, showsuccessToast } from "../helpers"
 import Toast from 'react-native-toast-message';
 
 export class AuthService {
@@ -10,13 +10,11 @@ export class AuthService {
         const url = BACKEND_BASE_URL + "/auth/users/"
         try {
             const res = await axios.post(url, data)
-            console.log({ status: res.status });
-
             return res.data
         } catch (err: any) {
-            const errDetail = err.response?.data?.detail
-            showErrorToast(errDetail)
-            throw Error(errDetail);
+            const parsedError = extractErrorMessage(err)
+            showErrorToast(parsedError.status, parsedError.detail)
+            throw Error(parsedError.detail);
         }
     }
     static async SignIN(data: SignInRequestDataType): Promise<SignInResponseDataType> {
@@ -26,36 +24,21 @@ export class AuthService {
             await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(res.data))
             return res.data
         } catch (err: any) {
-            const errDetail = err.response?.data?.detail
-            showErrorToast(errDetail)
-            throw Error(errDetail);
+            const parsedError = extractErrorMessage(err)
+            showErrorToast(parsedError.status, parsedError.detail)
+            throw Error(parsedError.detail);
         }
     }
 
-    static async GetMe(data: ProfileRequestData): Promise<ProfileResponseData> {
-        const url = `${BACKEND_BASE_URL}/auth/users/me/`
-        const AuthHeaders = await getAuthHeaders()
-        try {
-            const response = await axios.get(url, {
-                headers: { ...AuthHeaders }
-            })
-            await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify({ ...data, ...response.data }))
-            return { ...data, ...response.data }
 
-        } catch (err: any) {
-            const errDetail = err.response?.data?.detail
-            showErrorToast(errDetail)
-            throw Error(errDetail);
-        }
-    }
 
     static async SignOut(): Promise<void> {
         try {
             await AsyncStorage.removeItem(USER_STORAGE_KEY)
         } catch (err: any) {
-            const errDetail = err.response?.data?.detail
-            showErrorToast(errDetail)
-            throw Error(errDetail);
+            const parsedError = extractErrorMessage(err)
+            showErrorToast(parsedError.status, parsedError.detail)
+            throw Error(parsedError.detail);
         }
 
     }
@@ -68,22 +51,20 @@ export class AuthService {
         try {
             return (await axios.post(url, data)).data
         } catch (err: any) {
-            const errDetail = err.response?.data?.detail
-            showErrorToast(errDetail)
-            throw Error(errDetail);
+            const parsedError = extractErrorMessage(err)
+            showErrorToast(parsedError.status, parsedError.detail)
+            throw Error(parsedError.detail);
         }
     }
-
-
 
     static async RequestOTP(params: RequestOtpParmsType): Promise<void> {
         const url = `${BACKEND_BASE_URL}/auth/send_sms_code/${params.phone}`
         try {
             return (await axios.get(url)).data
         } catch (err: any) {
-            const errDetail = err.response?.data?.detail
-            showErrorToast(errDetail)
-            throw Error(errDetail);
+            const parsedError = extractErrorMessage(err)
+            showErrorToast(parsedError.status, parsedError.detail)
+            throw Error(parsedError.detail);
         }
     }
 
@@ -92,9 +73,41 @@ export class AuthService {
         try {
             return (await axios.get(url)).data
         } catch (err: any) {
-            const errDetail = err.response?.data?.detail
-            showErrorToast(errDetail)
-            throw Error(errDetail);
+            const parsedError = extractErrorMessage(err)
+            showErrorToast(parsedError.status, parsedError.detail)
+            throw Error(parsedError.detail);
+        }
+    }
+    /** protected services ==> needs token authorization header */
+    static async GetMe(data: ProfileRequestData): Promise<ProfileResponseData> {
+        const url = `${BACKEND_BASE_URL}/auth/users/me/`
+        const AuthHeaders = await getAuthHeaders()
+        try {
+            const response = await axios.get(url, {
+                headers: { ...AuthHeaders }
+            })
+            await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify({ ...data, ...response.data }))
+            return { ...data, ...response.data }
+
+        } catch (err: any) {
+            const parsedError = extractErrorMessage(err)
+            showErrorToast(parsedError.status, parsedError.detail)
+            throw Error(parsedError.detail);
+        }
+    }
+    static async changePassword(data: changePasswordRequestType) {
+        const url = `${BACKEND_BASE_URL}/auth/users/set_password/`
+        const AuthHeaders = await getAuthHeaders()
+        try {
+            const res = await axios.post(url, data, {
+                headers: { ...AuthHeaders }
+            })
+            showsuccessToast("password updates")
+            return res.data
+        } catch (err: any) {
+            const parsedError = extractErrorMessage(err)
+            showErrorToast(parsedError.status, parsedError.detail)
+            throw Error(parsedError.detail);
         }
     }
 

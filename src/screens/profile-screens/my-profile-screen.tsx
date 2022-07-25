@@ -14,7 +14,7 @@ import { ThemeType } from '../../theme'
 type MyProfileScreenProps = NativeStackScreenProps<ProfileStackParamList, 'MyProfile'>;
 export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
     const { navigate } = navigation
-    const {signOut, serverState} =useAuthentication()
+    const {signOut, serverState, currentUser} =useAuthentication()
     const { theme } = useTheme()
     const styles = getStyles(theme)
     return (
@@ -39,8 +39,8 @@ export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
                         <View style={styles.info_wraper}>
                             <Image style={styles.profile_pic} source={ProfilePicture} />
                             <View style={{ justifyContent: 'center' }}>
-                                <Text style={styles.profile_name}>Hemza Talha</Text>
-                                <Text style={styles.phone}>0799085706</Text>
+                                <Text style={styles.profile_name}>{`${currentUser?.first_name} ${currentUser?.last_name}`}</Text>
+                                <Text style={styles.phone}>{currentUser?.phonenumber}</Text>
                             </View>
                         </View>
 

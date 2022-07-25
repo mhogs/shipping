@@ -1,5 +1,5 @@
 import { View, Text, StatusBar, KeyboardAvoidingView, StyleSheet, Platform, Pressable, ImageBackground, Keyboard, ActivityIndicator } from 'react-native'
-import React, { useMemo, useRef, useCallback, useState, useEffect } from 'react'
+import React, { useMemo, useRef, useCallback, useState, useEffect, Fragment } from 'react'
 import { useTheme } from "../../state/theming";
 import { ThemeType } from "../../theme";
 import { LeftArrowIcon } from "../../components/icons";
@@ -16,15 +16,18 @@ import { successGradient, successImage } from '../../assets';
 import { OtpTextInput } from '../../components/inputs/OtpTextInput';
 import { useAuthentication } from '../../state';
 import { OperationSuccessfulModal } from '../../components/modals';
+import { Formik } from 'formik';
+import * as yup from 'yup';
 
-
+const SignupSchema = yup.object().shape({
+  code: yup.string().required("phone is required").min(6, "Otp code must be six characters long !").max(6, "Otp code must be six characters long !"),
+});
 
 
 type VerificationScreenProps = NativeStackScreenProps<AuthStackParamList, 'VerificationScreen'>;
 export const VerifficationScreen = (props: VerificationScreenProps) => {
   const { navigation, route } = props;
   const { phone, password } = route.params;
-  const [code, setCode] = useState(NaN)
 
 
 
@@ -38,69 +41,90 @@ export const VerifficationScreen = (props: VerificationScreenProps) => {
       signIn({ phonenumber: phone, password: password })
   }, [serverState.otp_confirmed])
 
-  if (serverState.isLoading) {
-    return <LoadingView />
-  }
+
   return (
-    <>
-      <StatusBar
-        barStyle={"dark-content"}
-        backgroundColor={theme.palette.white[theme.mode].main}
-      />
+    <Formik
+      initialValues={{
+        code: NaN,
+      }}
 
-      <KeyboardAvoidingView style={styles.root}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <View style={styles.header}>
-          <Pressable
-            onPress={() => navigation.goBack()}
-            style={styles.back_wraper}
+      onSubmit={values => {
+        sendOTP({ code: values.code, phone: phone })
+      }}
+      validationSchema={SignupSchema}
+      initialErrors={{ code: 'code is required' }}
+    >
+      {({ handleChange, handleBlur, handleSubmit, values,setFieldValue, errors, touched, isValid }) => (
+        <Fragment>
+          <StatusBar
+            barStyle={"dark-content"}
+            backgroundColor={theme.palette.white[theme.mode].main}
+          />
+
+          <KeyboardAvoidingView style={styles.root}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
           >
-            <LeftArrowIcon
-              size={24}
-              color={theme.palette.black[theme.mode].main}
+            <View style={styles.header}>
+              <Pressable
+                onPress={() => navigation.goBack()}
+                style={styles.back_wraper}
+              >
+                <LeftArrowIcon
+                  size={24}
+                  color={theme.palette.black[theme.mode].main}
+                />
+              </Pressable>
+            </View>
+            <Space direction='vertical' size={20} />
+            <Text style={styles.title}>Verification Code</Text>
+            <Space direction='vertical' size={10} />
+            <View style={styles.description}>
+              <Text style={styles.descriptionContainer}>
+                <View>
+                  <Text style={styles.descriptionText}>We have sent the code verification to your number </Text>
+                </View>
+                <View>
+                  <Text style={styles.descriptionNumber}>{phone}</Text>
+                </View>
+              </Text>
+            </View>
+
+            <Space direction='vertical' size={30} />
+
+            <OtpTextInput digits={6} onceFilled={(otp: number) => setFieldValue("code",otp)} />
+
+
+            <Space direction='vertical' size={40} />
+            <SaveChangesButton
+              text='Submit'
+              onPress={handleSubmit}
+              pending={serverState.isLoading}
+              disabled={serverState.isLoading || !isValid}
             />
-          </Pressable>
-        </View>
-        <Space direction='vertical' size={20} />
-        <Text style={styles.title}>Verification Code</Text>
-        <Space direction='vertical' size={10} />
-        <View style={styles.description}>
-          <Text style={styles.descriptionContainer}>
-            <View>
-              <Text style={styles.descriptionText}>We have sent the code verification to your number </Text>
+            <Space direction='vertical' size={15} />
+            <View style={styles.sendFailedContainer}>
+              <Text style={styles.description}>Didn't receive the code?</Text>
+              <Space direction='horizontal' size={5} />
+              <Pressable
+                onPress={() => requestOTP({ phone: phone })}
+              >
+                <Text style={styles.resendText}>Resend</Text>
+              </Pressable>
             </View>
-            <View>
-              <Text style={styles.descriptionNumber}>{phone}</Text>
-            </View>
-          </Text>
-        </View>
-
-        <Space direction='vertical' size={30} />
-
-        <OtpTextInput digits={6} onceFilled={(otp: number) => setCode(otp)} />
 
 
-        <Space direction='vertical' size={40} />
-        <SaveChangesButton
-          text='Submit'
-          onPress={() => sendOTP({ code: code, phone: phone })}
-        />
-        <Space direction='vertical' size={15} />
-        <View style={styles.sendFailedContainer}>
-          <Text style={styles.description}>Didn't receive the code?</Text>
-          <Space direction='horizontal' size={5} />
-          <Pressable
-            onPress={() => requestOTP({ phone: phone })}
-          >
-            <Text style={styles.resendText}>Resend</Text>
-          </Pressable>
-        </View>
-        {serverState.isLoading && <ActivityIndicator />}
+          </KeyboardAvoidingView>
+        </Fragment>
+      )}
 
-      </KeyboardAvoidingView>
 
-    </>
+
+    </Formik>
+
+
+
+
+
 
   )
 }

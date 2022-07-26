@@ -1,20 +1,16 @@
 import React from 'react'
 import { Pressable, View, StyleSheet, Image, Text, Dimensions } from 'react-native'
+import { OrdersResponseDataType, orderStateType } from '../../@types'
 import { MessageNotifIcon, PackageColored } from '../../assets'
 import { useTheme } from '../../state'
 import { ThemeType } from '../../theme'
 
 
-export type orderStateType = "Pending" | "Delivred" | "On Progress"
-type orderItemProps = {
-    icon?: any,
-    title: string,
-    description?: string,
-    state: orderStateType
+type orderItemProps = OrdersResponseDataType & {
     onPress?: () => void
 }
 export const OrderHistoryItem = (props: orderItemProps) => {
-    const { icon, title, description, state, onPress } = props
+    const { code, description, state, onPress } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
     return (
@@ -31,7 +27,7 @@ export const OrderHistoryItem = (props: orderItemProps) => {
                         </View>
                         <View style={styles.orderDetailsContainer}>
                             <Text style={styles.orderTitle}>
-                                {title}
+                                {code}
                             </Text>
                             <Text style={styles.orderBrief}>
                                 {description}
@@ -50,13 +46,13 @@ export const OrderHistoryItem = (props: orderItemProps) => {
     )
 }
 
-function getStateColor(theme: ThemeType, state: orderStateType) {
+function getStateColor(theme: ThemeType, state?: orderStateType) {
     switch (state) {
-        case 'Delivred':
+        case "delivered":
             return theme.palette.success[theme.mode].main
-        case "On Progress":
+        case "on_progress":
             return theme.palette.primary[theme.mode].main
-        case 'Pending':
+        case "pending":
             return theme.palette.warning[theme.mode].main
         default:
             return theme.palette.grey[theme.mode].main

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 import { Modal, View, Text, StyleSheet, Pressable } from "react-native"
 import { useTheme } from '../../../state';
 import { ThemeType } from '../../../theme';
@@ -61,12 +61,12 @@ export const SelectServiceModal = (props: SelectServiceModalProps) => {
                         <Space direction='vertical' size={20} />
                         <View  style={styles.servicesListe}>
                             {
-                                services?.map((item)=>{
+                                services?.map((item,index)=>{
                                     return (
-                                        <>
+                                        <Fragment key={index}>
                                             <ServiceItem icon={item.icon} title={item.title} description={item.description} price={item.price} onPress={selectServiceCloseModal} />               
                                             <Space direction='vertical' size={15} />
-                                        </>
+                                        </Fragment>
                                     )
                                 })
                             }    

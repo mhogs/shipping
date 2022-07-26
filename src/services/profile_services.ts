@@ -46,8 +46,6 @@ export class ProfileServices {
         const AuthHeaders = await getAuthHeaders()
         try {
             const formdata=createFormData(data)
-            console.log("********************")
-            console.log(formdata);
             const res = await axios.patch(url,formdata, {
                 headers: { ...AuthHeaders,'content-type': 'multipart/form-data'}
             })

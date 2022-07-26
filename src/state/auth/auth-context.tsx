@@ -143,18 +143,6 @@ export const AuthProvider: FC<{}> = ({ children }) => {
     }
 
     useEffect(() => {
-        async function updateUserInLocalStorage() {
-            if (currentUser === null) {
-                await AsyncStorage.removeItem(USER_STORAGE_KEY)
-            }
-            else {
-                await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(currentUser))
-            }
-        }
-        updateUserInLocalStorage()
-    }, [currentUser])
-
-    useEffect(() => {
         async function loadUser() {
             const user= await getUserFromStorage()
             if (user === null) {

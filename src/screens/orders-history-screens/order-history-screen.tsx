@@ -5,23 +5,19 @@
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC, Fragment } from 'react'
-import { View, StyleSheet, Image, StatusBar, Text, TextInput, KeyboardAvoidingView, Pressable, ScrollView } from 'react-native'
+import { View, StyleSheet, Image, StatusBar, Text, KeyboardAvoidingView, Pressable, ScrollView } from 'react-native'
 import { SceneRendererProps } from 'react-native-tab-view'
-import { add_squar_icon_asset, avatar_asset, checkRatesIcon, HelpCenterFeatureIcon, logo_asset, NearByFeatureIcon, notification_asset, OrderFeatureIcon, OtherFeatureIcon, scanIcon, searchIcon, WalletFeatureIcon } from '../../assets'
-import { MessageItem } from '../../components/content'
+import { scanIcon, searchIcon } from '../../assets'
 import { FilterIcon } from '../../components/icons'
 import { SearchInput } from '../../components/inputs'
-import { Devider, MyTabView, Space } from '../../components/util'
-import { listToMatrix } from '../../helpers'
-import { RootStackParamList } from '../../navigation/BottomNavigationBar'
+import { MyTabView, Space } from '../../components/util'
 import { OrdersHistoryStackParamList } from '../../navigation/OrderHistoryStack'
+import { useAuthentication } from '../../state'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
-import { LoginScreen } from '../auth-screens/login-screen'
-import { RegisterScreen } from '../auth-screens/register-screen'
-import {  orderHistoryType, OrdersListScene } from './orders-list-scene'
+import { OrdersListScene } from './orders-list-scene'
 import { useOrdersHistory } from './useOrdersHistory'
-
+import { useRefreshOnFocus } from '../../hooks'
 
 type OrderHistoryScreenProps = NativeStackScreenProps<OrdersHistoryStackParamList, 'MyOrders'>;
 
@@ -29,8 +25,9 @@ export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
   const { navigate } = navigation
   const { theme } = useTheme()
   const styles = getStyles(theme)
-  const {data:orders, isLoading}= useOrdersHistory()
-
+  const { currentUser } = useAuthentication()
+  const { data: orders, isLoading, refetch } = useOrdersHistory()
+  useRefreshOnFocus(refetch)
   const TabRoutes = [
     { key: "from_me", title: "From Me" },
     { key: "to_me", title: "To Me" },
@@ -45,9 +42,9 @@ export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
 
     switch (route.key) {
       case 'from_me':
-        return <OrdersListScene loading={isLoading} orders={orders?.filter(order=>order.fromMe)}  />;
+        return <OrdersListScene loading={isLoading} orders={orders?.filter(order => order.creator === currentUser?.id)} />;
       case 'to_me':
-        return <OrdersListScene loading={isLoading} orders={orders?.filter(order=>!order.fromMe)}  />;
+        return <OrdersListScene loading={isLoading} orders={orders?.filter(order => order.made_to === currentUser?.id)} />;
       default:
         return null;
     }
@@ -73,10 +70,10 @@ export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
           {/**search box */}
           <Space size={20} direction="vertical" />
           <SearchInput
-            startIcon={<Image source={searchIcon} width={24} height={24} />}
+            startIcon={<Image source={searchIcon} />}
             placeholder='Search Messages'
             placeholderTextColor={theme.palette.grey[theme.mode][3]}
-            endicon={<Image source={scanIcon} width={24} height={24} />}
+            endicon={<Image source={scanIcon} />}
           />
 
 

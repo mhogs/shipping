@@ -11,11 +11,12 @@ import { AuthActionButton, SocialLoginButton } from '../../components/buttons'
 import { Devider } from '../../components/util/Devider'
 import { AuthScreenProps, AuthStackParamList } from '../../navigation/AuthStack';
 import { SceneRendererProps } from 'react-native-tab-view';
-import { OrderHistoryItem, orderStateType } from '../../components/content';
+import { OrderHistoryItem } from '../../components/content';
+import { OrdersResponseDataType } from '../../@types';
 
 
 type OrdersFormMeSceneProps = {
-    orders?: orderHistoryType[],
+    orders?: OrdersResponseDataType[],
     loading: boolean
 }
 
@@ -47,11 +48,11 @@ export const OrdersListScene = (props: OrdersFormMeSceneProps) => {
             case 'all':
                 return <OrdersHistoryList loading={loading} orders={orders} />;
             case 'pending':
-                return <OrdersHistoryList loading={loading} orders={orders?.filter(order => order.state === "Pending")} />;
+                return <OrdersHistoryList loading={loading} orders={orders?.filter(order => order.state === 'pending')} />;
             case 'on_progress':
-                return <OrdersHistoryList loading={loading} orders={orders?.filter(order => order.state === 'On Progress')} />;
+                return <OrdersHistoryList loading={loading} orders={orders?.filter(order => order.state === 'on_progress')} />;
             case 'deliverded':
-                return <OrdersHistoryList loading={loading} orders={orders?.filter(order => order.state === 'Delivred')} />;
+                return <OrdersHistoryList loading={loading} orders={orders?.filter(order => order.state === 'delivered')} />;
             default:
                 return null;
         }
@@ -75,14 +76,9 @@ export const OrdersListScene = (props: OrdersFormMeSceneProps) => {
     )
 }
 
-export type orderHistoryType = {
-    title: string
-    description: string,
-    state: orderStateType,
-    fromMe: boolean
-}
+
 type OrdersHistoryListProps = {
-    orders?: orderHistoryType[]
+    orders?: OrdersResponseDataType[]
     loading?: boolean
 }
 const OrdersHistoryList = (props: OrdersHistoryListProps) => {

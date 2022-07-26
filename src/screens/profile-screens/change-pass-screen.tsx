@@ -10,7 +10,7 @@ import { MyTextInput } from '../../components/inputs'
 import { useHideBottomBar } from '../../components/navigation'
 import { SimpleScreenHeader, Space } from '../../components/util'
 import { ProfileStackParamList } from '../../navigation/ProfileStack'
-import { AuthService } from '../../services'
+import { AuthService, ProfileServices } from '../../services'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 import * as yup from 'yup';
@@ -33,12 +33,10 @@ export const ChangePasswordScreen = ({ navigation }: ChangePasswordScreenProps) 
   const { goBack } = navigation
   const { theme } = useTheme()
   const styles = getStyles(theme)
-  const { mutate: change_password, isLoading: submiting } = useMutation(AuthService.changePassword, {
+  const { mutate: change_password, isLoading: submiting } = useMutation(ProfileServices.changePassword, {
     onSuccess: (data) => {
-
     },
     onError: (err: any) => {
-
     },
   })
   return (

@@ -1,14 +1,16 @@
-import { createContext, FC, useContext, useEffect, useMemo, useState } from "react"
+import { createContext, Dispatch, FC, SetStateAction, useContext, useEffect, useMemo, useState } from "react"
 import { useMutation, } from '@tanstack/react-query'
 
 import { currentUserType, RequestOtpParmsType, SendOtpParmsType, SignInRequestDataType, SignUpRequestDataType } from "../../@types"
-import { AuthService } from "../../services"
+import { AuthService, ProfileServices } from "../../services"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { USER_STORAGE_KEY } from "../../constants"
 import { LoadingView } from "../../components/util"
+import { getUserFromStorage } from "../../helpers"
 
 type AuthContextType = {
     currentUser: currentUserType
+    setCurrentUser: Dispatch<SetStateAction<currentUserType>>
     signUp: (data: SignUpRequestDataType) => void
     signIn: (data: SignInRequestDataType) => void
     signOut: () => void
@@ -23,6 +25,7 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType>({
     currentUser: null,
+    setCurrentUser: () => { },
     signUp: (data: SignUpRequestDataType) => { },
     signIn: (data: SignInRequestDataType) => { },
     signOut: () => { },
@@ -39,7 +42,7 @@ const AuthContext = createContext<AuthContextType>({
 export const AuthProvider: FC<{}> = ({ children }) => {
     const [currentUser, setCurrentUser] = useState<currentUserType>(null)
     const [loadingState, setLoadingState] = useState<boolean>(true)
-    
+
 
     const { mutate: signup_mutate, isLoading: signuping } = useMutation(AuthService.SignUp, {
         onSuccess: (data) => {
@@ -50,7 +53,7 @@ export const AuthProvider: FC<{}> = ({ children }) => {
         },
     })
 
-    const { mutate: get_profile_mutation, isLoading: geting_profile } = useMutation(AuthService.GetMe, {
+    const { mutate: get_profile_mutation, isLoading: geting_profile } = useMutation(ProfileServices.GetMe, {
         onSuccess: (data) => {
             setCurrentUser(prev => ({ ...prev, ...data }))
         },
@@ -61,6 +64,7 @@ export const AuthProvider: FC<{}> = ({ children }) => {
 
     const { mutate: signin_mutate, isLoading: signing } = useMutation(AuthService.SignIN, {
         onSuccess: (data) => {
+            setCurrentUser(prev => ({ ...prev, ...data }))
             get_profile_mutation(data)
         },
         onError: (err: any) => {
@@ -100,7 +104,7 @@ export const AuthProvider: FC<{}> = ({ children }) => {
         onError: (err: any) => {
 
         }
-        
+
     })
 
     const signUp = (data: SignUpRequestDataType) => {
@@ -125,6 +129,7 @@ export const AuthProvider: FC<{}> = ({ children }) => {
     const contextValue =
     {
         currentUser,
+        setCurrentUser,
         serverState: {
             isLoading: signuping || sending || requesting || geting_profile || signing || signing_out,
             otp_confirmed,
@@ -137,29 +142,25 @@ export const AuthProvider: FC<{}> = ({ children }) => {
         requestOTP,
     }
 
-
-    /** refresh token periodically (1 day) 
     useEffect(() => {
-        const refresh_rate = 24 * 3600 * 1000
-        // refresh on app opened
-        refresh_token_mutate()
-        const interval = setInterval(() => {
-            refresh_token_mutate()
-        }, refresh_rate)
+        async function updateUserInLocalStorage() {
+            if (currentUser === null) {
+                await AsyncStorage.removeItem(USER_STORAGE_KEY)
+            }
+            else {
+                await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(currentUser))
+            }
+        }
+        updateUserInLocalStorage()
+    }, [currentUser])
 
-        return () => clearInterval(interval)
-
-    }, [])
-    */
-    /** load user from storage if exist */
     useEffect(() => {
         async function loadUser() {
-            const user_str = await AsyncStorage.getItem(USER_STORAGE_KEY)
-            if (user_str === null){
+            const user= await getUserFromStorage()
+            if (user === null) {
                 setLoadingState(false)
                 return
-            } 
-            const user = JSON.parse(user_str)
+            }
             setCurrentUser(user)
             setLoadingState(false)
         }
@@ -170,7 +171,7 @@ export const AuthProvider: FC<{}> = ({ children }) => {
 
     return (
         <AuthContext.Provider value={contextValue}>
-            {loadingState? <LoadingView/> : children}
+            {loadingState ? <LoadingView /> : children}
         </AuthContext.Provider>
     )
 }

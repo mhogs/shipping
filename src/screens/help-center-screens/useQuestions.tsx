@@ -2,20 +2,14 @@ import React from 'react'
 
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Apis } from '../../helpers/restApi';
+
 
 
 export type QuestionType={
     title: string;
     content: string;
 }
-const fetchQuestions = async () => {
-    const data = await Apis.get_all({
-        methode: 'GET',
-        route: 'questions',
-    })
-    return data;
-};
+
 
 
 export const useQuestions = () => {

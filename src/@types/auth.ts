@@ -5,6 +5,7 @@ export type userType = {
     id?: number,
     first_name?: string,
     last_name?: string
+    picture?:string
 }
 export type currentUserType = userType | null
 /** signup */
@@ -51,4 +52,18 @@ export type changePasswordRequestType = {
     current_password: string
     new_password: string
     re_new_password: string
+}
+
+export type updateProfileRequestDataType = {
+    first_name?: string
+    last_name?: string
+    picture?: any
+    phonenumber?:string
+}
+export type updateProfileResponseDataType = {
+    first_name?: string
+    last_name?: string
+    picture?: any
+    phonenumber?:string,
+    id:number
 }

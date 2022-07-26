@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import React, { useEffect } from 'react'
-import { View, Text, StyleSheet, KeyboardAvoidingView, Image, Pressable, TextInput, ScrollView } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, Text, StyleSheet, KeyboardAvoidingView, Image, Pressable, TextInput, ScrollView, Platform } from 'react-native'
 import { ChangeImageIcon, ColoredCallIcon, ColoredProfileIcon, ProfilePicture } from '../../assets'
 import { SaveChangesButton } from '../../components/buttons'
 import { CheckedIcon, LeftArrowIcon } from '../../components/icons'
@@ -8,9 +8,23 @@ import { MyTextInput } from '../../components/inputs'
 import { useHideBottomBar } from '../../components/navigation'
 import { SimpleScreenHeader, Space } from '../../components/util'
 import { ProfileStackParamList } from '../../navigation/ProfileStack'
-import { useAuth } from '../../state'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
+import * as ImagePicker from 'expo-image-picker';
+import { Formik } from 'formik'
+import { updateProfileRequestDataType } from '../../@types'
+import { ProfileServices } from '../../services'
+import { useMutation } from '@tanstack/react-query'
+import * as yup from 'yup';
+import { useAuthentication } from '../../state'
+
+
+const updateProfileSchema = yup.object().shape({
+  first_name: yup.string().required("phone is required").min(3, "first name must be at least 3 characters long !"),
+  last_name: yup.string().required("phone is required").min(3, "last name must be at least 3 characters long !"),
+  phonenumber: yup.string().required("phone is required").min(10, "phone must be at least 10 digits long !"),
+
+});
 
 type EditProfileScreenProps = NativeStackScreenProps<ProfileStackParamList, 'EditProfile'>;
 
@@ -20,43 +34,117 @@ export const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
   const { goBack } = navigation
   const { theme } = useTheme()
   const styles = getStyles(theme)
+  const { currentUser, setCurrentUser } = useAuthentication()
 
-  
+
+  /** */
+  const handleChoosePhoto = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
+    });
+    if (result.cancelled) return;
+    let localUri = result.uri;
+    let filename = localUri.split('/').pop() || new Date().toString();
+    let match = /\.(\w+)$/.exec(filename);
+    let type = match ? `image/${match[1]}` : `image`;
+    let formData = new FormData();
+    update_profile({ picture: { uri: localUri, name: filename, type } })
+  };
+
+
+  const { mutate: update_profile, isLoading: submiting } = useMutation(ProfileServices.updateProfile, {
+    onSuccess: (data) => {
+      setCurrentUser(prev => ({ ...prev, ...data }))
+    },
+    onError: (err: any) => {
+    },
+  })
+
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <KeyboardAvoidingView style={styles.root} >
-        <View>
-          <SimpleScreenHeader title="Edit Profile" goBack={goBack} />
-          <View style={styles.profilePicWraper} >
-            <Image source={ProfilePicture} style={{ width: 100, height: 100 }} />
-            <Pressable style={{ position: "absolute", right: 20, top: -20 }}>
-              <Image source={ChangeImageIcon} />
-            </Pressable>
-          </View>
-          
-          <View style={styles.form} >
-            <MyTextInput
-              label='Full Name'
-              value='Talha Hemza'
-              startIcon={<Image source={ColoredProfileIcon} />}
-              endIcon={<CheckedIcon color={theme.palette.success[theme.mode].main} />}
+    <Formik
+      initialValues={{
+        first_name: currentUser?.first_name || "",
+        last_name: currentUser?.last_name || "",
+        phonenumber: currentUser?.phonenumber || "",
+      } as updateProfileRequestDataType}
+
+      onSubmit={values => {
+        update_profile(values)
+      }
+      }
+      validationSchema={updateProfileSchema}
+      initialErrors={{ first_name: 'First name is required' }}
+    >
+
+      {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid, setFieldValue }) => (
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <KeyboardAvoidingView style={styles.root} >
+            <View>
+              <SimpleScreenHeader title="Edit Profile" goBack={goBack} />
+              <View style={styles.profilePicWraper} >
+                <Image source={{ uri: currentUser?.picture }} style={{ width: 100, height: 100, borderRadius: 100 }} />
+                <Pressable
+                  style={{ position: "absolute", right: 20, top: -20 }}
+                  onPress={handleChoosePhoto}
+                >
+                  <Image source={ChangeImageIcon} />
+                </Pressable>
+              </View>
+
+              <View style={styles.form} >
+                <MyTextInput
+                  label='First Name'
+                  startIcon={<Image source={ColoredProfileIcon} />}
+                  endIcon={<CheckedIcon color={theme.palette.success[theme.mode].main} />}
+                  value={values.first_name}
+                  onChangeText={handleChange('first_name')}
+                  onBlur={handleBlur('first_name')}
+                  touched={touched.first_name}
+                  error={errors.first_name}
+                />
+                <Space direction='vertical' size={20} />
+
+                <MyTextInput
+                  label='Last Name'
+                  startIcon={<Image source={ColoredProfileIcon} />}
+                  endIcon={<CheckedIcon color={theme.palette.success[theme.mode].main} />}
+                  value={values.last_name}
+                  onChangeText={handleChange('last_name')}
+                  onBlur={handleBlur('last_name')}
+                  touched={touched.last_name}
+                  error={errors.last_name}
+                />
+                <Space direction='vertical' size={20} />
+
+                <MyTextInput
+                  label='Phone Number'
+                  startIcon={<Image source={ColoredCallIcon} />}
+                  endIcon={<CheckedIcon color={theme.palette.success[theme.mode].main} />}
+                  value={values.phonenumber}
+                  onChangeText={handleChange('phonenumber')}
+                  onBlur={handleBlur('phonenumber')}
+                  touched={touched.phonenumber}
+                  error={errors.phonenumber}
+                />
+              </View>
+            </View>
+            <Space direction='vertical' size={30} />
+
+            <SaveChangesButton
+              onPress={handleSubmit}
+              text='Save Changes'
+              pending={submiting}
+              disabled={submiting || !isValid}
             />
-            <Space direction='vertical' size={20} />
+          </KeyboardAvoidingView>
+        </ScrollView>
+      )}
 
-            <MyTextInput
-              label='Phone Number'
-              value='0799085706'
-              startIcon={<Image source={ColoredCallIcon} />}
-              endIcon={<CheckedIcon color={theme.palette.success[theme.mode].main} />}
-            />
-          </View>
-        </View>
-
-        <SaveChangesButton text='Save Changes' />
-      </KeyboardAvoidingView>
-    </ScrollView>
-
-
+    </Formik>
 
   )
 }

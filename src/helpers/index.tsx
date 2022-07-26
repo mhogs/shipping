@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Platform } from "react-native";
 import Toast from "react-native-toast-message";
 import { currentUserType, userType } from "../@types";
 import { USER_STORAGE_KEY } from "../constants";
@@ -15,6 +16,18 @@ export function listToMatrix(list: Array<any>, elementsPerSubArray: number) {
     }
     return matrix;
 }
+
+
+export  const createFormData = ( body :any) => {
+    const data = new FormData();
+
+    Object.keys(body).forEach((key) => {
+      data.append(key, body[key]);
+    });
+
+    return data;
+  };
+
 export async function getUserFromStorage(): Promise<currentUserType> {
     const user_str = await AsyncStorage.getItem(USER_STORAGE_KEY)
     if (user_str === null) return null
@@ -36,7 +49,7 @@ export function showErrorToast(status: string, detail: string) {
         text2: detail,
     });
 }
-export function showsuccessToast(message:string) {
+export function showsuccessToast(message: string) {
     Toast.show({
         type: 'success',
         text1: "Ok",
@@ -44,8 +57,12 @@ export function showsuccessToast(message:string) {
     });
 }
 
+
 export function extractErrorMessage(errorResponse: any): { status: string, detail: string } {
+    
     const errorData = errorResponse.response?.data
+    
+    
     const errorStatus: "400" | "404" | "301" | "500" = errorResponse.response?.status
     const ERRORS_STATUS_MAP = {
         "400": "Bad Request",

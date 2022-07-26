@@ -23,7 +23,6 @@ const updateProfileSchema = yup.object().shape({
   first_name: yup.string().required("phone is required").min(3, "first name must be at least 3 characters long !"),
   last_name: yup.string().required("phone is required").min(3, "last name must be at least 3 characters long !"),
   phonenumber: yup.string().required("phone is required").min(10, "phone must be at least 10 digits long !"),
-
 });
 
 type EditProfileScreenProps = NativeStackScreenProps<ProfileStackParamList, 'EditProfile'>;

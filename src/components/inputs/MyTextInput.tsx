@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { View, Image, Text, StyleSheet, TextInput, Pressable, GestureResponderEvent } from 'react-native'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
+import { Space } from '../util'
 
 type iconPressActionType = "TOGGLE_SECRET" | "RESET_INPUT" | undefined
 type TextInputProps = {
@@ -57,19 +58,26 @@ export const MyTextInput = (props: TextInputProps) => {
     }
     return (
         <View>
-            {label ?
-                <View style={{ flexDirection: "row" }}>
+            {label &&
+                <Fragment>
                     <Text style={styles.inputLabel}> {label}</Text>
-                </View> : null
+                    <Space size={10} direction="vertical" />
+                </Fragment>
             }
 
-            <View style={[styles.inputWraper,(touched && error)?{ borderColor:theme.palette.danger[theme.mode].main}:{}]}>
-                <Pressable
+            <View style={[
+                styles.inputWraper,
+                (touched && error)?{ borderColor:theme.palette.danger[theme.mode].main}:{},
+                editable?{}:{backgroundColor:theme.palette.lightGrey[theme.mode].main}
+                ]}>
+                {startIcon &&
+                    <Pressable
                     onPress={onIconPress(startIconAction)}
-                    style={startIcon ? { paddingLeft: 13 } : null}
+                    style={{ paddingLeft: 13 }}
                 >
                     {startIcon}
                 </Pressable>
+                }
 
                 <TextInput
                     style={styles.input}
@@ -117,7 +125,6 @@ const getStyles = (theme: ThemeType) => {
             color: palette.black[mode].main
         },
         inputWraper: {
-            marginTop: 10,
             flexDirection: 'row',
             alignItems: 'center',
             borderWidth: 1.5,

@@ -1,5 +1,5 @@
 import React from "react"
-import { Modal, View, Text, StyleSheet, ImageBackground } from "react-native"
+import { Modal, View, Text, StyleSheet, ImageBackground, Pressable } from "react-native"
 import { useTheme } from '../../../state';
 import { ThemeType } from '../../../theme';
 import { orderSuccessImage } from "../../../assets"
@@ -24,10 +24,14 @@ export const OrderSuccessfulModal = (props: OrderSuccessfulModalProps) => {
             onRequestClose={() => { }}
         >
             <View style={styles.modalContainer}>
-                <View
-                    style={styles.modalOverlay}
-                >
-                </View>
+                
+                    <Pressable
+                        style={styles.modalOverlay}
+                        onPress={closeModal}
+                    />
+                    
+                
+
 
                 <View style={styles.modalContent}>
                     <ImageBackground source={orderSuccessImage} resizeMode="cover" style={styles.bg}>
@@ -56,7 +60,7 @@ const getStyles = (theme: ThemeType) => {
         root: { flex: 1 },
         modalContainer: {
             flexGrow: 1,
-            justifyContent:"space-between"
+            justifyContent: "space-between"
         },
         modalContent: {
             position: 'relative',
@@ -69,7 +73,7 @@ const getStyles = (theme: ThemeType) => {
             width: 60,
             height: 6,
             position: 'absolute',
-            zIndex:10,
+            zIndex: 10,
             top: 10,
             backgroundColor: palette.lightGrey[mode].main,
             borderRadius: 10,
@@ -79,15 +83,15 @@ const getStyles = (theme: ThemeType) => {
             height: "30%",
             backgroundColor: 'rgba(25, 29, 49, 0.3)',
         },
-        bg:{
-            flex:1,
-            display:'flex',
-            flexDirection:'column',
-            justifyContent:'flex-end',
+        bg: {
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
             alignItems: 'stretch',
         },
         headerText: {
-            textAlign:'center',
+            textAlign: 'center',
             ...text.heading.H1,
             color: palette.black[mode].main,
             marginBottom: 10,
@@ -95,8 +99,8 @@ const getStyles = (theme: ThemeType) => {
         subheaderText: {
             ...text.regular.P14_Lh180,
             color: palette.grey[mode].main,
-            textAlign:"center",
-            marginBottom:10
+            textAlign: "center",
+            marginBottom: 10
         }
 
     })

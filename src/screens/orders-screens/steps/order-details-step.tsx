@@ -7,22 +7,27 @@ import { MyTextInput } from '../../../components/inputs';
 import { AuthActionButton } from '../../../components/buttons';
 import { arrowDownIcon, cargoIcon, expressIcon, noteIcon, packageIcon, regularIcon } from '../../../assets';
 import { OrderSuccessfulModal, OrderPaymentMethodeModal, SelectServiceModal } from '../modals';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { OrderStackParamList } from '../../../navigation/OrdersStack';
+import { OrderSceneProps } from '../order-screen';
 
 
 
-export const OrderDetailsScreen = ({ navigation, switchIndex }: any) => {
+
+export const OrderDetailsScene = (props:OrderSceneProps) => {
+    const {moveForward,moveBackward, navigation}=props
     const { theme } = useTheme()
     const styles = getStyles(theme)
-    
-    const [modals, setModals] = useState({ paymentMethodes: false, onPaymentSuccess: false, onSelectService:false });
-    const [selectedService, setSelectedService] = useState<string|null>(null);
-    
 
-    const selectService = ()=>{
+    const [modals, setModals] = useState({ paymentMethodes: false, onPaymentSuccess: false, onSelectService: false });
+    const [selectedService, setSelectedService] = useState<string | null>(null);
+
+
+    const selectService = () => {
         setModals({ ...modals, onSelectService: true })
     }
 
-    const payNow = ()=>{
+    const payNow = () => {
         setModals({ ...modals, paymentMethodes: true })
     }
 
@@ -35,12 +40,12 @@ export const OrderDetailsScreen = ({ navigation, switchIndex }: any) => {
             <View style={styles.root} >
                 <SimpleScreenHeader
                     title='Order details'
-                    goBack={() => switchIndex(0)}
+                    goBack={moveBackward}
                 />
-                <Space direction='vertical' size={35} />
-                <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false}>
+                <Space direction='vertical' size={10} />
+                <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
                     <View style={styles.inputGroup}>
-                        <View style={{flex:2}}>
+                        <View style={{ flex: 2 }}>
                             <MyTextInput
                                 label='Package'
                                 placeholder='Enter Package Type'
@@ -48,7 +53,7 @@ export const OrderDetailsScreen = ({ navigation, switchIndex }: any) => {
                             />
                         </View>
                         <Space direction='horizontal' size={10} />
-                        <View style={{flex:1}}>
+                        <View style={{ flex: 1 }}>
                             <MyTextInput
                                 label='Weight'
                                 placeholder='0'
@@ -56,16 +61,16 @@ export const OrderDetailsScreen = ({ navigation, switchIndex }: any) => {
                                 isNumeric={true}
                             />
                         </View>
-                        
+
                     </View>
-                    
+
                     <Space direction='vertical' size={20} />
 
-                    <View style={{flexDirection:"row"}}>
+                    <View style={{ flexDirection: "row" }}>
                         <Text style={styles.groupLabel}>Dimension</Text>
                     </View>
                     <View style={styles.inputGroup}>
-                        <View style={{flex:1}}>
+                        <View style={{ flex: 1 }}>
                             <MyTextInput
                                 placeholder='Length'
                                 endIcon={<Text style={styles.unit}>Cm</Text>}
@@ -73,7 +78,7 @@ export const OrderDetailsScreen = ({ navigation, switchIndex }: any) => {
                             />
                         </View>
                         <Space direction='horizontal' size={10} />
-                        <View style={{flex:1}}>
+                        <View style={{ flex: 1 }}>
                             <MyTextInput
                                 placeholder='Width'
                                 endIcon={<Text style={styles.unit}>Cm</Text>}
@@ -81,7 +86,7 @@ export const OrderDetailsScreen = ({ navigation, switchIndex }: any) => {
                             />
                         </View>
                         <Space direction='horizontal' size={10} />
-                        <View style={{flex:1}}>
+                        <View style={{ flex: 1 }}>
                             <MyTextInput
                                 placeholder='Height'
                                 endIcon={<Text style={styles.unit}>Cm</Text>}
@@ -96,7 +101,7 @@ export const OrderDetailsScreen = ({ navigation, switchIndex }: any) => {
                         <MyTextInput
                             label='Services'
                             placeholder='Select Services'
-                            value={selectedService? selectedService: undefined}
+                            value={selectedService ? selectedService : undefined}
                             editable={false}
                             startIcon={<Image source={noteIcon} />}
                             endIcon={<Image source={arrowDownIcon} />}
@@ -104,24 +109,24 @@ export const OrderDetailsScreen = ({ navigation, switchIndex }: any) => {
                     </Pressable>
                     <Space direction='vertical' size={20} />
 
-                    <WarningText 
-                        text={'Weight discrepancies will incur additional fees or the goods will be returned'} 
+                    <WarningText
+                        text={'Weight discrepancies will incur additional fees or the goods will be returned'}
                         withIcon={true}
                     />
                 </ScrollView>
                 <View style={styles.actionContainer}>
-                    <AuthActionButton 
+                    <AuthActionButton
                         label='Pay Now'
                         onClick={payNow}
                     />
                 </View>
             </View>
 
-            
-            
-            <OrderSuccessfulModal 
+
+
+            <OrderSuccessfulModal
                 visible={modals.onPaymentSuccess}
-                onBtnPress={()=>navigation.navigate('Home')}
+                onBtnPress={() => navigation.navigate('Home')}
                 closeModal={() => setModals({ ...modals, onPaymentSuccess: false })}
             />
             <OrderPaymentMethodeModal
@@ -146,12 +151,12 @@ const getStyles = (theme: ThemeType) => {
         root: {
             flex: 1,
             position: 'relative',
-            paddingTop:24,
+            paddingTop: 24,
             paddingHorizontal: 24,
             backgroundColor: palette.white[theme.mode][3],
         },
         actionContainer: {
-            marginBottom:20
+            marginBottom: 20
         },
         inputGroup: {
             display: 'flex',
@@ -167,7 +172,7 @@ const getStyles = (theme: ThemeType) => {
         },
         contentContainer: {
             flex: 1,
-            paddingHorizontal:24,
+            paddingHorizontal: 24,
             marginBottom: 47,
         },
         selectServiceTitle: {

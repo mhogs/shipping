@@ -7,14 +7,14 @@ import { ServiceType } from '../../@types';
 type serviceItemProps = {
     id:number,
     icon?: any,
-    title: string,
+    name: string,
     description?: string,
     price: string
     onPress?: (s : ServiceType) => void
 }
 
 export const ServiceItem = (props: serviceItemProps) => {
-    const {id, icon, title, description, price, onPress } = props
+    const {id, icon, name, description, price, onPress } = props
     const { theme } = useTheme()
     
 
@@ -29,7 +29,7 @@ export const ServiceItem = (props: serviceItemProps) => {
             <Pressable
                 style={{ padding: 10, }}
                 onPress={() => {
-                    onPress? onPress({}) : null
+                    onPress? onPress({name,icon,id}) : null
                 }}
                 android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
             >
@@ -50,7 +50,7 @@ export const ServiceItem = (props: serviceItemProps) => {
                             backgroundColor: theme.palette.lightGrey[theme.mode].main,
                             borderRadius: 10,
                         }}>
-                            <Image source={{uri:icon}} />
+                            <Image source={{uri:icon}} style={{width:24, height:24}} />
                         </View>
                         <View style={{
                             marginLeft: 14,
@@ -60,7 +60,7 @@ export const ServiceItem = (props: serviceItemProps) => {
                                 ...theme.text.medium.P14_Lh130,
                                 color: theme.palette.black[theme.mode].main
                             }}>
-                                {title}
+                                {name}
                             </Text>
                             <Text style={{
                                 ...theme.text.regular.P14_Lh130,

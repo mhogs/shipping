@@ -4,14 +4,23 @@ import { useTheme } from '../../../state';
 import { ThemeType } from '../../../theme';
 import { SimpleScreenHeader, Space, WarningText } from '../../../components/util';
 import { MyTextInput } from '../../../components/inputs';
-import { AuthActionButton, SaveChangesButton } from '../../../components/buttons';
-import { arrowDownIcon, cargoIcon, expressIcon, noteIcon, packageIcon, regularIcon } from '../../../assets';
+import {  SaveChangesButton } from '../../../components/buttons';
+import { arrowDownIcon, noteIcon, packageIcon, regularIcon } from '../../../assets';
 import { OrderSuccessfulModal, OrderPaymentMethodeModal, SelectServiceModal } from '../modals';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { OrderStackParamList } from '../../../navigation/OrdersStack';
 import { OrderSceneProps } from '../order-screen';
-import { Formik } from 'formik';
-import { PackageType, ServiceType } from '../../../@types';
+import { Formik, validateYupSchema } from 'formik';
+import {  ServiceType } from '../../../@types';
+import * as yup from 'yup';
+
+
+const orderPackageDetails = yup.object().shape({
+  name: yup.string().required("package Type required").min(2, "package type must be at least 2 characters long !"),
+  weight: yup.string(),
+  width: yup.string(),
+  length: yup.string(),
+  height:yup.string(),
+  service:yup.object().required("please select service"),
+});
 
 
 
@@ -22,16 +31,7 @@ export const OrderDetailsScene = (props: OrderSceneProps) => {
     const styles = getStyles(theme)
 
     const [modals, setModals] = useState({ paymentMethodes: false, onPaymentSuccess: false, onSelectService: false });
-    const [selectedService, setSelectedService] = useState<ServiceType>(null);
 
-
-    const selectService = () => {
-        setModals({ ...modals, onSelectService: true })
-    }
-
-    const payNow = () => {
-        setModals({ ...modals, paymentMethodes: true })
-    }
 
     return (
         <Formik
@@ -41,8 +41,9 @@ export const OrderDetailsScene = (props: OrderSceneProps) => {
                 width: "",
                 length: "",
                 height: "",
+                service:null as ServiceType|null
             }}
-            /*validationSchema={orderRouteShema}*/
+            validationSchema={orderPackageDetails}
             onSubmit={values => {
                 updateOrder({
                     package: {
@@ -52,14 +53,14 @@ export const OrderDetailsScene = (props: OrderSceneProps) => {
                         length: Number(values.length),
                         height: Number(values.height)
                     },
-                    service: selectedService?.id
+                    service: values.service?.id
                 })
                 moveForward()
             }}
         /*initialErrors={{ pickup: 'this field is required' }}*/
         >
 
-            {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid, setFieldValue }) => (
+            {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid, setFieldValue,setTouched }) => (
 
                 <View style={styles.root} >
                     <StatusBar
@@ -150,19 +151,21 @@ export const OrderDetailsScene = (props: OrderSceneProps) => {
                             </View>
                             <Space direction='vertical' size={20} />
                             <Pressable
-                                onPress={selectService}
+                                onPress={()=>{
+                                    setModals({ ...modals, onSelectService: true })
+                                    setTouched({...touched,service:true})
+                                }}
                             >
                                 <MyTextInput
                                     label='Services'
                                     placeholder='Select Services'
-                                    value={selectedService ? selectedService : undefined}
+                                    value={values.service?.name}
                                     onChangeText={handleChange('service')}
                                     onBlur={handleBlur('service')}
-                                    touched={touched.service}
-                                    error={errors.service}
                                     editable={false}
                                     startIcon={<Image source={noteIcon} />}
                                     endIcon={<Image source={arrowDownIcon} />}
+                                    
                                 />
                             </Pressable>
                             <Space direction='vertical' size={20} />
@@ -194,7 +197,7 @@ export const OrderDetailsScene = (props: OrderSceneProps) => {
                     <SelectServiceModal
                         visible={modals.onSelectService}
                         closeModal={() => setModals({ ...modals, onSelectService: false })}
-                        selectService={setSelectedService}
+                        selectService={(service:ServiceType)=>setFieldValue("service",service)}
                     />
                 </View>
             )}

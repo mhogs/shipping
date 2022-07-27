@@ -1,11 +1,13 @@
 import React, { Fragment } from "react"
-import { Modal, View, Text, StyleSheet, Pressable } from "react-native"
+import { Modal, View, Text, StyleSheet, Pressable, ActivityIndicator } from "react-native"
 import { useTheme } from '../../../state';
 import { ThemeType } from '../../../theme';
 import { Space } from "../../../components/util";
 import { ServiceItem } from "../../../components/content/service-item";
 import { cargoIcon, expressIcon, regularIcon } from "../../../assets";
 import { ServiceType } from "../../../@types";
+import { useQuery } from "@tanstack/react-query";
+import { OrdersServices } from "../../../services";
 
 
 type SelectServiceModalProps = {
@@ -15,15 +17,15 @@ type SelectServiceModalProps = {
 }
 
 
-const services:ServiceType[] = [
+const services: ServiceType[] = [
     {
-        icon:"", name:'Regular',id:1
+        icon: "", name: 'Regular', id: 1
     },
     {
-        icon:cargoIcon, name:'Cargo',id:2
+        icon: cargoIcon, name: 'Cargo', id: 2
     },
     {
-        icon:expressIcon, name:'Express', id:3
+        icon: expressIcon, name: 'Express', id: 3
     },
 ]
 
@@ -33,7 +35,16 @@ export const SelectServiceModal = (props: SelectServiceModalProps) => {
     const { theme } = useTheme()
     const styles = getStyles(theme)
 
-    const selectServiceCloseModal = (service: ServiceType) =>{
+    const { data: services, isError, isLoading } = useQuery<ServiceType[], Error>
+        (
+            ['services'],
+            OrdersServices.fetchServices,
+            {
+                retry: 1
+            }
+        )
+
+    const selectServiceCloseModal = (service: ServiceType) => {
         selectService(service);
         closeModal();
     }
@@ -56,21 +67,23 @@ export const SelectServiceModal = (props: SelectServiceModalProps) => {
                     <View style={styles.modalTopBa}></View>
                     <View style={styles.contentContainer}>
                         <Space direction='vertical' size={46} />
-                        <View style={{flexDirection:"row"}}>
-                            <Text style={styles.selectServiceTitle}>Services</Text>
+                        <View style={{ flexDirection: "row" }}>
+                            <Text style={styles.selectServiceTitle}>Services {services?.length}</Text>
                         </View>
                         <Space direction='vertical' size={20} />
-                        <View  style={styles.servicesListe}>
-                            {
-                                services?.map((item,index)=>{
+                        <View style={styles.servicesListe}>
+                            {isLoading ?
+                                <ActivityIndicator color={theme.palette.primary[theme.mode].main} size="large" />
+                                :
+                                services?.map((item, index) => {
                                     return (
                                         <Fragment key={index}>
-                                            <ServiceItem icon={item.icon} title={item.title} description={item.description} price={item.price} onPress={selectServiceCloseModal} />               
+                                            <ServiceItem {...item} description={"4-3 days"} price={"$10"} onPress={selectServiceCloseModal} />
                                             <Space direction='vertical' size={15} />
                                         </Fragment>
                                     )
                                 })
-                            }    
+                            }
                         </View>
                     </View>
                 </View>
@@ -87,7 +100,7 @@ const getStyles = (theme: ThemeType) => {
         root: { flex: 1 },
         modalContainer: {
             flexGrow: 1,
-            justifyContent:"space-between"
+            justifyContent: "space-between"
         },
         modalContent: {
             position: 'relative',
@@ -100,7 +113,7 @@ const getStyles = (theme: ThemeType) => {
             width: 60,
             height: 6,
             position: 'absolute',
-            zIndex:10,
+            zIndex: 10,
             top: 10,
             backgroundColor: palette.lightGrey[mode].main,
             borderRadius: 10,

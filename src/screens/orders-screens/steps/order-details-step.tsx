@@ -4,23 +4,25 @@ import { useTheme } from '../../../state';
 import { ThemeType } from '../../../theme';
 import { SimpleScreenHeader, Space, WarningText } from '../../../components/util';
 import { MyTextInput } from '../../../components/inputs';
-import { AuthActionButton } from '../../../components/buttons';
+import { AuthActionButton, SaveChangesButton } from '../../../components/buttons';
 import { arrowDownIcon, cargoIcon, expressIcon, noteIcon, packageIcon, regularIcon } from '../../../assets';
 import { OrderSuccessfulModal, OrderPaymentMethodeModal, SelectServiceModal } from '../modals';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { OrderStackParamList } from '../../../navigation/OrdersStack';
 import { OrderSceneProps } from '../order-screen';
+import { Formik } from 'formik';
+import { PackageType, ServiceType } from '../../../@types';
 
 
 
 
-export const OrderDetailsScene = (props:OrderSceneProps) => {
-    const {moveForward,moveBackward, navigation}=props
+export const OrderDetailsScene = (props: OrderSceneProps) => {
+    const { moveForward, moveBackward, navigation, updateOrder } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
 
     const [modals, setModals] = useState({ paymentMethodes: false, onPaymentSuccess: false, onSelectService: false });
-    const [selectedService, setSelectedService] = useState<string | null>(null);
+    const [selectedService, setSelectedService] = useState<ServiceType>(null);
 
 
     const selectService = () => {
@@ -32,115 +34,178 @@ export const OrderDetailsScene = (props:OrderSceneProps) => {
     }
 
     return (
-        <>
-            <StatusBar
-                barStyle={"dark-content"}
-                backgroundColor={theme.palette.white[theme.mode].main}
-            />
-            <View style={styles.root} >
-                <SimpleScreenHeader
-                    title='Order details'
-                    goBack={moveBackward}
-                />
-                <Space direction='vertical' size={10} />
-                <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-                    <View style={styles.inputGroup}>
-                        <View style={{ flex: 2 }}>
-                            <MyTextInput
-                                label='Package'
-                                placeholder='Enter Package Type'
-                                startIcon={<Image source={packageIcon} />}
-                            />
-                        </View>
-                        <Space direction='horizontal' size={10} />
-                        <View style={{ flex: 1 }}>
-                            <MyTextInput
-                                label='Weight'
-                                placeholder='0'
-                                endIcon={<Text style={styles.unit}>Kg</Text>}
-                                isNumeric={true}
-                            />
-                        </View>
+        <Formik
+            initialValues={{
+                name: "",
+                weight: "",
+                width: "",
+                length: "",
+                height: "",
+            }}
+            /*validationSchema={orderRouteShema}*/
+            onSubmit={values => {
+                updateOrder({
+                    package: {
+                        ...values,
+                        weight: Number(values.weight),
+                        width: Number(values.width),
+                        length: Number(values.length),
+                        height: Number(values.height)
+                    },
+                    service: selectedService?.id
+                })
+                moveForward()
+            }}
+        /*initialErrors={{ pickup: 'this field is required' }}*/
+        >
 
-                    </View>
+            {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid, setFieldValue }) => (
 
-                    <Space direction='vertical' size={20} />
-
-                    <View style={{ flexDirection: "row" }}>
-                        <Text style={styles.groupLabel}>Dimension</Text>
-                    </View>
-                    <View style={styles.inputGroup}>
-                        <View style={{ flex: 1 }}>
-                            <MyTextInput
-                                placeholder='Length'
-                                endIcon={<Text style={styles.unit}>Cm</Text>}
-                                isNumeric={true}
-                            />
-                        </View>
-                        <Space direction='horizontal' size={10} />
-                        <View style={{ flex: 1 }}>
-                            <MyTextInput
-                                placeholder='Width'
-                                endIcon={<Text style={styles.unit}>Cm</Text>}
-                                isNumeric={true}
-                            />
-                        </View>
-                        <Space direction='horizontal' size={10} />
-                        <View style={{ flex: 1 }}>
-                            <MyTextInput
-                                placeholder='Height'
-                                endIcon={<Text style={styles.unit}>Cm</Text>}
-                                isNumeric={true}
-                            />
-                        </View>
-                    </View>
-                    <Space direction='vertical' size={20} />
-                    <Pressable
-                        onPress={selectService}
-                    >
-                        <MyTextInput
-                            label='Services'
-                            placeholder='Select Services'
-                            value={selectedService ? selectedService : undefined}
-                            editable={false}
-                            startIcon={<Image source={noteIcon} />}
-                            endIcon={<Image source={arrowDownIcon} />}
-                        />
-                    </Pressable>
-                    <Space direction='vertical' size={20} />
-
-                    <WarningText
-                        text={'Weight discrepancies will incur additional fees or the goods will be returned'}
-                        withIcon={true}
+                <View style={styles.root} >
+                    <StatusBar
+                        barStyle={"dark-content"}
+                        backgroundColor={theme.palette.white[theme.mode].main}
                     />
-                </ScrollView>
-                <View style={styles.actionContainer}>
-                    <AuthActionButton
-                        label='Pay Now'
-                        onClick={payNow}
+                    <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+                        <SimpleScreenHeader
+                            title='Order details'
+                            goBack={moveBackward}
+                        />
+                        <Space direction='vertical' size={10} />
+                        <View style={{ flex: 1 }} >
+                            <View style={styles.inputGroup}>
+                                <View style={{ flex: 2 }}>
+                                    <MyTextInput
+                                        label='Package'
+                                        placeholder='Enter Package Type'
+                                        startIcon={<Image source={packageIcon} />}
+                                        value={values.name}
+                                        onChangeText={handleChange('name')}
+                                        onBlur={handleBlur('name')}
+                                        touched={touched.name}
+                                        error={errors.name}
+                                    />
+                                </View>
+                                <Space direction='horizontal' size={10} />
+                                <View style={{ flex: 1 }}>
+                                    <MyTextInput
+                                        label='Weight'
+                                        placeholder='0'
+                                        endIcon={<Text style={styles.unit}>Kg</Text>}
+                                        isNumeric={true}
+                                        value={values.weight}
+                                        onChangeText={handleChange('weight')}
+                                        onBlur={handleBlur('weight')}
+                                        touched={touched.weight}
+                                        error={errors.weight}
+                                    />
+                                </View>
+
+                            </View>
+
+                            <Space direction='vertical' size={20} />
+
+                            <View style={{ flexDirection: "row" }}>
+                                <Text style={styles.groupLabel}>Dimension</Text>
+                            </View>
+                            <View style={styles.inputGroup}>
+                                <View style={{ flex: 1 }}>
+                                    <MyTextInput
+                                        placeholder='Length'
+                                        endIcon={<Text style={styles.unit}>Cm</Text>}
+                                        isNumeric={true}
+                                        value={values.length}
+                                        onChangeText={handleChange('length')}
+                                        onBlur={handleBlur('length')}
+                                        touched={touched.length}
+                                        error={errors.length}
+                                    />
+                                </View>
+                                <Space direction='horizontal' size={10} />
+                                <View style={{ flex: 1 }}>
+                                    <MyTextInput
+                                        placeholder='Width'
+                                        endIcon={<Text style={styles.unit}>Cm</Text>}
+                                        isNumeric={true}
+                                        value={values.width}
+                                        onChangeText={handleChange('width')}
+                                        onBlur={handleBlur('width')}
+                                        touched={touched.width}
+                                        error={errors.width}
+                                    />
+                                </View>
+                                <Space direction='horizontal' size={10} />
+                                <View style={{ flex: 1 }}>
+                                    <MyTextInput
+                                        placeholder='Height'
+                                        endIcon={<Text style={styles.unit}>Cm</Text>}
+                                        isNumeric={true}
+                                        value={values.height}
+                                        onChangeText={handleChange('height')}
+                                        onBlur={handleBlur('height')}
+                                        touched={touched.height}
+                                        error={errors.height}
+                                    />
+                                </View>
+                            </View>
+                            <Space direction='vertical' size={20} />
+                            <Pressable
+                                onPress={selectService}
+                            >
+                                <MyTextInput
+                                    label='Services'
+                                    placeholder='Select Services'
+                                    value={selectedService ? selectedService : undefined}
+                                    onChangeText={handleChange('service')}
+                                    onBlur={handleBlur('service')}
+                                    touched={touched.service}
+                                    error={errors.service}
+                                    editable={false}
+                                    startIcon={<Image source={noteIcon} />}
+                                    endIcon={<Image source={arrowDownIcon} />}
+                                />
+                            </Pressable>
+                            <Space direction='vertical' size={20} />
+
+                            <WarningText
+                                text={'Weight discrepancies will incur additional fees or the goods will be returned'}
+                                withIcon={true}
+                            />
+                        </View>
+                        <View style={styles.actionContainer}>
+                            <SaveChangesButton
+                                text='Save Order'
+                                onPress={handleSubmit}
+                                disabled={!isValid}
+                            />
+                        </View>
+                    </ScrollView>
+                    <OrderSuccessfulModal
+                        visible={modals.onPaymentSuccess}
+                        onBtnPress={() => navigation.navigate('Home')}
+                        closeModal={() => setModals({ ...modals, onPaymentSuccess: false })}
+                    />
+                    <OrderPaymentMethodeModal
+                        visible={modals.paymentMethodes}
+                        closeModal={() => setModals({ ...modals, paymentMethodes: false })}
+                        onBtnPress={() => setModals({ ...modals, onPaymentSuccess: true })}
+                    />
+
+                    <SelectServiceModal
+                        visible={modals.onSelectService}
+                        closeModal={() => setModals({ ...modals, onSelectService: false })}
+                        selectService={setSelectedService}
                     />
                 </View>
-            </View>
+            )}
+        </Formik>
 
 
 
-            <OrderSuccessfulModal
-                visible={modals.onPaymentSuccess}
-                onBtnPress={() => navigation.navigate('Home')}
-                closeModal={() => setModals({ ...modals, onPaymentSuccess: false })}
-            />
-            <OrderPaymentMethodeModal
-                visible={modals.paymentMethodes}
-                closeModal={() => setModals({ ...modals, paymentMethodes: false })}
-                onBtnPress={() => setModals({ ...modals, onPaymentSuccess: true })}
-            />
 
-            <SelectServiceModal
-                visible={modals.onSelectService}
-                closeModal={() => setModals({ ...modals, onSelectService: false })}
-                selectService={setSelectedService}
-            />
-        </>
+
+
+
     )
 }
 

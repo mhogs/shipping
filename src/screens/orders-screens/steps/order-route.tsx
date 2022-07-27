@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image, StatusBar, KeyboardAvoidingView } from 'react-native'
+import { View, StyleSheet, Image,Text, StatusBar, KeyboardAvoidingView } from 'react-native'
 import React from 'react'
 import { useTheme } from '../../../state';
 import { ThemeType } from '../../../theme';
@@ -6,87 +6,104 @@ import { SimpleScreenHeader, Space } from '../../../components/util';
 import { ScrollView } from 'react-native-gesture-handler';
 import { GooglePlacesInput, MyTextAreaInput, MyTextInput } from '../../../components/inputs';
 import { callIcon, gpsIcon, locationIcon, ProfileIcon } from '../../../assets';
-import { AuthActionButton } from '../../../components/buttons';
+import { AuthActionButton, SaveChangesButton } from '../../../components/buttons';
 import { OrderSceneProps } from '../order-screen';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
 
 const orderRouteShema = yup.object().shape({
-    pickup: yup.string().required("this field is required"),
-    destination: yup.string().required("this field is required"),
+    pickup: yup.object().required(),
+    destination: yup.object().required(),
     details: yup.string(),
 });
 
 export const OrderRouteScene = (props: OrderSceneProps) => {
-    const { moveForward, moveBackward, navigation } = props
+    const { moveForward, moveBackward, navigation, updateOrder } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
+    
 
     return (
         <Formik
             initialValues={{
                 pickup: null,
                 destination: null,
-                details: "",
             }}
             validationSchema={orderRouteShema}
             onSubmit={values => {
-
+                updateOrder(values)
+                moveForward()
             }}
-            initialErrors={{ pickup: 'First name is required' }}
         >
 
             {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid, setFieldValue }) => (
-                
-                    <KeyboardAvoidingView style={styles.root} >
-                        <StatusBar
-                            barStyle={"dark-content"}
-                            backgroundColor={theme.palette.white[theme.mode].main}
-                        />
+
+                <KeyboardAvoidingView style={styles.root}  >
+                    <StatusBar
+                        barStyle={"dark-content"}
+                        backgroundColor={theme.palette.white[theme.mode].main}
+                    />
+                    <ScrollView
+                        contentContainerStyle={{ flexGrow: 1 }}
+                        showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps='always'
+
+                    >
                         <SimpleScreenHeader
                             title='Order Route'
                             goBack={moveBackward}
                         />
                         <Space direction='vertical' size={10} />
+                       
                         <View style={{ flexGrow: 1 }} >
 
                             <GooglePlacesInput
                                 label='Pickup Adress'
                                 placeholder='where to pick from'
-                                onChange={() => { }}
+                                onChange={(adress) => setFieldValue("pickup", adress)}
                                 icon={<Image source={gpsIcon} />}
+                                touched={touched.pickup}
+                                error={errors.pickup}
+                                onBlur={handleBlur("pickup")}
                             />
                             <Space direction='vertical' size={20} />
                             <MyTextAreaInput
                                 label='Pickup Adress Details'
                                 placeholder={'Type detailed location to make it easier for us to pick up the package'}
                                 h={65}
+                                onChangeText={(text)=>setFieldValue("pickup",{...(values.pickup || {}),details:text})}
+
                             />
                             <Space direction='vertical' size={20} />
                             <GooglePlacesInput
                                 label='Drop Adress'
-                                placeholder='where to pick from'
-                                onChange={() => { }}
+                                placeholder='where to drop'
+                                onChange={(adress) => setFieldValue("destination", adress)}
                                 icon={<Image source={gpsIcon} />}
+                                touched={touched.destination}
+                                error={errors.destination}
+                                onBlur={handleBlur("destination")}
                             />
                             <Space direction='vertical' size={20} />
                             <MyTextAreaInput
                                 label='Drop Adress Details'
                                 placeholder={'Type detailed location to make it easier for us to drop the package'}
                                 h={65}
+                                onChangeText={(text)=>setFieldValue("destination",{...(values.destination || {}),details:text})}
                             />
-                           
-
                         </View>
+
                         <Space direction='vertical' size={30} />
                         <View style={styles.actionContainer}>
-                            <AuthActionButton
-                                label='Continue'
-                                onClick={moveForward}
+                            <SaveChangesButton
+                                text='Continue'
+                                onPress={handleSubmit}
+                                disabled={!isValid}
                             />
                         </View>
-                    </KeyboardAvoidingView>
+                    </ScrollView>
+                </KeyboardAvoidingView>
 
 
             )}

@@ -8,10 +8,14 @@ type TextAreaInputProps = {
     placeholder?: string,
     value?: string,
     h?: number,
+    onChangeText?: (text: string) => void,
+    onBlur?: (e: any) => void,
+    touched?:boolean
+    error?:string
 }
 
 export const MyTextAreaInput = (props: TextAreaInputProps) => {
-    const { label, placeholder, value, h } = props
+    const { label, placeholder, value, h, onChangeText,onBlur,error,touched } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
     return (
@@ -22,11 +26,17 @@ export const MyTextAreaInput = (props: TextAreaInputProps) => {
 
             <View style={{...styles.inputWraper, height: h? h:160 }}>
                 <TextInput
-                    style={styles.input}
+                    style={[
+                        styles.input,
+                        (touched && error)?{ borderColor:theme.palette.danger[theme.mode].main}:{},
+                    ]}
                     placeholder={placeholder}
                     defaultValue={value}
                     multiline={true}
+                    onChangeText={(text)=>onChangeText && onChangeText(text)}
+                    onBlur={onBlur}
                 />
+                {touched && error && <Text style={styles.errorText}>- {error}</Text>}
             </View>
         </View>
     )
@@ -54,6 +64,13 @@ const getStyles = (theme: ThemeType) => {
             padding: 13,
             flex: 1,
             textAlign:"left"
+        },
+        errorText: {
+            fontSize: 10,
+            marginLeft: 8,
+            color: palette.danger[mode].main,
+            position: "absolute",
+            bottom: -16
         }
     })
 }

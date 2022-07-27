@@ -1,11 +1,22 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import axios, { AxiosError } from "axios"
-import { changePasswordRequestType, currentUserType, ProfileRequestData, ProfileResponseData, RefreshRequestDataType, RefreshResponseDataType, RequestOtpParmsType, SendOtpParmsType, SignInRequestDataType, SignInResponseDataType, SignUpRequestDataType, SignUpResponseDataType, userType } from "../@types"
+import { changePasswordRequestType, checkUserRequestType, checkUserResponseType, currentUserType, ProfileRequestData, ProfileResponseData, RefreshRequestDataType, RefreshResponseDataType, RequestOtpParmsType, SendOtpParmsType, SignInRequestDataType, SignInResponseDataType, SignUpRequestDataType, SignUpResponseDataType, userType } from "../@types"
 import { BACKEND_BASE_URL, USER_STORAGE_KEY } from "../constants"
 import { extractErrorMessage, getAuthHeaders, getUserFromStorage, showErrorToast, showsuccessToast } from "../helpers"
 import Toast from 'react-native-toast-message';
 
 export class AuthService {
+    static async CheckUser(params: checkUserRequestType): Promise<checkUserResponseType> {
+        const url = `${BACKEND_BASE_URL}/auth/check_user/${params.phonenumber}`
+        try {
+            const res = await axios.get(url)
+            return res.data
+        } catch (err: any) {
+            const parsedError = extractErrorMessage(err)
+            showErrorToast(parsedError.status, parsedError.detail)
+            throw Error(parsedError.detail);
+        }
+    }
     static async SignUp(data: SignUpRequestDataType): Promise<SignUpResponseDataType> {
         const url = BACKEND_BASE_URL + "/auth/users/"
         try {

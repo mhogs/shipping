@@ -1,5 +1,5 @@
 import React, { Fragment, useRef } from 'react';
-import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Image, Pressable, ScrollView, Dimensions, useWindowDimensions } from 'react-native'
 import { GooglePlaceData, GooglePlacesAutocomplete, GooglePlacesAutocompleteRef } from 'react-native-google-places-autocomplete';
 
 import { useTheme } from '../../state/theming'
@@ -9,22 +9,22 @@ import { Space } from '../util';
 type GooglePlacesInputProps = {
     label?: string,
     placeholder?: string,
-    onChange?: (value: any) => void,
+    onChange: (value: any) => void,
+    onBlur?: (e: any) => void,
     icon?: any,
+    touched?: boolean
+    error?: string
 }
 
 
 export const GooglePlacesInput = (props: GooglePlacesInputProps) => {
-    const { label, placeholder, icon, onChange } = props;
+    const { label, placeholder, icon, onChange, touched, error,onBlur } = props;
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = getStyles(theme, Boolean(error)&&touched)
 
     const inputRef = useRef<GooglePlacesAutocompleteRef>(null);
 
-    const setPlace = (value: any) => {
-        onChange ? onChange(value) : null;
-
-    }
+    
 
     const clear = () => {
         inputRef?.current?.clear()
@@ -44,7 +44,7 @@ export const GooglePlacesInput = (props: GooglePlacesInputProps) => {
         )
     }
 
-    const renderListItem = (data: GooglePlaceData, index: number) => {
+    const renderListItem = (data: any, index: number) => {
         return (
             <View style={{
                 paddingVertical: 15,
@@ -53,48 +53,75 @@ export const GooglePlacesInput = (props: GooglePlacesInputProps) => {
                     color: theme.palette.black[theme.mode].main,
                     ...theme.text.regular.P14_Lh180,
                 }}>
-                    {data.description}
+                    {data.description || data.formatted_address || data.name}
+                    
                 </Text>
             </View>
         )
     }
-
+    const { width: deviceWidth } = useWindowDimensions()
     return (
-        <Fragment>
-            {label ?
-                <Fragment>
-                    <Text style={styles.inputLabel}> {label}</Text>
-                    <Space size={10} direction="vertical" />
-                </Fragment> : null
-            }
-            
-            <GooglePlacesAutocomplete
-                ref={inputRef}
-                placeholder={placeholder ? placeholder : 'Search location'}
-                onPress={(data, details = null) => {
-                    setPlace(data);
-                }}
-                suppressDefaultStyles={true}
-                minLength={3}
-                enablePoweredByContainer={false}
-                query={{
-                    key: 'AIzaSyBeg9OGJfQWY0CWyRh8PfW2ERQbsP-yEwc',
-                    language: 'en',
-                    components: 'country:dz'
-                }}
-                renderRow={renderListItem}
-                renderRightButton={renderIcon}
+        <View >
+            <ScrollView
+                horizontal={true}
+                contentContainerStyle={{ width: "100%" }}
+                nestedScrollEnabled={true}
+                keyboardShouldPersistTaps='handled'
 
-                styles={styles}
-            />
-        </Fragment>
+            >
+                <View style={{ flexGrow: 1 }}>
 
+                    {label ?
+                        <Fragment>
+                            <Text style={styles.inputLabel}> {label}</Text>
+                            <Space size={10} direction="vertical" />
+                        </Fragment> : null
+                    }
+
+                    <GooglePlacesAutocomplete
+
+                        ref={inputRef}
+                        placeholder={placeholder ? placeholder : 'Search location'}
+                        onPress={(data, details = null) => {
+                            onChange({ 
+                                place:data.description, 
+                                longitude:details?.geometry.location.lng,
+                                latitude:details?.geometry.location.lng,
+                            });
+                        }}
+                        
+                        fetchDetails={true}
+                        suppressDefaultStyles={true}
+                        minLength={2}
+                        enablePoweredByContainer={false}
+                        query={{
+                            key: 'AIzaSyBeg9OGJfQWY0CWyRh8PfW2ERQbsP-yEwc',
+                            language: 'fr',
+                            components: 'country:dz'
+                        }}    
+                        renderRow={renderListItem}
+                        renderRightButton={renderIcon}
+                        styles={styles}
+                        textInputProps={{
+                            onChangeText: (location) => location === "" && onChange(null),
+                            
+                        }}
+                        
+                        debounce={200}
+
+                    />
+
+                </View>
+
+            </ScrollView>
+
+        </View>
 
     );
 };
 
 
-const getStyles = (theme: ThemeType) => {
+const getStyles = (theme: ThemeType, error?: boolean) => {
     const { palette, mode, text } = theme
     return StyleSheet.create({
         container: {
@@ -113,7 +140,7 @@ const getStyles = (theme: ThemeType) => {
             justifyContent: 'space-between',
             borderRadius: 12,
             borderWidth: 1,
-            borderColor: palette.lightGrey[mode].main,
+            borderColor: error ? palette.danger[mode].main : palette.lightGrey[mode].main,
             backgroundColor: palette.white[mode].main,
         },
         textInput: {
@@ -134,6 +161,16 @@ const getStyles = (theme: ThemeType) => {
             height: 1,
             backgroundColor: palette.lightGrey[mode].main,
         },
+        errorText: {
+            fontSize: 10,
+            marginLeft: 8,
+            color: palette.danger[mode].main,
+            position: "absolute",
+            bottom: -16
+        },
+        predefinedPlacesDescription: {
+            color: '#1faadb'
+        }
 
     })
 }

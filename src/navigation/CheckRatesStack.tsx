@@ -7,7 +7,7 @@ import { ChackRatesScreen } from '../screens';
 const Stack = createNativeStackNavigator();
 
 export const CheckRatesStackNavigator = () => {
-
+    
     return (
 
         <Stack.Navigator

@@ -10,19 +10,21 @@ type WarningTextProps = {
     withIcon: boolean
 }
 
-export const WarningText = (props : WarningTextProps) => {
+export const WarningText = (props: WarningTextProps) => {
     const { text, withIcon } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
     return (
         <View style={styles.root}>
-            { withIcon? <Image source={infoCircleIcon} />: null }
-            { withIcon? <Space direction='horizontal' size={12} />: null }
+            {withIcon ? <Image source={infoCircleIcon} /> : null}
+            {withIcon ? <Space direction='horizontal' size={12} /> : null}
+
             <Text style={styles.text}>{text}</Text>
+
+
         </View>
     )
 }
-
 
 const getStyles = (theme: ThemeType) => {
     const { palette, mode, text } = theme
@@ -32,15 +34,14 @@ const getStyles = (theme: ThemeType) => {
             paddingHorizontal: 14,
             paddingVertical: 10,
             borderRadius: 12,
-            display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'flex-start',
-            
         },
         text: {
             ...text.medium.P14_Lh180,
             color: palette.warning[mode][2],
+            flex: 1,
+            flexWrap: 'wrap'
         },
     })
 }

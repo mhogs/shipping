@@ -10,16 +10,16 @@ import { Image } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './src/state';
 import Toast, { ToastProps } from 'react-native-toast-message';
+import * as Location from 'expo-location'
 const queryClient = new QueryClient();
 
 export default function App() {
-
   const appIsReady = useAppLoader()
-
+ 
   if (!appIsReady) {
     return null;
   }
-  let v:ToastProps
+ 
   
   return (
 
@@ -44,6 +44,7 @@ const useAppLoader = () => {
   });
   const [appIsReady, setAppIsReady] = useState(false);
 
+  
   useEffect(() => {
     setAppIsReady(fontsLoaded)
   }, [fontsLoaded])

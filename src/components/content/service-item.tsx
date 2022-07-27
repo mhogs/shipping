@@ -2,17 +2,19 @@ import { View, Text, Pressable, Image } from 'react-native'
 import React from 'react'
 import { useTheme } from '../../state';
 import { ThemeType } from '../../theme';
+import { ServiceType } from '../../@types';
 
 type serviceItemProps = {
+    id:number,
     icon?: any,
     title: string,
     description?: string,
     price: string
-    onPress?: (s : string) => void
+    onPress?: (s : ServiceType) => void
 }
 
 export const ServiceItem = (props: serviceItemProps) => {
-    const { icon, title, description, price, onPress } = props
+    const {id, icon, title, description, price, onPress } = props
     const { theme } = useTheme()
     
 
@@ -27,7 +29,7 @@ export const ServiceItem = (props: serviceItemProps) => {
             <Pressable
                 style={{ padding: 10, }}
                 onPress={() => {
-                    onPress? onPress(title) : null
+                    onPress? onPress({}) : null
                 }}
                 android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
             >
@@ -48,7 +50,7 @@ export const ServiceItem = (props: serviceItemProps) => {
                             backgroundColor: theme.palette.lightGrey[theme.mode].main,
                             borderRadius: 10,
                         }}>
-                            <Image source={icon} />
+                            <Image source={{uri:icon}} />
                         </View>
                         <View style={{
                             marginLeft: 14,

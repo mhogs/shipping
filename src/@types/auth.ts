@@ -15,6 +15,7 @@ export type SignUpRequestDataType = {
     first_name: string,
     last_name: string
 }
+
 export type SignUpResponseDataType = {
     phonenumber: string,
     id: number,
@@ -44,4 +45,11 @@ export type RequestOtpParmsType = {
 export type SendOtpParmsType = {
     phone: string,
     code: number
+}
+/** chack user */
+export type checkUserRequestType = {
+    phonenumber: string,
+}
+export type checkUserResponseType = {
+    id: number,
 }

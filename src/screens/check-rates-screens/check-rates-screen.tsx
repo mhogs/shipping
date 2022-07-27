@@ -45,13 +45,13 @@ export const ChackRatesScreen = (props : ChackRatesScreenProps) => {
                   <GooglePlacesInput 
                     placeholder='Pick up Location'
                     onChange={setPickupLocation}
-                    icon={gpsIcon}
+                    icon={<Image source={gpsIcon}/>}
                   />
                   <Space direction='vertical' size={30} />
                   <GooglePlacesInput
                     placeholder='Package Destination'
                     onChange={setDestination}
-                    icon={gpsIcon}
+                    icon={<Image source={gpsIcon}/>}
                   />
                   <Space direction='vertical' size={30} />
 

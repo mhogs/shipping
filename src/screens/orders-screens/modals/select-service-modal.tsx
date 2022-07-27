@@ -5,24 +5,25 @@ import { ThemeType } from '../../../theme';
 import { Space } from "../../../components/util";
 import { ServiceItem } from "../../../components/content/service-item";
 import { cargoIcon, expressIcon, regularIcon } from "../../../assets";
+import { ServiceType } from "../../../@types";
 
 
 type SelectServiceModalProps = {
     visible: boolean
     closeModal: () => void
-    selectService: (service: string) => void
+    selectService: (service: ServiceType) => void
 }
 
 
-const services = [
+const services:ServiceType[] = [
     {
-        icon:regularIcon, title:'Regular', description:'2 - 3 Days', price:'$10'
+        icon:"", name:'Regular',id:1
     },
     {
-        icon:cargoIcon, title:'Cargo', description:'3 - 6 Days', price:'$24'
+        icon:cargoIcon, name:'Cargo',id:2
     },
     {
-        icon:expressIcon, title:'Express', description:'1 - 2 Days', price:'$40'
+        icon:expressIcon, name:'Express', id:3
     },
 ]
 
@@ -32,7 +33,7 @@ export const SelectServiceModal = (props: SelectServiceModalProps) => {
     const { theme } = useTheme()
     const styles = getStyles(theme)
 
-    const selectServiceCloseModal = (service: string) =>{
+    const selectServiceCloseModal = (service: ServiceType) =>{
         selectService(service);
         closeModal();
     }

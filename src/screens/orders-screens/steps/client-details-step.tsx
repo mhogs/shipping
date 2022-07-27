@@ -2,39 +2,45 @@ import { View, StyleSheet, Image, StatusBar } from 'react-native'
 import React from 'react'
 import { useAuthentication, useTheme } from '../../../state';
 import { ThemeType } from '../../../theme';
-import { SimpleScreenHeader, Space } from '../../../components/util';
+import { SimpleScreenHeader, Space, WarningText } from '../../../components/util';
 import { ScrollView } from 'react-native-gesture-handler';
 import { MyTextAreaInput, MyTextInput } from '../../../components/inputs';
 import { callIcon, locationIcon, ProfileIcon } from '../../../assets';
-import { AuthActionButton } from '../../../components/buttons';
+import { AuthActionButton, SaveChangesButton } from '../../../components/buttons';
 import { OrderSceneProps } from '../order-screen';
 import * as yup from 'yup';
 import { Formik } from 'formik';
+import { useMutation } from '@tanstack/react-query';
+import { AuthService } from '../../../services';
 
 const orderClientDetailsSchema = yup.object().shape({
-  first_name: yup.string().required("phone is required").min(3, "first name must be at least 3 characters long !"),
-  last_name: yup.string().required("phone is required").min(3, "last name must be at least 3 characters long !"),
   phonenumber: yup.string().required("phone is required").min(10, "phone must be at least 10 digits long !"),
 });
 
 export const ClientDetailsScene = (props: OrderSceneProps) => {
-  const { moveForward, moveBackward, navigation } = props
+  const { moveForward, moveBackward, navigation, updateOrder } = props
   const { theme } = useTheme()
   const styles = getStyles(theme)
-  const { currentUser } = useAuthentication()
+  const { mutate: check_user, isLoading: submiting, isError } = useMutation(AuthService.CheckUser, {
+    onSuccess: (data) => {
+      updateOrder({ made_to: data.id })
+      moveForward()
+    },
+    onError: (err: any) => {
+    },
+  })
 
   return (
     <Formik
       initialValues={{
-        first_name: currentUser?.first_name || "",
-        last_name: currentUser?.last_name || "",
-        phonenumber: currentUser?.phonenumber || "",
+        phonenumber: "+21379908570",
       }}
       onSubmit={values => {
+        check_user(values)
 
       }}
       validationSchema={orderClientDetailsSchema}
-      initialErrors={{ first_name: 'First name is required' }}
+      initialErrors={{ phonenumber: 'this field is required' }}
     >
 
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid, setFieldValue }) => (
@@ -51,30 +57,7 @@ export const ClientDetailsScene = (props: OrderSceneProps) => {
             />
             <Space direction='vertical' size={10} />
             <View style={{ flexGrow: 1 }} >
-              <MyTextInput
-                label='First Name'
-                placeholder='Enter your first name'
-                startIcon={<Image source={ProfileIcon} />}
-                value={values.first_name}
-                onChangeText={handleChange('first_name')}
-                onBlur={handleBlur('first_name')}
-                touched={touched.first_name}
-                error={errors.first_name}
-                editable={false}
-              />
-              <Space direction='vertical' size={20} />
-              <MyTextInput
-                label='Last Name'
-                placeholder='Enter your last name'
-                startIcon={<Image source={ProfileIcon} />}
-                value={values.last_name}
-                onChangeText={handleChange('last_name')}
-                onBlur={handleBlur('last_name')}
-                touched={touched.last_name}
-                error={errors.last_name}
-                editable={false}
-              />
-              <Space direction='vertical' size={20} />
+
               <MyTextInput
                 label='Phone Number'
                 placeholder='Enter your number'
@@ -84,14 +67,24 @@ export const ClientDetailsScene = (props: OrderSceneProps) => {
                 onBlur={handleBlur('phonenumber')}
                 touched={touched.phonenumber}
                 error={errors.phonenumber}
-                editable={false}
+
               />
+              <Space direction='vertical' size={30} />
+              {
+                isError &&
+                <WarningText
+                  text={'Be sure that the the receiver has account with the above number'}
+                  withIcon={true}
+                />
+              }
             </View>
             <Space direction='vertical' size={30} />
             <View style={styles.actionContainer}>
-              <AuthActionButton
-                label='Continue'
-                onClick={moveForward}
+              <SaveChangesButton
+                text='Continue'
+                onPress={handleSubmit}
+                disabled={submiting || !isValid}
+                pending={submiting}
               />
             </View>
           </ScrollView>

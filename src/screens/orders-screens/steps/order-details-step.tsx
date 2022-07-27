@@ -11,6 +11,8 @@ import { OrderSceneProps } from '../order-screen';
 import { Formik, validateYupSchema } from 'formik';
 import { ServiceType } from '../../../@types';
 import * as yup from 'yup';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { OrdersServices } from '../../../services';
 
 
 const orderPackageDetails = yup.object().shape({
@@ -26,44 +28,51 @@ const orderPackageDetails = yup.object().shape({
 
 
 export const OrderDetailsScene = (props: OrderSceneProps) => {
-    const { moveForward, moveBackward, navigation, updateOrder, saveOrder, order,submeting_order } = props
+    const { moveForward, moveBackward, navigation, updateOrder, order } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
-    const {currentUser}=useAuthentication()
+    const { currentUser } = useAuthentication()
     const [modals, setModals] = useState({ paymentMethodes: false, onPaymentSuccess: false, onSelectService: false });
+    const { mutate: saveOrder, isLoading: submeting_order } = useMutation(OrdersServices.createOrder, {
+        onSuccess: (data) => {
+            updateOrder(data)
+        },
+        onError: (err: any) => { }
+    })
+    const { data: services,  isLoading:loading_services } = useQuery<ServiceType[], Error>(['services'], OrdersServices.fetchServices,{retry: 1})
 
 
     return (
         <Formik
             initialValues={{
-                name: "",
-                weight: "",
-                width: "",
-                length: "",
-                height: "",
-                service: null as ServiceType | null
+                name: order?.package?.name + "",
+                weight: order?.package?.weight + "",
+                width: order?.package?.width + "",
+                length: order?.package?.length + "",
+                height: order?.package?.height + "",
+                service: services?.filter(ser=>ser.id===order?.service).pop() || null 
             }}
 
             validationSchema={orderPackageDetails}
             onSubmit={values => {
-                const {service, ...the_package} = values;
+                const { service, ...the_package } = values;
                 saveOrder && saveOrder(
                     {
                         ...order,
-                        creator:currentUser?.id,
+                        creator: currentUser?.id,
                         package: {
-                            name:the_package.name,
-                            weight:Number(the_package.weight),
-                            width:Number(the_package.width),
-                            length:Number(the_package.length),
-                            height:Number(the_package.height)
+                            name: the_package.name,
+                            weight: Number(the_package.weight),
+                            width: Number(the_package.width),
+                            length: Number(the_package.length),
+                            height: Number(the_package.height)
                         },
                         service: service?.id
                     }
                 )
                 moveForward()
             }}
-        initialErrors={{ name: 'this field is required' }}
+            initialErrors={{ name: 'this field is required' }}
         >
 
             {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid, setFieldValue, setTouched }) => (
@@ -185,7 +194,7 @@ export const OrderDetailsScene = (props: OrderSceneProps) => {
                             <SaveChangesButton
                                 text='Save Order'
                                 onPress={handleSubmit}
-                                disabled={ submeting_order || !isValid}
+                                disabled={submeting_order || !isValid}
                                 pending={submeting_order}
                             />
                         </View>
@@ -205,6 +214,8 @@ export const OrderDetailsScene = (props: OrderSceneProps) => {
                         visible={modals.onSelectService}
                         closeModal={() => setModals({ ...modals, onSelectService: false })}
                         selectService={(service: ServiceType) => setFieldValue("service", service)}
+                        services={services}
+                        isLoading={loading_services}
                     />
                 </View>
             )}

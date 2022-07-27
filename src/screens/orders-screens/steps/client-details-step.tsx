@@ -18,7 +18,7 @@ const orderClientDetailsSchema = yup.object().shape({
 });
 
 export const ClientDetailsScene = (props: OrderSceneProps) => {
-  const { moveForward, moveBackward, navigation, updateOrder } = props
+  const { moveForward, moveBackward, navigation, updateOrder,order } = props
   const { theme } = useTheme()
   const styles = getStyles(theme)
   const { mutate: check_user, isLoading: submiting, isError } = useMutation(AuthService.CheckUser, {
@@ -33,11 +33,10 @@ export const ClientDetailsScene = (props: OrderSceneProps) => {
   return (
     <Formik
       initialValues={{
-        phonenumber: "+21379908570",
+        phonenumber: "",
       }}
       onSubmit={values => {
         check_user(values)
-
       }}
       validationSchema={orderClientDetailsSchema}
       initialErrors={{ phonenumber: 'this field is required' }}

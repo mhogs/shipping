@@ -20,5 +20,5 @@ export const OrdersStackNavigator = () => {
 }
 
 export type OrderStackParamList = {
-    order:undefined,
+    order:{orderId:number},
 };

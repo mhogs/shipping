@@ -14,6 +14,8 @@ type SelectServiceModalProps = {
     visible: boolean
     closeModal: () => void
     selectService: (service: ServiceType) => void
+    services?:ServiceType[],
+    isLoading?:boolean
 }
 
 
@@ -31,19 +33,11 @@ const services: ServiceType[] = [
 
 
 export const SelectServiceModal = (props: SelectServiceModalProps) => {
-    const { visible, closeModal, selectService } = props
+    const { visible, closeModal, selectService, services, isLoading } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
 
-    const { data: services, isError, isLoading } = useQuery<ServiceType[], Error>
-        (
-            ['services'],
-            OrdersServices.fetchServices,
-            {
-                retry: 1
-            }
-        )
-
+    
     const selectServiceCloseModal = (service: ServiceType) => {
         selectService(service);
         closeModal();

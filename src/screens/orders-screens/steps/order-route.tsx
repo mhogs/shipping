@@ -19,7 +19,7 @@ const orderRouteShema = yup.object().shape({
 });
 
 export const OrderRouteScene = (props: OrderSceneProps) => {
-    const { moveForward, moveBackward, navigation, updateOrder } = props
+    const { moveForward, moveBackward, navigation, updateOrder,order } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
     
@@ -27,8 +27,8 @@ export const OrderRouteScene = (props: OrderSceneProps) => {
     return (
         <Formik
             initialValues={{
-                pickup: null,
-                destination: null,
+                pickup: order?.pickup || null,
+                destination:order?.destination || null,
             }}
             validationSchema={orderRouteShema}
             onSubmit={values => {

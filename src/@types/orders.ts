@@ -23,6 +23,7 @@ export type ServiceType={
 
 export type orderStateType = "delivered" | "on_progress" | "pending"
 export type OrdersRequestDataType = {
+    creator?:number
     description?: string
     state?: orderStateType
     made_to?: number

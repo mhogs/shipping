@@ -9,6 +9,7 @@ import { ThemeType } from '../../theme'
 type orderItemProps = OrdersResponseDataType & {
     onPress?: () => void
 }
+
 export const OrderHistoryItem = (props: orderItemProps) => {
     const { code, description, state, onPress } = props
     const { theme } = useTheme()

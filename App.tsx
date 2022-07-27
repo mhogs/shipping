@@ -57,7 +57,7 @@ const useAppLoader = () => {
         else
           await SplashScreen.hideAsync();
       } catch (e) {
-        console.warn(e);
+        
       }
     }
     prepare();

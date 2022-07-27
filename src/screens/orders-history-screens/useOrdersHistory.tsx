@@ -11,11 +11,11 @@ export const useOrdersHistory = () => {
 
     const { data, error, isLoading, isError,refetch } = useQuery<OrdersResponseDataType[], Error>(
        [ "orders_history"],
-        OrdersServices.getOrders,
+        OrdersServices.fetchOrders,
         {
             retry: retryIfQueryFails, 
         }
     );
-
+        
     return { data, error, isLoading, isError,refetch }
 }

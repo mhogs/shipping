@@ -7,18 +7,25 @@ import { SceneRendererProps, TabView } from 'react-native-tab-view';
 import { ClientDetailsScene, OrderDetailsScene, OrderRouteScene } from './steps'
 import { RootStackParamList } from '../../navigation/BottomNavigationBar';
 import { OrdersRequestDataType } from '../../@types';
+import { useMutation } from '@tanstack/react-query';
+import { OrdersServices } from '../../services';
+import { useAuthentication } from '../../state';
 
 export type OrderSceneProps = {
   navigation: NativeStackNavigationProp<OrderStackParamList & RootStackParamList, "order", undefined>
   moveForward: () => void
   moveBackward: () => void
   updateOrder:(data:OrdersRequestDataType)=>void
+  saveOrder?:(order:OrdersRequestDataType)=>void
+  order?:OrdersRequestDataType
+  submeting_order?:boolean
 }
 type OrderScreenProps = NativeStackScreenProps<OrderStackParamList & RootStackParamList, 'order'>;
 export const OrderScreen = (props: OrderScreenProps) => {
   const { navigation } = props;
   useHideBottomBar(navigation, 2)
   const layout = useWindowDimensions();
+  
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: "sender", title: "Sender Details" },
@@ -27,7 +34,16 @@ export const OrderScreen = (props: OrderScreenProps) => {
   ]);
   /**form state */
   const [order, setOrder] = useState<OrdersRequestDataType>({})
-  console.log(order);
+  
+  const { mutate: save_order, isLoading:submeting_order } = useMutation(OrdersServices.createOrder, {
+    onSuccess: (data) => {
+        alert ('order created')
+    },
+    onError: (err: any) => {
+      alert ('order was not creaeted !!')
+    }
+
+})
   
   const renderScene = (props: SceneRendererProps & {
     route: {
@@ -61,6 +77,9 @@ export const OrderScreen = (props: OrderScreenProps) => {
           moveForward={() => { }}
           moveBackward={() => setIndex(i => i - 1)}
           updateOrder={(data:OrdersRequestDataType)=>setOrder(prev=>({...prev,...data}))}
+          saveOrder={save_order}
+          order={order}
+          submeting_order={submeting_order}
         />;
       default:
         return null;

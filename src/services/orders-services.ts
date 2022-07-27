@@ -32,8 +32,9 @@ export class OrdersServices {
             const response = await axios.post(url,data, {
                 headers: { ...AuthHeaders },
             })
-            return response.data
             showsuccessToast("Order saved ")
+            return response.data
+            
         } catch (err: any) {
             const parsedError = extractErrorMessage(err)
             showErrorToast(parsedError.status, parsedError.detail)

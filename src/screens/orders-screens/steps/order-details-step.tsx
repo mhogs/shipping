@@ -45,11 +45,11 @@ export const OrderDetailsScene = (props: OrderSceneProps) => {
     return (
         <Formik
             initialValues={{
-                name: order?.package?.name + "",
-                weight: order?.package?.weight + "",
-                width: order?.package?.width + "",
-                length: order?.package?.length + "",
-                height: order?.package?.height + "",
+                name: order?.package?.name || "",
+                weight: (order?.package?.weight || "").toString(),
+                width: (order?.package?.width || "").toString(),
+                length: (order?.package?.length || "").toString(),
+                height: (order?.package?.height || "").toString(),
                 service: services?.filter(ser=>ser.id===order?.service).pop() || null 
             }}
 

@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { faqCategoriesResponseDataType } from '../@types';
 import { HelpCenterCategoryScreen, HelpCenterScreen } from '../screens';
 
 
@@ -22,5 +23,5 @@ export const HelpCenterStackNavigator = () => {
 }
 export type HelpCenterStackParamList = {
     Help:undefined,
-    HelpCategory:{name:string,}
+    HelpCategory:{category:faqCategoriesResponseDataType}
   };

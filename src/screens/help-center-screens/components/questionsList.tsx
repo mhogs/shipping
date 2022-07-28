@@ -1,40 +1,47 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
 import { ScrollView } from 'react-native-gesture-handler';
-import { MinusIcon, PlusIcon } from '../../components/icons';
-import { Devider, Space } from '../../components/util';
-import { HelpCenterStackParamList } from '../../navigation/HelpCenterStack';
-import { MessagesStackParamList } from '../../navigation/MessagesStack';
-import { useTheme } from '../../state';
-import { ThemeType } from '../../theme';
-import { useQuestions } from './useQuestions';
+import { faqRequestParmsType, faqResponseDataType } from '../../../@types';
+
+import { MinusIcon, PlusIcon } from '../../../components/icons';
+import { Devider, LoadingBlock, Space } from '../../../components/util';
+import { HelpCenterStackParamList } from '../../../navigation/HelpCenterStack';
+import { MessagesStackParamList } from '../../../navigation/MessagesStack';
+import { useTheme } from '../../../state';
+import { ThemeType } from '../../../theme';
+import { useFetchFaqs } from '../custom-hooks';
+
+
 
 
 type QuestionsListViewProps = {
-    navigation: any
+    navigation: any,
+    params?: faqRequestParmsType
 }
 export function QuestionsListView(props: QuestionsListViewProps) {
-    const { navigation } = props
-    const [activeQuestions, setActiveQuestions] = useState<number[]>([])
+    const { navigation, params } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
+    const { faqs, faqs_loading } = useFetchFaqs(params || {})
+ 
 
-    const { data: questions, isLoading, isError, error } = useQuestions()
+    const [activeFAQs, setActiveFAQs] = useState<number[]>([])
 
     const _IsActive = (question: any) => {
-        if (!questions) return false
-        if (!activeQuestions?.length) return false
-        return Boolean(activeQuestions.filter(index => questions[index].title === question.title).length)
+        if (!faqs?.length) return false
+        if (!activeFAQs?.length) return false
+        return Boolean(activeFAQs.filter(index => faqs[index].title === question.title).length)
 
     }
 
-    const _renderHeader = (question: any) => {
+
+    const _renderHeader = (faq: faqResponseDataType) => {
         return (
             <View style={styles.questionHeader}>
-                <Text style={styles.questionHeaderText}>{question.title}</Text>
-                {_IsActive(question) ?
+                <Text style={styles.questionHeaderText}>{faq.title}</Text>
+                {_IsActive(faq) ?
                     <MinusIcon color={theme.palette.primary[theme.mode].main} />
                     :
                     <PlusIcon color={theme.palette.primary[theme.mode].main} />
@@ -44,11 +51,11 @@ export function QuestionsListView(props: QuestionsListViewProps) {
     };
 
 
-    const _renderContent = (question: any) => {
+    const _renderContent = (faq: faqResponseDataType) => {
         return (
             <View style={{ marginTop: 14 }}>
                 <Text style={styles.mutedText}>
-                    {question.content}
+                    {faq.content}
                 </Text>
                 <Devider spacing={10} />
                 <View style={styles.reviewContainer}>
@@ -66,7 +73,7 @@ export function QuestionsListView(props: QuestionsListViewProps) {
                         <Space size={15} />
                         <Pressable
                             android_ripple={{ color: theme.palette.grey[theme.mode][3], borderless: true }}
-                            onPress={() => {}}
+                            onPress={() => { }}
                         >
                             <Text style={styles.reviewButtonsText}>
                                 No
@@ -78,26 +85,33 @@ export function QuestionsListView(props: QuestionsListViewProps) {
         );
     };
 
-    const _updateSections = (questions: any[]) => {
-        setActiveQuestions(questions);
+    const _updateSections = (faqs_indexes: number[]) => {
+        setActiveFAQs(faqs_indexes);
     };
 
 
+    if (faqs_loading)
+        return <LoadingBlock />
+    if (!faqs?.length) {
+        return (
+            <Text style={styles.empty_result_test}>
+                Empty!
+            </Text>
+        )
+    }
+
     return (
         <View>
-            {questions?.length &&
-                <Accordion
-                    sections={questions}
-                    activeSections={activeQuestions}
-                    renderHeader={_renderHeader}
-                    renderContent={_renderContent}
-                    onChange={_updateSections}
-                    underlayColor={theme.palette.lightGrey[theme.mode].main}
-                    touchableComponent={Pressable as any}
-                    sectionContainerStyle={styles.sectionContainerStyle}
-                />
-            }
-            {isLoading && <ActivityIndicator size="large" color={theme.palette.primary[theme.mode].main} />}
+            <Accordion
+                sections={faqs}
+                activeSections={activeFAQs}
+                renderHeader={_renderHeader}
+                renderContent={_renderContent}
+                onChange={_updateSections}
+                underlayColor={theme.palette.lightGrey[theme.mode].main}
+                touchableComponent={Pressable as any}
+                sectionContainerStyle={styles.sectionContainerStyle}
+            />
             <View style={{ alignItems: "center" }}>
                 <Pressable
                     style={{ paddingHorizontal: 10, paddingVertical: 5 }}
@@ -108,7 +122,6 @@ export function QuestionsListView(props: QuestionsListViewProps) {
                     </Text>
                 </Pressable>
             </View>
-
         </View>
 
     );
@@ -161,6 +174,12 @@ const getStyles = (theme: ThemeType) => {
         seeMoreText: {
             ...text.medium.P12_Lh130,
             color: palette.primary[mode].main
+        },
+        empty_result_test: {
+            ...text.medium.P14_Lh180,
+            color: palette.grey[mode].main,
+            textAlign:"center",
+            marginTop:20
         }
 
 

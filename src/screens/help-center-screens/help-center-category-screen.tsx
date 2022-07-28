@@ -1,71 +1,80 @@
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { Fragment, useState } from 'react'
-import { View, Text, Image, ScrollView, KeyboardAvoidingView, StyleSheet, Dimensions, TextInput, Modal, Pressable } from 'react-native'
-import MapView from 'react-native-maps';
-import { insuranceIconColored, LocationIcon, MobileIconColored, searchIcon, searchIconGrey, trackIconColored } from '../../assets';
-import { SaveChangesButton, SocialLoginButton } from '../../components/buttons';
-import { HelpCenterCategoryItem, LocationItem } from '../../components/content';
-import { EmailIcon, PlusIcon, ThreeDotsIcon, WhatsAppIcon } from '../../components/icons';
+import { Formik } from 'formik';
+import React, { useState } from 'react'
+import { View, Text, Image, ScrollView, KeyboardAvoidingView, StyleSheet } from 'react-native'
+import { searchIconGrey } from '../../assets';
+import { HelpCenterCategoryItem } from '../../components/content';
 import { SearchInput } from '../../components/inputs';
 import { useHideBottomBar } from '../../components/navigation';
-import { Devider, SimpleScreenHeader, Space } from '../../components/util'
-import { listToMatrix } from '../../helpers';
+import { SimpleScreenHeader } from '../../components/util'
 import { HelpCenterStackParamList } from '../../navigation/HelpCenterStack';
 import { MessagesStackParamList } from '../../navigation/MessagesStack';
 import { useTheme } from '../../state';
 import { ThemeType } from '../../theme';
-import { helpCentercategories } from './help-center-screen';
-import { QuestionsListView } from './questionsList';
+import { QuestionsListView } from './components/questionsList';
 
 type HelpCenterCategoryScreenProps = NativeStackScreenProps<HelpCenterStackParamList & MessagesStackParamList, 'HelpCategory'>;
 export const HelpCenterCategoryScreen = ({ route, navigation }: HelpCenterCategoryScreenProps) => {
     useHideBottomBar(navigation, 2)
-    const { name: categoryName } = route.params
     const { theme } = useTheme()
     const styles = getStyles(theme)
-    const [modalVisible, setModalVisible] = useState(false);
+    const { category } = route.params
+
     return (
-        <KeyboardAvoidingView style={styles.root} >
-            <SimpleScreenHeader
-                title={`Help Center - ${categoryName}`}
-                goBack={() => navigation.goBack()}
-            />
-            <ScrollView showsVerticalScrollIndicator={false} >
-
-
-                <SearchInput
-                    startIcon={<Image source={searchIconGrey} />}
-                    placeholder='Tap to search faq'
-                    placeholderTextColor={theme.palette.grey[theme.mode][3]}
-                    extraStyle={styles.searchBox}
-                />
-                <View >
-                    <Text style={styles.sectionTitle} >
-                        Category
-                    </Text>
-                    <View>
-
-                        <HelpCenterCategoryItem
-                            icon={helpCentercategories.find(item => item.name = categoryName)?.icon}
-                            name={categoryName}
+        <Formik
+            initialValues={{
+                search: "",
+            }}
+            onSubmit={() => { }}
+        >
+            {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid, setFieldValue }) => (
+                <KeyboardAvoidingView style={styles.root} >
+                    <SimpleScreenHeader
+                        title={`Help Center - ${category.name}`}
+                        goBack={navigation.goBack}
+                    />
+                    <ScrollView showsVerticalScrollIndicator={false} >
+                        <SearchInput
+                            startIcon={<Image source={searchIconGrey} />}
+                            placeholder='Tap to search faq'
+                            placeholderTextColor={theme.palette.grey[theme.mode][3]}
+                            extraStyle={styles.searchBox}
+                            value={values.search}
+                            onChangeText={handleChange("search")}
                         />
+                        <View >
+                            <Text style={styles.sectionTitle} >
+                                Category
+                            </Text>
+                            <View>
 
-                    </View>
-                    <Text style={styles.sectionTitle} >
-                        FAQ
-                    </Text>
-                    {/** questions list  */}
-                    <QuestionsListView navigation={navigation} />
-                    
-                   
-                </View>
-            </ScrollView>
-        </KeyboardAvoidingView>
+                                <HelpCenterCategoryItem
+                                    {...category}
+                                />
+
+                            </View>
+                            <Text style={styles.sectionTitle} >
+                                FAQ
+                            </Text>
+                            {/** questions list  */}
+                            {
+                                <QuestionsListView
+                                    navigation={navigation}
+                                    params={
+                                        {
+                                            category: category.id,
+                                            search: values.search
+                                        }
+                                    }
+                                />}
 
 
-
-
+                        </View>
+                    </ScrollView>
+                </KeyboardAvoidingView>
+            )}
+        </Formik>
     )
 }
 const getStyles = (theme: ThemeType) => {

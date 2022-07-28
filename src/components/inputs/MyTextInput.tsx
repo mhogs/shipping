@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react'
 import { View, Image, Text, StyleSheet, TextInput, Pressable, GestureResponderEvent } from 'react-native'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
+import { CheckIcon } from '../icons'
 import { Space } from '../util'
 
 type iconPressActionType = "TOGGLE_SECRET" | "RESET_INPUT" | undefined
@@ -92,8 +93,11 @@ export const MyTextInput = (props: TextInputProps) => {
                 />
                 <Pressable
                     onPress={onIconPress(endIconAction)}
-                    style={endIcon ? { paddingRight: 13 } : null}
+                    style={{ paddingRight: 13 }}
                 >
+                    {!endIcon && touched && !error &&
+                        <CheckIcon color={theme.palette.success[theme.mode].main} size={20} />
+                    }
                     {endIcon}
                 </Pressable>
 

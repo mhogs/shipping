@@ -15,22 +15,24 @@ const queryClient = new QueryClient();
 
 export default function App() {
   const appIsReady = useAppLoader()
- 
+
   if (!appIsReady) {
     return null;
   }
- 
-  
+
+
   return (
 
-    <NavigationContainer>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
+
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <NavigationContainer>
           <Navigation />
-          <Toast visibilityTime={5000} />
-        </AuthProvider>
-      </QueryClientProvider>
-    </NavigationContainer>
+        </NavigationContainer>
+        <Toast visibilityTime={5000} />
+      </AuthProvider>
+    </QueryClientProvider>
+
 
   );
 }
@@ -44,7 +46,7 @@ const useAppLoader = () => {
   });
   const [appIsReady, setAppIsReady] = useState(false);
 
-  
+
   useEffect(() => {
     setAppIsReady(fontsLoaded)
   }, [fontsLoaded])
@@ -57,7 +59,7 @@ const useAppLoader = () => {
         else
           await SplashScreen.hideAsync();
       } catch (e) {
-        
+
       }
     }
     prepare();

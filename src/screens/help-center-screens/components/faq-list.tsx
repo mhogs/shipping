@@ -17,15 +17,16 @@ import { useFetchFaqs } from '../custom-hooks';
 
 
 type QuestionsListViewProps = {
-    navigation: any,
+    navigation: NativeStackNavigationProp<HelpCenterStackParamList & MessagesStackParamList, "Help", undefined>,
     params?: faqRequestParmsType
 }
 export function QuestionsListView(props: QuestionsListViewProps) {
-    const { navigation, params } = props
+
+    const { params,navigation } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
-    const { faqs, faqs_loading } = useFetchFaqs(params || {})
- 
+    const { faqs, faqs_loading,loading_more, loadMore } = useFetchFaqs(params)
+
 
     const [activeFAQs, setActiveFAQs] = useState<number[]>([])
 
@@ -73,7 +74,7 @@ export function QuestionsListView(props: QuestionsListViewProps) {
                         <Space size={15} />
                         <Pressable
                             android_ripple={{ color: theme.palette.grey[theme.mode][3], borderless: true }}
-                            onPress={() => { }}
+                            onPress={()=>"navigate to message details" }
                         >
                             <Text style={styles.reviewButtonsText}>
                                 No
@@ -101,27 +102,31 @@ export function QuestionsListView(props: QuestionsListViewProps) {
     }
 
     return (
+
         <View>
-            <Accordion
-                sections={faqs}
-                activeSections={activeFAQs}
-                renderHeader={_renderHeader}
-                renderContent={_renderContent}
-                onChange={_updateSections}
-                underlayColor={theme.palette.lightGrey[theme.mode].main}
-                touchableComponent={Pressable as any}
-                sectionContainerStyle={styles.sectionContainerStyle}
-            />
-            <View style={{ alignItems: "center" }}>
-                <Pressable
-                    style={{ paddingHorizontal: 10, paddingVertical: 5 }}
-                    android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
-                >
-                    <Text style={styles.seeMoreText}>
-                        see more
-                    </Text>
-                </Pressable>
-            </View>
+                <Accordion
+                    sections={faqs}
+                    activeSections={activeFAQs}
+                    renderHeader={_renderHeader}
+                    renderContent={_renderContent}
+                    onChange={_updateSections}
+                    underlayColor={theme.palette.lightGrey[theme.mode].main}
+                    touchableComponent={Pressable as any}
+                    sectionContainerStyle={styles.sectionContainerStyle}
+
+                />
+                {loading_more && <LoadingBlock height={30}/>}
+                <View style={{ alignItems: "center" }}>
+                    <Pressable
+                        style={{ paddingHorizontal: 10, paddingVertical: 5 }}
+                        android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
+                        onPress={()=>loadMore()}
+                    >
+                        <Text style={styles.seeMoreText}>
+                            see more
+                        </Text>
+                    </Pressable>
+                </View>
         </View>
 
     );
@@ -132,6 +137,7 @@ const getStyles = (theme: ThemeType) => {
     const { palette, mode, text } = theme
     return StyleSheet.create({
         root: {
+            height: 200
         },
 
         questionHeader: {
@@ -178,8 +184,8 @@ const getStyles = (theme: ThemeType) => {
         empty_result_test: {
             ...text.medium.P14_Lh180,
             color: palette.grey[mode].main,
-            textAlign:"center",
-            marginTop:20
+            textAlign: "center",
+            marginTop: 20
         }
 
 

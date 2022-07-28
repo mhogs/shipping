@@ -16,17 +16,26 @@ export function listToMatrix(list: Array<any>, elementsPerSubArray: number) {
     }
     return matrix;
 }
+export function matrixToList<T>(table?: T[][]): T[] {
+    if (!table) return []
+    const arr: T[] = [];
+    for (const row of table) {
+        for (const item of row)
+            arr.push(item);
+    }
+    return arr
+}
 
 
-export  const createFormData = ( body :any) => {
+export const createFormData = (body: any) => {
     const data = new FormData();
 
     Object.keys(body).forEach((key) => {
-      data.append(key, body[key]);
+        data.append(key, body[key]);
     });
 
     return data;
-  };
+};
 
 export async function getUserFromStorage(): Promise<currentUserType> {
     const user_str = await AsyncStorage.getItem(USER_STORAGE_KEY)
@@ -59,10 +68,10 @@ export function showsuccessToast(message: string) {
 
 
 export function extractErrorMessage(errorResponse: any): { status: string, detail: string } {
-    
+
     const errorData = errorResponse.response?.data
-    
-    
+
+
     const errorStatus: "400" | "404" | "301" | "500" = errorResponse.response?.status
     const ERRORS_STATUS_MAP = {
         "400": "Bad Request",

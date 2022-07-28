@@ -12,7 +12,7 @@ import { HelpCenterStackParamList } from '../../navigation/HelpCenterStack';
 import { MessagesStackParamList } from '../../navigation/MessagesStack';
 import { useTheme } from '../../state';
 import { ThemeType } from '../../theme';
-import { QuestionsListView } from './components/questionsList';
+import { QuestionsListView } from './components/faq-list';
 
 type HelpCenterCategoryScreenProps = NativeStackScreenProps<HelpCenterStackParamList & MessagesStackParamList, 'HelpCategory'>;
 export const HelpCenterCategoryScreen = ({ route, navigation }: HelpCenterCategoryScreenProps) => {
@@ -68,7 +68,6 @@ export const HelpCenterCategoryScreen = ({ route, navigation }: HelpCenterCatego
                                         }
                                     }
                                 />}
-
 
                         </View>
                     </ScrollView>

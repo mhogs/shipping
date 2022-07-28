@@ -1,26 +1,43 @@
-import { useQuery } from '@tanstack/react-query';
+import { FetchNextPageOptions, useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { HelpServices } from '../../../services';
-import { faqCategoriesResponseDataType, faqRequestParmsType, faqResponseDataType } from '../../../@types';
+import { faqCategoriesResponseDataType, faqRequestParmsType, faqResponseDataType, PaginatedResponse, paginationParams } from '../../../@types';
 import { useState } from 'react';
+import { matrixToList } from '../../../helpers';
 
 /** */
-export const useFetchFaqs = (params:faqRequestParmsType) => {
-    const QUERY_QEY=['faqs', ...Object.values(params || {})]
-    const { data:faqs, isLoading:faqs_loading } = useQuery<faqResponseDataType[], Error>(
-        QUERY_QEY,
-        ()=>HelpServices.fetchQuestions(params),
-        {
-            retry: 1
-        }
-    );
+export const useFetchFaqs = (params: faqRequestParmsType) => {
+    const initial_pagination_parms: paginationParams = {
+        limit: 4,
+        offset: 0
+    }
+    const QUERY_QEY = ['faqs', ...Object.values(params || {})]
 
-    return { faqs, faqs_loading}
+    const {
+        data: infinit_faqs,
+        error,
+        isLoading: faqs_loading,
+        isFetchingNextPage: loading_more,
+        fetchNextPage:loadMore,
+        hasNextPage,
+        isFetching,
+        isFetchingNextPage,
+        status,
+    } = useInfiniteQuery<PaginatedResponse<faqResponseDataType>, Error>(
+        QUERY_QEY,
+        ({ pageParam = params }: any) => HelpServices.fetchFAQs(pageParam), {
+        getNextPageParam: (lastPage, pages) => lastPage.next || undefined
+    })
+
+    
+    const result_matrix = infinit_faqs?.pages.map(item => item.results)
+    const faqs = matrixToList(result_matrix)
+    return { faqs, faqs_loading, loading_more, loadMore }
 }
 
 /** */
 export const useFetchFaqCategories = () => {
 
-    const { data:fasq_categories ,  isLoading:faqs_cats_loading } = useQuery<faqCategoriesResponseDataType[], Error>(
+    const { data: fasq_categories, isLoading: faqs_cats_loading } = useQuery<faqCategoriesResponseDataType[], Error>(
         ['faqs_categories'],
         HelpServices.fetchQuestionCategories,
         {
@@ -28,6 +45,6 @@ export const useFetchFaqCategories = () => {
         }
     );
 
-    return { fasq_categories,faqs_cats_loading }
+    return { fasq_categories, faqs_cats_loading }
 }
 /** */

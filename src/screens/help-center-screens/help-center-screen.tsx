@@ -15,7 +15,7 @@ import { HelpCenterStackParamList } from '../../navigation/HelpCenterStack';
 import { MessagesStackParamList } from '../../navigation/MessagesStack';
 import { useTheme } from '../../state';
 import { ThemeType } from '../../theme';
-import { QuestionsListView } from './components/questionsList';
+import { QuestionsListView } from './components/faq-list';
 import { useFetchFaqCategories } from './custom-hooks';
 
 type HelpCenterScreenProps = NativeStackScreenProps<HelpCenterStackParamList & MessagesStackParamList, 'Help'>;

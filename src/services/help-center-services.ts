@@ -1,20 +1,26 @@
 
 import axios from "axios"
-import {   faqCategoriesResponseDataType, faqRequestParmsType,faqResponseDataType } from "../@types"
+import { faqCategoriesResponseDataType, faqRequestParmsType, faqResponseDataType, PaginatedResponse, paginationParams } from "../@types"
 import { BACKEND_BASE_URL } from "../constants"
-import {  extractErrorMessage, getAuthHeaders, showErrorToast, showsuccessToast } from "../helpers"
+import { extractErrorMessage, getAuthHeaders, showErrorToast, showsuccessToast } from "../helpers"
 
 
 
 
 export class HelpServices {
 
-    static async fetchQuestions(params?:faqRequestParmsType): Promise<faqResponseDataType[]> {
+    static async fetchFAQs(pageParam:faqRequestParmsType | string ): Promise<PaginatedResponse<faqResponseDataType>> {
+        console.log(pageParam);
+
         const url = `${BACKEND_BASE_URL}/help/faqs/`
+        const initial_page_params: paginationParams = { limit: 2, offset: 0 }
+        const ready_url = typeof pageParam === "string"
         try {
-            const response = await axios.get(url, {
-                params:{...params}
-            })
+            const response = await axios.get(
+                ready_url ? pageParam : url
+                , {
+                    params: ready_url ? {} : { ...pageParam, ...initial_page_params }
+                })
             return response.data
         } catch (err: any) {
             const parsedError = extractErrorMessage(err)
@@ -22,11 +28,11 @@ export class HelpServices {
             throw Error(parsedError.detail);
         }
     }
-    static async fetchQuestionCategories(params:any): Promise<faqCategoriesResponseDataType[]> {
+    static async fetchQuestionCategories(params: any): Promise<faqCategoriesResponseDataType[]> {
         const url = `${BACKEND_BASE_URL}/help/faq_categories/`
         try {
             const response = await axios.get(url, {
-                params:{...params}
+                params: { ...params }
             })
             return response.data
         } catch (err: any) {
@@ -35,8 +41,8 @@ export class HelpServices {
             throw Error(parsedError.detail);
         }
     }
-   
-   
+
+
 
 }
 

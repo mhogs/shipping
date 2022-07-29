@@ -1,27 +1,19 @@
-import { View, StyleSheet, Image, Text, ScrollView, ActivityIndicator } from 'react-native'
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { Fragment } from 'react'
-import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
-import { MyTextInput } from '../../components/inputs'
-import { MyTabView, Space } from '../../components/util'
-import { callIcon, googleIcon, appleIcon } from '../../assets'
-import { LockOutLineIcon } from '../../components/icons'
-import { AuthActionButton, SocialLoginButton } from '../../components/buttons'
-import { Devider } from '../../components/util/Devider'
-import { AuthScreenProps, AuthStackParamList } from '../../navigation/AuthStack';
+import { View, StyleSheet } from 'react-native'
+import React from 'react'
+import { useTheme } from '../../../state/theming'
+import { ThemeType } from '../../../theme'
 import { SceneRendererProps } from 'react-native-tab-view';
-import { OrderHistoryItem } from '../../components/content';
-import { OrdersResponseDataType } from '../../@types';
+import { orderHistoryFilterType } from '../../../@types';
+import { OrdersHistoryList } from './orders-history-list';
+import { MyTabView } from '../../../components/navigation';
 
 
 type OrdersFormMeSceneProps = {
-    orders?: OrdersResponseDataType[],
-    loading: boolean
+    filter?: orderHistoryFilterType
 }
 
 export const OrdersListScene = (props: OrdersFormMeSceneProps) => {
-    const { orders,loading } = props;
+    const { filter } = props;
 
     const { theme } = useTheme()
     const styles = getStyles(theme)
@@ -31,6 +23,7 @@ export const OrdersListScene = (props: OrdersFormMeSceneProps) => {
 
     const TabRoutes = [
         { key: "all", title: "All" },
+        { key: "draft", title: "Draft" },
         { key: "pending", title: "Pending" },
         { key: "on_progress", title: "On Progress" },
         { key: "deliverded", title: "Deliverded" },
@@ -46,13 +39,15 @@ export const OrdersListScene = (props: OrdersFormMeSceneProps) => {
 
         switch (route.key) {
             case 'all':
-                return <OrdersHistoryList loading={loading} orders={orders} />;
+                return <OrdersHistoryList filter={{ ...filter }} />;
+            case 'draft':
+                return <OrdersHistoryList filter={{ ...filter,state: "draft" }} />;
             case 'pending':
-                return <OrdersHistoryList loading={loading} orders={orders?.filter(order => order.state === 'pending')} />;
+                return <OrdersHistoryList filter={{ ...filter, state: "pending" }} />;
             case 'on_progress':
-                return <OrdersHistoryList loading={loading} orders={orders?.filter(order => order.state === 'on_progress')} />;
+                return <OrdersHistoryList filter={{ ...filter, state: "on_progress" }} />;
             case 'deliverded':
-                return <OrdersHistoryList loading={loading} orders={orders?.filter(order => order.state === 'delivered')} />;
+                return <OrdersHistoryList filter={{ ...filter, state: "delivered" }} />;
             default:
                 return null;
         }
@@ -77,39 +72,7 @@ export const OrdersListScene = (props: OrdersFormMeSceneProps) => {
 }
 
 
-type OrdersHistoryListProps = {
-    orders?: OrdersResponseDataType[]
-    loading?: boolean
-}
-const OrdersHistoryList = (props: OrdersHistoryListProps) => {
-    const { loading, orders } = props
-    const { theme } = useTheme()
-    const styles = getStyles(theme)
-    return (
-        <ScrollView showsVerticalScrollIndicator={false}>
-            <View>
-                <Text style={styles.resultsText}>
-                    {orders?.length} Results
-                </Text>
-                <Space size={20} direction='vertical' />
 
-                {
-                    orders?.map((order, index) => (
-                        <Fragment key={index}>
-                            <OrderHistoryItem
-                                {...order}
-                            />
-                            <Space size={15} direction='vertical' />
-                        </Fragment>
-                    ))
-                }
-                {loading && <ActivityIndicator size="large" color={theme.palette.primary[theme.mode].main} />}
-
-            </View>
-        </ScrollView>
-
-    )
-}
 
 
 const getStyles = (theme: ThemeType) => {
@@ -158,12 +121,7 @@ const getStyles = (theme: ThemeType) => {
             ...text.medium.P12_Lh130,
             textAlign: "center",
         },
-        resultsText: {
-            ...text.heading.H3,
-            color: palette.black[mode].main
-        }
-
-
+       
     })
 }
 

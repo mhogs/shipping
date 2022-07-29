@@ -3,6 +3,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Formik } from 'formik';
 import React, { Fragment, useState } from 'react'
 import { View, Text, Image, ScrollView, KeyboardAvoidingView, StyleSheet, Pressable } from 'react-native'
+import { faqCategoriesResponseDataType } from '../../@types';
 import { insuranceIconColored, MobileIconColored, searchIconGrey, trackIconColored } from '../../assets';
 import { SocialLoginButton } from '../../components/buttons';
 import { HelpCenterCategoryItem } from '../../components/content';
@@ -11,19 +12,23 @@ import { SearchInput } from '../../components/inputs';
 import { useHideBottomBar } from '../../components/navigation';
 import { LoadingBlock, SimpleScreenHeader, Space } from '../../components/util'
 import { listToMatrix } from '../../helpers';
+import { useFetcher } from '../../hooks';
 import { HelpCenterStackParamList } from '../../navigation/HelpCenterStack';
 import { MessagesStackParamList } from '../../navigation/MessagesStack';
 import { useTheme } from '../../state';
 import { ThemeType } from '../../theme';
 import { QuestionsListView } from './components/faq-list';
-import { useFetchFaqCategories } from './custom-hooks';
+
 
 type HelpCenterScreenProps = NativeStackScreenProps<HelpCenterStackParamList & MessagesStackParamList, 'Help'>;
 export const HelpCenterScreen = ({ navigation }: HelpCenterScreenProps) => {
   useHideBottomBar(navigation, 2)
   const { theme } = useTheme()
   const styles = getStyles(theme)
-  const { fasq_categories, faqs_cats_loading } = useFetchFaqCategories()
+  const {
+    data: fasq_categories,
+    isLoading: faqs_cats_loading
+  } = useFetcher<faqCategoriesResponseDataType>("faq_categories", "/help/faq_categories/",{})
 
   return (
     <Formik

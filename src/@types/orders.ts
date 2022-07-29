@@ -15,15 +15,15 @@ export type PackageType = {
     height: number
 }
 
-export type ServiceType={
-    name:string,
-    icon:string
-    id:number
+export type ServiceType = {
+    name: string,
+    icon: string
+    id: number
 }
 
-export type orderStateType = "delivered" | "on_progress" | "pending"
+export type orderStateType = "delivered" | "on_progress" | "pending"|"draft"
 export type OrdersRequestDataType = {
-    creator?:number
+    creator?: number
     description?: string
     state?: orderStateType
     made_to?: number
@@ -36,9 +36,16 @@ export type OrdersRequestDataType = {
     destination?: locationType
 }
 export type OrdersResponseDataType = OrdersRequestDataType & {
-    id: 1,
+    id: number,
     created_at?: string,
     updated_at?: string,
     code?: string,
     creator?: number,
+}
+
+export type orderHistoryFilterType = {
+    made_to?: number,
+    state?: orderStateType,
+    creator?: number,
+    search?:string
 }

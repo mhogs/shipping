@@ -18,7 +18,7 @@ export const Slider = ({slides}: sliderProps) => {
 
   const [currentIndex, setCurrentIndex]= useState(0);
 
-  const itemChanged = useRef((info)=>{
+  const itemChanged = useRef((info:any)=>{
     setCurrentIndex(info.viewableItems[0].index)
   }).current;
 

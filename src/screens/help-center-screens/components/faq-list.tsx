@@ -2,30 +2,33 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { Fragment, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
-import { ScrollView } from 'react-native-gesture-handler';
 import { faqRequestParmsType, faqResponseDataType } from '../../../@types';
-
 import { MinusIcon, PlusIcon } from '../../../components/icons';
 import { Devider, LoadingBlock, Space } from '../../../components/util';
-import { HelpCenterStackParamList } from '../../../navigation/HelpCenterStack';
-import { MessagesStackParamList } from '../../../navigation/MessagesStack';
+import { useInfinitFetcher } from '../../../hooks';
 import { useTheme } from '../../../state';
 import { ThemeType } from '../../../theme';
-import { useFetchFaqs } from '../custom-hooks';
+
 
 
 
 
 type QuestionsListViewProps = {
-    navigation: NativeStackNavigationProp<HelpCenterStackParamList & MessagesStackParamList, "Help", undefined>,
+    navigation: any,
     params?: faqRequestParmsType
 }
 export function QuestionsListView(props: QuestionsListViewProps) {
 
-    const { params,navigation } = props
+    const { params, navigation } = props
+    const PAGESIZE=4
     const { theme } = useTheme()
     const styles = getStyles(theme)
-    const { faqs, faqs_loading,loading_more, loadMore } = useFetchFaqs(params)
+    const {
+        results: faqs,
+        isLoading: faqs_loading,
+        isFetchingNextPage: loading_more,
+        fetchNextPage: loadMore
+    } = useInfinitFetcher<faqResponseDataType>("faqs", params, "/help/faqs/",PAGESIZE)
 
 
     const [activeFAQs, setActiveFAQs] = useState<number[]>([])
@@ -74,7 +77,7 @@ export function QuestionsListView(props: QuestionsListViewProps) {
                         <Space size={15} />
                         <Pressable
                             android_ripple={{ color: theme.palette.grey[theme.mode][3], borderless: true }}
-                            onPress={()=>"navigate to message details" }
+                            onPress={() => "navigate to message details"}
                         >
                             <Text style={styles.reviewButtonsText}>
                                 No
@@ -104,29 +107,29 @@ export function QuestionsListView(props: QuestionsListViewProps) {
     return (
 
         <View>
-                <Accordion
-                    sections={faqs}
-                    activeSections={activeFAQs}
-                    renderHeader={_renderHeader}
-                    renderContent={_renderContent}
-                    onChange={_updateSections}
-                    underlayColor={theme.palette.lightGrey[theme.mode].main}
-                    touchableComponent={Pressable as any}
-                    sectionContainerStyle={styles.sectionContainerStyle}
+            <Accordion
+                sections={faqs}
+                activeSections={activeFAQs}
+                renderHeader={_renderHeader}
+                renderContent={_renderContent}
+                onChange={_updateSections}
+                underlayColor={theme.palette.lightGrey[theme.mode].main}
+                touchableComponent={Pressable as any}
+                sectionContainerStyle={styles.sectionContainerStyle}
 
-                />
-                {loading_more && <LoadingBlock height={30}/>}
-                <View style={{ alignItems: "center" }}>
-                    <Pressable
-                        style={{ paddingHorizontal: 10, paddingVertical: 5 }}
-                        android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
-                        onPress={()=>loadMore()}
-                    >
-                        <Text style={styles.seeMoreText}>
-                            see more
-                        </Text>
-                    </Pressable>
-                </View>
+            />
+            {loading_more && <LoadingBlock height={30} />}
+            <View style={{ alignItems: "center" }}>
+                <Pressable
+                    style={{ paddingHorizontal: 10, paddingVertical: 5 }}
+                    android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
+                    onPress={() => loadMore()}
+                >
+                    <Text style={styles.seeMoreText}>
+                        see more
+                    </Text>
+                </Pressable>
+            </View>
         </View>
 
     );

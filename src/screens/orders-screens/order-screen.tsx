@@ -33,8 +33,6 @@ export const OrderScreen = (props: OrderScreenProps) => {
   /**form state */
   const [order, setOrder] = useState<OrdersRequestDataType>({})
   
-  
-  
   const renderScene = (props: SceneRendererProps & {
     route: {
       key: string;

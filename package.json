@@ -47,6 +47,7 @@
     "react-native-tab-view": "^3.1.1",
     "react-native-toast-message": "^2.1.5",
     "react-native-web": "0.17.7",
+    "reconnecting-websocket": "^4.4.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {

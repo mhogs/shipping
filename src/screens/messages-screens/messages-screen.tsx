@@ -1,15 +1,18 @@
 
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import React, { FC, Fragment } from 'react'
+import React, { FC, Fragment, useEffect } from 'react'
 import { View, StyleSheet, Image, StatusBar, Text, TextInput, KeyboardAvoidingView, Pressable, ScrollView, ActivityIndicator } from 'react-native'
+import ReconnectingWebSocket from 'reconnecting-websocket'
 import { add_squar_icon_asset, avatar_asset, checkRatesIcon, HelpCenterFeatureIcon, logo_asset, NearByFeatureIcon, notification_asset, OrderFeatureIcon, OtherFeatureIcon, scanIcon, searchIcon, WalletFeatureIcon } from '../../assets'
 import { MessageItem } from '../../components/content'
 import { SearchInput } from '../../components/inputs'
 import { Devider, Space } from '../../components/util'
-import { listToMatrix } from '../../helpers'
+import { WEB_SOCKET_SERVER } from '../../constants'
+import { listToMatrix, showsuccessToast } from '../../helpers'
 import { RootStackParamList } from '../../navigation/BottomNavigationBar'
 import { MessagesStackParamList } from '../../navigation/MessagesStack'
+import { useAuthentication } from '../../state'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 import { useMessages } from './useMessages'
@@ -21,7 +24,22 @@ export const MessagesScreen = ({ navigation }: MessagesScreenProps) => {
   const { navigate } = navigation
   const { theme } = useTheme()
   const styles = getStyles(theme)
-  const { data: messages, isLoading, error } = useMessages()
+  const { currentUser } = useAuthentication()
+  //const { data: messages, isLoading, error } = useMessages()
+  useEffect(() => {
+    if (currentUser) {
+      const ws = new WebSocket(`${WEB_SOCKET_SERVER}?token=${currentUser?.access}`);
+
+      ws.onopen = () => {
+        console.log("connected ........");
+        ws.send('something'); // send a message
+      };
+      ws.onerror = () => {
+        console.log("can not connect  ........");
+      }
+    }
+
+  })
   return (
     <>
       <StatusBar backgroundColor={theme.palette.primary[theme.mode].main} />
@@ -55,15 +73,15 @@ export const MessagesScreen = ({ navigation }: MessagesScreenProps) => {
         </View>
         <ScrollView>
           <View style={styles.body} >
-            {messages &&
+            {/*messages &&
               messages.map((message, index) => (
                 <Fragment key={index}>
-                  <MessageItem {...message} onPress={()=>navigate("MessageDetails")} />
+                  <MessageItem {...message} onPress={() => navigate("MessageDetails")} />
                   <Devider spacing={15} />
                 </Fragment>
               ))
-            }
-            {isLoading && <ActivityIndicator size="large" color={theme.palette.primary[theme.mode].main} />}
+              */}
+            {/*isLoading && <ActivityIndicator size="large" color={theme.palette.primary[theme.mode].main} />*/}
           </View>
         </ScrollView>
 
@@ -122,8 +140,8 @@ const getStyles = (theme: ThemeType) => {
       right: 2,
       zIndex: 1
     },
-   
-   
+
+
     /** Body */
     body: {
       flex: 1,

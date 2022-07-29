@@ -33,7 +33,7 @@ export function MyBottomTabBar(props: BottomTabBarProps) {
                                 }}
                                 android_ripple={{ color: theme.palette.lightGrey[theme.mode].main, borderless: true }}
                             >
-                                <Image source={isActiveTab(tab.route) ? tab.activeIcon : tab.icon} width={24} height={24} />
+                                <Image source={isActiveTab(tab.route) ? tab.activeIcon : tab.icon} style={{width:24, height:24}} />
                                 <Text style={[styles.tabText, isActiveTab(tab.route) ? { color: theme.palette.primary[theme.mode].main } : {}]}>{tab.name}</Text>
                             </Pressable>
                         </View>

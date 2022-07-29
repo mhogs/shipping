@@ -1,5 +1,8 @@
 {
   "home": {
     "title": "Home"
+  },
+  "orders_history":{
+    "screen_title":"My Orders"
   }
 }

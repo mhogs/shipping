@@ -60,7 +60,7 @@ i18n.use(initReactI18next).init({
     escapeValue: false, // react already safes from xss
   },
 })
-export { useTranslation } from 'react-i18next'
+export  {useTranslation}  from 'react-i18next'
 export { i18n, isRTL, initI18N, changeLanguage }
 
 

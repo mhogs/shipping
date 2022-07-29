@@ -19,12 +19,17 @@ import { OrdersListScene } from './components/orders-list-scene'
 import { useRefreshOnFocus } from '../../hooks'
 import { Formik, useFormik } from 'formik'
 import { MyTabView } from '../../components/navigation'
+import { useTranslation } from 'react-i18next'
+import { isRTL } from '../../locales'
 
 type OrderHistoryScreenProps = NativeStackScreenProps<OrdersHistoryStackParamList, 'MyOrders'>;
 
 export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
 
   const { theme } = useTheme()
+  const {t} = useTranslation("orders_history")
+  
+
   const styles = getStyles(theme)
   const { currentUser } = useAuthentication()
   const { values, handleChange } = useFormik({
@@ -64,7 +69,7 @@ export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
         {/** title */}
         <View style={styles.title}>
 
-          <Text style={styles.title_text}  >My Orders</Text>
+          <Text style={styles.title_text}  >{t("screen_title")}</Text>
 
           <Pressable
             style={styles.filterIconContainer}
@@ -77,7 +82,7 @@ export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
         <Space size={20} direction="vertical" />
         <SearchInput
           startIcon={<Image source={searchIcon} />}
-          placeholder='Search Messages'
+          placeholder='Search Orders'
           placeholderTextColor={theme.palette.grey[theme.mode][3]}
           endicon={<Image source={scanIcon} />}
           value={values.search}
@@ -107,7 +112,7 @@ const getStyles = (theme: ThemeType) => {
       padding: 24
     },
     title: {
-      flexDirection: 'row',
+      flexDirection: isRTL()?"row-reverse":'row',
       alignItems: 'center',
       justifyContent: 'space-between'
     },

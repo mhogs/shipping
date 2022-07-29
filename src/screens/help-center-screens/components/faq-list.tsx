@@ -118,7 +118,7 @@ export function QuestionsListView(props: QuestionsListViewProps) {
                 sectionContainerStyle={styles.sectionContainerStyle}
 
             />
-            {loading_more && <LoadingBlock height={30} />}
+            {loading_more && <LoadingBlock/>}
             <View style={{ alignItems: "center" }}>
                 <Pressable
                     style={{ paddingHorizontal: 10, paddingVertical: 5 }}

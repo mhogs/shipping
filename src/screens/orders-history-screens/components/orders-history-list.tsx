@@ -20,7 +20,8 @@ export const OrdersHistoryList = (props: OrdersHistoryListProps) => {
         isLoading,
         isFetchingNextPage: loading_more,
         fetchNextPage: loadMore,
-        refetch
+        refetch,
+        resultsCount
     } = useInfinitFetcher<OrdersResponseDataType>("orders_history", filter, "/orders/orders/", 3)
 
     useRefreshOnFocus(refetch)
@@ -39,19 +40,19 @@ export const OrdersHistoryList = (props: OrdersHistoryListProps) => {
                 <Space size={50} direction='vertical' />
             }
             {loading_more && index >= orders.length - 1 &&
-                <LoadingBlock height={12} />
+                <LoadingBlock style={{justifyContent:"flex-start"}}  />
             }
         </Fragment>
     );
     if (isLoading) {
         return (
-            <LoadingBlock height={100} />
+            <LoadingBlock style={{height:50}} />
         )
     }
     return (
         <>
             <Text style={styles.resultsText}>
-                {orders?.length} Results
+                {resultsCount} Results
             </Text>
             <Space size={20} direction='vertical' />
             <FlatList

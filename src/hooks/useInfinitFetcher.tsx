@@ -21,8 +21,8 @@ export function useInfinitFetcher<T>(queryName: string, filter: any, route: stri
         ({ pageParam = { ...query_params, route } }: any) => GenricServices.fetchInfinit<T>(pageParam), {
         getNextPageParam: (lastPage, pages) => lastPage.next || undefined
     })
-
+    const resultsCount=data?.pages.length ?data?.pages[0].count:0
     const results_table = data?.pages.map(item => item.results)
     const results = matrixToList(results_table)
-    return { results, isLoading, isFetchingNextPage, fetchNextPage, refetch, error, hasNextPage }
+    return { results, isLoading, isFetchingNextPage, fetchNextPage, refetch, error, hasNextPage,resultsCount  }
 }

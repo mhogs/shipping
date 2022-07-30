@@ -25,6 +25,8 @@ export type TypographyType = {
     P16_Lh130: TextStyleType,
     P14_Lh130: TextStyleType,
     P12_Lh130: TextStyleType,
+    P10_Lh130?:TextStyleType,
+    P8_Lh130?:TextStyleType
 }
 export type ThemeType = {
     mode: "dark" | "light",
@@ -246,6 +248,19 @@ export const defaultTheme: ThemeType = {
                 lineHeight: 15.6,
                 fontFamily: 'Outfit_400Regular'
             },
+            P10_Lh130: {
+                fontSize: 10,
+                fontWeight: "400",
+                lineHeight: 13,
+                fontFamily: 'Outfit_400Regular'
+            },
+            P8_Lh130: {
+                fontSize: 8,
+                fontWeight: "400",
+                lineHeight: 10,
+                fontFamily: 'Outfit_400Regular'
+            },
+
         },
         medium: {
             P20_Lh180: {

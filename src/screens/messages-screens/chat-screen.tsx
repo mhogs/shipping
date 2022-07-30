@@ -2,54 +2,31 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useCallback, useEffect } from 'react'
 import { View, StyleSheet, Text, Pressable, Image, TextStyle, KeyboardAvoidingView, Platform } from 'react-native';
 import { Actions, ActionsProps, AvatarProps, Bubble, BubbleProps, Composer, ComposerProps, GiftedChat, IMessage, InputToolbar, InputToolbarProps, LeftRightStyle, Message, MessageImage, MessageImageProps, MessageProps, MessageText, MessageTextProps, Send, SendProps, Time, TimeProps } from 'react-native-gifted-chat'
+import { avatar_asset } from '../../assets';
 import { AttachmentIcon, LeftArrowIcon, PhoneCallIcon, SendIcon, ThreeDotsIcon } from '../../components/icons';
 import { useHideBottomBar } from '../../components/navigation';
 import { Space } from '../../components/util';
 import { MessagesStackParamList } from '../../navigation/MessagesStack';
 import { useTheme } from '../../state';
 import { ThemeType } from '../../theme';
+import { useMessageDetails } from './useMessageDetails';
 
 const INPUT_HEIGHT = 44
 
 type ChatScreenScreenProps = NativeStackScreenProps<MessagesStackParamList, "MessageDetails">;
 
-export const ChatScreen = ({ navigation }: ChatScreenScreenProps) => {
+export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
     const { goBack } = navigation
+    const { sender } = route.params
     useHideBottomBar(navigation, 1)
     const { theme } = useTheme()
     const styles = getStyles(theme)
-    const [messages, setMessages] = useState<IMessage[]>([]);
+    const { messages, isLoading, loading_more, loadMore } = useMessageDetails({ user2: sender?.id })
 
-    useEffect(() => {
-        setMessages([
-            {
-                _id: 1,
-                text: 'Hello developer',
-                createdAt: new Date(),
-                user: {
-                    _id: 2,
-                    name: 'Loqman',
-                    avatar: 'https://placeimg.com/140/140/any',
-                },
-                image: 'https://placeimg.com/140/140/any'
 
-            },
-            {
-                _id: 2,
-                text: 'Hello dudes',
-                createdAt: new Date(),
-                user: {
-                    _id: 1,
-                    name: 'Node',
-                    avatar: 'https://placeimg.com/140/140/any',
-                },
-                image: 'https://placeimg.com/140/140/any'
-            },
-        ])
-    }, [])
 
-    const onSend = useCallback((messages: IMessage[] = []) => {
-        setMessages((previousMessages: any) => GiftedChat.append(previousMessages, messages))
+    const onSend = useCallback((msgs: IMessage[] = []) => {
+        GiftedChat.append(messages, msgs)
     }, [])
 
     return (
@@ -67,19 +44,22 @@ export const ChatScreen = ({ navigation }: ChatScreenScreenProps) => {
                     <View style={{ marginLeft: 20 }}>
                         <View style={styles.messageContainer}>
                             <View style={{ flexDirection: 'row', alignItems: "center" }}>
-                                <View style={[styles.avatarContainer, { marginRight: 14 }]}>
-                                    <Image
-                                        style={styles.avatarContainer}
-                                        source={{ uri: "https://placeimg.com/140/140/any" }}
-                                    />
-                                    <View style={styles.onlineBadge}>
+                                <View style={{ marginRight: 14 }}>
+                                    {
+                                        sender.picture ?
+                                            <Image
+                                                style={styles.avatarPicture}
+                                                source={{ uri: sender.picture }}
+                                            /> 
+                                            :
+                                            <Image source={avatar_asset} style={styles.avatarPicture} />
+                                    }
 
-                                    </View>
                                 </View>
 
                                 <View >
                                     <Text style={styles.notificatioTitle}>
-                                        Kathryn Murphy
+                                        {sender.first_name} {sender.last_name}
                                     </Text>
                                     <Text style={styles.notificatioBrief}>
                                         Online
@@ -115,7 +95,7 @@ export const ChatScreen = ({ navigation }: ChatScreenScreenProps) => {
                         style={styles.chatAvatar}
                     />
                 )}
-                
+
                 renderMessageImage={(props) => customtImage(props, theme)}
                 renderInputToolbar={(toolbarProps) => customtInputToolbar(toolbarProps, theme)}
                 renderComposer={(props) => customtComposer(props, theme)}
@@ -154,8 +134,7 @@ const getStyles = (theme: ThemeType) => {
             justifyContent: "space-between",
             alignItems: "flex-start"
         },
-        avatarContainer: {
-            position: "relative",
+        avatarPicture: {
             width: 44,
             height: 44,
             borderRadius: 44,

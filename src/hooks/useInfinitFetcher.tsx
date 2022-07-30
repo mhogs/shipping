@@ -6,7 +6,7 @@ import { GenricServices } from "../services"
 /** params == queryname , filter object, route, limit=10, offset=0 */
 export function useInfinitFetcher<T>(queryName: string, filter: any, route: string, limit: number = 10, offset: number = 0,) {
 
-    const QUERY_QEY = [queryName, ...Object.keys(filter).map(key => `${key}=${JSON.stringify(filter[key])}`)]
+    const QUERY_QEY =filter? [queryName, ...Object.keys(filter).map(key => `${key}=${JSON.stringify(filter[key])}`)]:[queryName]
     const query_params = { ...filter, limit, offset }
     const {
         data,

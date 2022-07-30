@@ -1,5 +1,6 @@
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { userType } from '../@types';
 import { ChatScreen, MessagesScreen } from '../screens';
 
 
@@ -23,6 +24,6 @@ export const MessagesStackNavigator = () => {
 }
 
 export type MessagesStackParamList = {
-    Messages:undefined
-    MessageDetails:undefined
-  };
+    Messages: undefined
+    MessageDetails: { sender:userType }
+};

@@ -19,13 +19,12 @@ export type dialogType = {
   messageText: string;
   time: string;
   unread: boolean;
-  sender:userType
+  sender: userType
 }
 
 export const useDialogs = (filter?: any) => {
-  const { currentUser } = useAuthentication()
 
- 
+
   const {
     results: data,
     isLoading,
@@ -34,6 +33,7 @@ export const useDialogs = (filter?: any) => {
     refetch,
     resultsCount
   } = useInfinitFetcher<dialogResponseType>("mydialogs", filter || {}, "/chat/dialogs/", API_PAGESIZE)
+  
   useRefreshOnFocus(refetch)
 
 
@@ -43,7 +43,7 @@ export const useDialogs = (filter?: any) => {
     messageText: item.last_message,
     time: moment.unix(item.created).fromNow(),
     unread: item.unread_count > 0,
-    sender:item.other_user
+    sender: item.other_user
   }))
   dialogs.sort((a, b) => a.unread ? -1 : 1)
 

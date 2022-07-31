@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useCallback, useEffect } from 'react'
 import { View, StyleSheet, Text, Pressable, Image, TextStyle, KeyboardAvoidingView, Platform } from 'react-native';
 import { Actions, ActionsProps, AvatarProps, Bubble, BubbleProps, Composer, ComposerProps, GiftedChat, IMessage, InputToolbar, InputToolbarProps, LeftRightStyle, Message, MessageImage, MessageImageProps, MessageProps, MessageText, MessageTextProps, Send, SendProps, Time, TimeProps } from 'react-native-gifted-chat'
+import { WS_MSG_TYPE } from '../../@types';
 import { avatar_asset } from '../../assets';
 import { AttachmentIcon, LeftArrowIcon, PhoneCallIcon, SendIcon, ThreeDotsIcon } from '../../components/icons';
 import { useHideBottomBar } from '../../components/navigation';
@@ -21,13 +22,26 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
     useHideBottomBar(navigation, 1)
     const { theme } = useTheme()
     const styles = getStyles(theme)
-    const { messages, isLoading, loading_more, loadMore } = useMessageDetails({ user2: sender?.id })
+    
+    const { messages, setMessages, isLoading, loading_more, loadMore, socket } = useMessageDetails({ user2: sender.id || 0 })
 
 
 
-    const onSend = useCallback((msgs: IMessage[] = []) => {
-        GiftedChat.append(messages, msgs)
-    }, [])
+    const onSend = (msgs: IMessage[] = []) => {
+        if (msgs.length) {
+            const msg = msgs[0]
+            if (msg.text != "")
+                socket?.send(JSON.stringify(
+                    {
+                        msg_type: WS_MSG_TYPE.TextMessage,
+                        text: msg.text,
+                        user_pk: sender.id?.toString(),
+                        random_id: - Math.floor(Math.random() * 1000)
+                    }
+                ))
+        }
+        setMessages(previousMessages => GiftedChat.append(previousMessages, msgs))
+    }
 
     return (
         <View style={styles.root}>
@@ -50,7 +64,7 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
                                             <Image
                                                 style={styles.avatarPicture}
                                                 source={{ uri: sender.picture }}
-                                            /> 
+                                            />
                                             :
                                             <Image source={avatar_asset} style={styles.avatarPicture} />
                                     }
@@ -83,6 +97,7 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
                     </Pressable>
                 </View>
             </View>
+            {/** body chat */}
             <GiftedChat
                 messages={messages}
                 onSend={messages => onSend(messages)}

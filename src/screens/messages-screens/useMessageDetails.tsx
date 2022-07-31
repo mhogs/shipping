@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react'
-
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import { useFetcher, useInfinitFetcher, useRefreshOnFocus } from '../../hooks';
-import { dialogResponseType, MessageResponseType, SW_MSG_TYPE, userType } from '../../@types';
+import { useInfinitFetcher, useRefreshOnFocus } from '../../hooks';
+import { MessageResponseType, userType, ws_incomingChatMsgType, WS_MSG_TYPE } from '../../@types';
 import moment from 'moment';
-import { showErrorToast, showsuccessToast } from '../../helpers';
-import { WEB_SOCKET_SERVER } from '../../constants';
 import { useAuthentication } from '../../state';
 import { IMessage } from 'react-native-gifted-chat';
+import { useEffect, useState } from 'react';
+import { WEB_SOCKET_SERVER } from '../../constants';
+import { showErrorToast } from '../../helpers';
+import { useMutation } from '@tanstack/react-query';
+import { GenricServices } from '../../services';
 
 const API_PAGESIZE = 20
 
@@ -22,12 +21,12 @@ export type dialogType = {
 }
 
 
-export const useMessageDetails = (filter: { user2?: number }) => {
+export const useMessageDetails = (filter: { user2: number }) => {
     const { currentUser } = useAuthentication()
-
-
+    const [messages, setMessages] = useState<IMessage[]>([])
+    const [socket, setSocket] = useState<WebSocket | undefined>(undefined)
+    // return 1 for right , 2 for left
     function getsenderSide(sender_id?: number) {
-        // 1 for right , 2 for left
         return currentUser?.id === sender_id ? 1 : 2
     }
 
@@ -39,58 +38,80 @@ export const useMessageDetails = (filter: { user2?: number }) => {
         refetch,
         resultsCount
     } = useInfinitFetcher<MessageResponseType>("messages", filter, "/chat/messages/", API_PAGESIZE)
+
     useRefreshOnFocus(refetch)
 
-    const messages: IMessage[] | undefined = data?.map(msg => ({
-        _id: msg.id,
-        text: msg.text,
-        createdAt: moment.unix(msg.created).toDate(),
-        user: {
-            _id: getsenderSide(msg.sender.id),
-            name: msg.sender_username,
-            avatar: msg.sender.picture,
+    const { mutate: fetchThenewMessage,
+        isLoading: feching_new_msg,
+        isSuccess: fetched_new_msg
+    } = useMutation((params: { route: string, id: number }) => GenricServices.fetchOne<MessageResponseType>(params), {
+        onSuccess: (new_msg) => {
+            if (new_msg.sender.id != currentUser?.id) {
+                setMessages(prev_msgs => [
+                    ...prev_msgs,
+                    {
+                        _id: new_msg.id,
+                        text: new_msg.text,
+                        createdAt: moment.unix(new_msg.created).toDate(),
+                        user: {
+                            _id: 2,
+                            name: new_msg.sender_username,
+                            avatar: new_msg.sender.picture
+                        }
+                    } as IMessage
+                ])
+            }
+
         },
-        image: msg.file,
-        received: msg.read
-    } as IMessage))
+        onError: (err: any) => {
+
+        }
+    })
 
     useEffect(() => {
-        if (currentUser && messages?.length) {
+        if (currentUser) {
             const ws = new WebSocket(`${WEB_SOCKET_SERVER}?token=${currentUser?.access}`);
 
             ws.onopen = (ev: Event) => {
+                if (!socket) setSocket(ws)
                 console.log("connected ........");
                 /** mark all not read msgs as read */
-                messages.
-                    filter(msg => msg.user._id === 2 && !msg.received)
+                messages.filter(msg => msg.user._id === 2 && !msg.received)
                     .map(recieved_msg => {
                         ws.send(JSON.stringify({
-                            msg_type: SW_MSG_TYPE.MessageRead,
+                            msg_type: WS_MSG_TYPE.MessageRead,
                             user_pk: filter.user2?.toString(),
                             message_id: recieved_msg._id
                         }))
                     })
-
             }
 
-            ws.onmessage = (ev: MessageEvent<any>) => {
-                console.log({ data: ev.data });
-                console.log({ type: ev.type });
-                showsuccessToast("event in ")
-            }
+            ws.addEventListener("message", (ev: MessageEvent<any>) => {
+                const message_data = JSON.parse(ev.data) 
+                console.log(message_data);
+
+                if (message_data && message_data.msg_type === WS_MSG_TYPE.MessageIdCreated) {
+                    fetchThenewMessage({route:"/chat/messages",id:message_data.db_id})
+                }
+            })
+
             ws.onerror = (ev: Event) => {
                 console.log("connected ........");
             }
             ws.onclose = (ev: Event) => {
-                showErrorToast("disconnected", "connection clodes")
+                console.log("disconnected ........");
             }
 
+
             return () => {
+                ws.removeEventListener('message', () => { })
                 ws.close()
             }
         }
 
-    }, [data])
+    }, [])
 
-    return { messages, isLoading, loadMore, loading_more }
+
+
+    return { messages, isLoading, loadMore, loading_more, socket, setMessages }
 }

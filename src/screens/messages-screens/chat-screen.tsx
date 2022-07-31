@@ -17,20 +17,22 @@ const INPUT_HEIGHT = 44
 type ChatScreenScreenProps = NativeStackScreenProps<MessagesStackParamList, "MessageDetails">;
 
 export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
-    const { goBack } = navigation
+    const { goBack, pop } = navigation
     const { sender } = route.params
     useHideBottomBar(navigation, 1)
     const { theme } = useTheme()
     const styles = getStyles(theme)
-    
-    const { messages, setMessages, isLoading, loading_more, loadMore, socket } = useMessageDetails({ user2: sender.id || 0 })
+    const [new_messgaes,setNewMessages]=useState<IMessage[]>([])
+    const { messages, SyncMessages, isLoading, loading_more, loadMore, socket } = useMessageDetails({ user2: sender.id || 0 })
 
 
 
     const onSend = (msgs: IMessage[] = []) => {
+
         if (msgs.length) {
             const msg = msgs[0]
-            if (msg.text != "")
+            if (msg.text != "") {
+               
                 socket?.send(JSON.stringify(
                     {
                         msg_type: WS_MSG_TYPE.TextMessage,
@@ -39,8 +41,9 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
                         random_id: - Math.floor(Math.random() * 1000)
                     }
                 ))
+            }
         }
-        setMessages(previousMessages => GiftedChat.append(previousMessages, msgs))
+        SyncMessages()
     }
 
     return (
@@ -99,12 +102,14 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
             </View>
             {/** body chat */}
             <GiftedChat
-                messages={messages}
+                messages={[...messages]}
                 onSend={messages => onSend(messages)}
                 placeholder="Type your message "
                 alwaysShowSend
                 user={{ _id: 1, name: 'Bz', }}
-
+                loadEarlier
+                onLoadEarlier={loadMore}
+                isLoadingEarlier={loading_more}
                 renderAvatar={(av) => (
                     <Image source={{ uri: av.currentMessage?.user.avatar as string | undefined }}
                         style={styles.chatAvatar}
@@ -117,6 +122,9 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
                 renderSend={(props) => customtSend(props, theme)}
                 renderActions={(props) => customtAction(props, theme)}
                 renderChatFooter={() => <View style={{ height: 24 }} />}
+                listViewProps={{
+                    onEndReached: loadMore
+                  }}
 
             />
 

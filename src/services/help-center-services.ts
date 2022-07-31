@@ -10,7 +10,7 @@ import { extractErrorMessage, getAuthHeaders, showErrorToast, showsuccessToast }
 export class HelpServices {
 
     static async fetchFAQs(pageParam:faqRequestParmsType | string ): Promise<PaginatedResponse<faqResponseDataType>> {
-        console.log(pageParam);
+       
 
         const url = `${BACKEND_BASE_URL}/help/faqs/`
         const initial_page_params: paginationParams = { limit: 2, offset: 0 }

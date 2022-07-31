@@ -24,7 +24,6 @@ export type dialogType = {
 
 export const useDialogs = (filter?: any) => {
 
-
   const {
     results: data,
     isLoading,

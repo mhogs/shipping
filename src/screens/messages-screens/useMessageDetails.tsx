@@ -1,7 +1,7 @@
 import { useInfinitFetcher, useRefreshOnFocus } from '../../hooks';
 import { MessageResponseType, userType, ws_incomingChatMsgType, WS_MSG_TYPE } from '../../@types';
 import moment from 'moment';
-import { useAuthentication } from '../../state';
+import { useAuthentication, useWebSocket } from '../../state';
 import { IMessage } from 'react-native-gifted-chat';
 import { useEffect, useState } from 'react';
 import { WEB_SOCKET_SERVER } from '../../constants';
@@ -9,7 +9,7 @@ import { showErrorToast } from '../../helpers';
 import { useMutation } from '@tanstack/react-query';
 import { GenricServices } from '../../services';
 
-const API_PAGESIZE = 20
+const API_PAGESIZE = 10
 
 export type dialogType = {
     picture?: string;
@@ -23,8 +23,7 @@ export type dialogType = {
 
 export const useMessageDetails = (filter: { user2: number }) => {
     const { currentUser } = useAuthentication()
-    const [messages, setMessages] = useState<IMessage[]>([])
-    const [socket, setSocket] = useState<WebSocket | undefined>(undefined)
+    const [socket, setWsocket] = useState<WebSocket | null>(null)
     // return 1 for right , 2 for left
     function getsenderSide(sender_id?: number) {
         return currentUser?.id === sender_id ? 1 : 2
@@ -39,41 +38,34 @@ export const useMessageDetails = (filter: { user2: number }) => {
         resultsCount
     } = useInfinitFetcher<MessageResponseType>("messages", filter, "/chat/messages/", API_PAGESIZE)
 
+    async function SyncMessages() {
+        refetch({ refetchPage: (page, index) => index === 0 })
+    }
+  
+    
     useRefreshOnFocus(refetch)
 
-    const { mutate: fetchThenewMessage,
-        isLoading: feching_new_msg,
-        isSuccess: fetched_new_msg
-    } = useMutation((params: { route: string, id: number }) => GenricServices.fetchOne<MessageResponseType>(params), {
-        onSuccess: (new_msg) => {
-            if (new_msg.sender.id != currentUser?.id) {
-                setMessages(prev_msgs => [
-                    ...prev_msgs,
-                    {
-                        _id: new_msg.id,
-                        text: new_msg.text,
-                        createdAt: moment.unix(new_msg.created).toDate(),
-                        user: {
-                            _id: 2,
-                            name: new_msg.sender_username,
-                            avatar: new_msg.sender.picture
-                        }
-                    } as IMessage
-                ])
-            }
-
-        },
-        onError: (err: any) => {
-
+    const messages = data.map(msg => (
+        {
+            _id: msg.id,
+            text: msg.text,
+            createdAt: moment.unix(msg.created).toDate(),
+            user: {
+                _id: getsenderSide(msg.sender.id),
+                name: msg.sender_username,
+                avatar: msg.sender.picture
+            },
+            received: msg.read
         }
-    })
+    ) as IMessage)
 
+
+  
     useEffect(() => {
         if (currentUser) {
             const ws = new WebSocket(`${WEB_SOCKET_SERVER}?token=${currentUser?.access}`);
-
             ws.onopen = (ev: Event) => {
-                if (!socket) setSocket(ws)
+                setWsocket(ws)
                 console.log("connected ........");
                 /** mark all not read msgs as read */
                 messages.filter(msg => msg.user._id === 2 && !msg.received)
@@ -87,11 +79,11 @@ export const useMessageDetails = (filter: { user2: number }) => {
             }
 
             ws.addEventListener("message", (ev: MessageEvent<any>) => {
-                const message_data = JSON.parse(ev.data) 
+                const message_data = JSON.parse(ev.data)
                 console.log(message_data);
 
                 if (message_data && message_data.msg_type === WS_MSG_TYPE.MessageIdCreated) {
-                    fetchThenewMessage({route:"/chat/messages",id:message_data.db_id})
+                    SyncMessages()
                 }
             })
 
@@ -102,16 +94,12 @@ export const useMessageDetails = (filter: { user2: number }) => {
                 console.log("disconnected ........");
             }
 
-
-            return () => {
-                ws.removeEventListener('message', () => { })
-                ws.close()
-            }
+            
         }
 
     }, [])
 
 
 
-    return { messages, isLoading, loadMore, loading_more, socket, setMessages }
+    return { messages, isLoading, loadMore, loading_more, socket, SyncMessages }
 }

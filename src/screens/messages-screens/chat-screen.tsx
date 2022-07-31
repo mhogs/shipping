@@ -23,7 +23,7 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
     const { theme } = useTheme()
     const styles = getStyles(theme)
     const [new_messgaes,setNewMessages]=useState<IMessage[]>([])
-    const { messages, SyncMessages, isLoading, loading_more, loadMore, socket } = useMessageDetails({ user2: sender.id || 0 })
+    const { messages, SyncMessages, isLoading, loading_more, loadMore, socket,API_PAGESIZE } = useMessageDetails({ user2: sender.id || 0 })
 
 
 
@@ -107,7 +107,7 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
                 placeholder="Type your message "
                 alwaysShowSend
                 user={{ _id: 1, name: 'Bz', }}
-                loadEarlier
+                loadEarlier={messages.length>=API_PAGESIZE}
                 onLoadEarlier={loadMore}
                 isLoadingEarlier={loading_more}
                 renderAvatar={(av) => (

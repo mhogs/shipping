@@ -26,9 +26,9 @@ export default function App() {
 
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <NavigationContainer>
-          <Navigation />
-        </NavigationContainer>
+          <NavigationContainer>
+            <Navigation />
+          </NavigationContainer>
         <Toast visibilityTime={5000} />
       </AuthProvider>
     </QueryClientProvider>

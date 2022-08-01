@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios"
 import { changePasswordRequestType, checkUserRequestType, checkUserResponseType, currentUserType, ProfileRequestData, ProfileResponseData, RefreshRequestDataType, RefreshResponseDataType, RequestOtpParmsType, SendOtpParmsType, SignInRequestDataType, SignInResponseDataType, SignUpRequestDataType, SignUpResponseDataType, userType } from "../@types"
 import { BACKEND_BASE_URL, USER_STORAGE_KEY } from "../constants"
 import { extractErrorMessage, getAuthHeaders, getUserFromStorage, showErrorToast, showsuccessToast } from "../helpers"
-import Toast from 'react-native-toast-message';
+
 
 export class AuthService {
     static async CheckUser(params: checkUserRequestType): Promise<checkUserResponseType> {

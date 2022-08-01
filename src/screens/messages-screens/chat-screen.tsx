@@ -10,6 +10,7 @@ import { Space } from '../../components/util';
 import { MessagesStackParamList } from '../../navigation/MessagesStack';
 import { useTheme } from '../../state';
 import { ThemeType } from '../../theme';
+import { useChat } from './chatContext';
 import { useMessageDetails } from './useMessageDetails';
 
 const INPUT_HEIGHT = 44
@@ -22,7 +23,7 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
     useHideBottomBar(navigation, 1)
     const { theme } = useTheme()
     const styles = getStyles(theme)
-    const [new_messgaes,setNewMessages]=useState<IMessage[]>([])
+    
     const { messages, SyncMessages, isLoading, loading_more, loadMore, socket,API_PAGESIZE } = useMessageDetails({ user2: sender.id || 0 })
 
 

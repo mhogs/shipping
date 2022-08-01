@@ -3,10 +3,11 @@ import { MessageResponseType, userType, ws_incomingChatMsgType, WS_MSG_TYPE } fr
 import moment from 'moment';
 import { useAuthentication } from '../../state';
 import { IMessage } from 'react-native-gifted-chat';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { WEB_SOCKET_SERVER } from '../../constants';
 
 import { useQueryClient } from '@tanstack/react-query';
+import { useChat } from './chatContext';
 
 
 //queryClient.invalidateQueries(['mydialogs'])
@@ -27,7 +28,7 @@ export const useMessageDetails = (filter: { user2: number }) => {
     const { currentUser } = useAuthentication()
     const [socket, setWsocket] = useState<WebSocket | null>(null)
     const queryClient = useQueryClient()
-
+    const { messages, dispatch } = useChat()
     // return 1 for right , 2 for left
     function getsenderSide(sender_id?: number) {
         return currentUser?.id === sender_id ? 1 : 2
@@ -48,7 +49,7 @@ export const useMessageDetails = (filter: { user2: number }) => {
 
 
 
-    const messages = data.map(msg => (
+    const formated_data = useMemo(() => data.map(msg => (
         {
             _id: msg.id,
             text: msg.text,
@@ -59,11 +60,10 @@ export const useMessageDetails = (filter: { user2: number }) => {
                 avatar: msg.sender.picture
             },
             received: msg.read
-        }
-    ) as IMessage)
+        })), [data])
 
     useEffect(() => {
-         /** mark all not read msgs as read */
+        /** mark all not read msgs as read */
         if (socket) {
             const unreadMessges = messages.filter(msg => msg.user._id === 2 && !msg.received)
             if (unreadMessges.length) {
@@ -108,5 +108,5 @@ export const useMessageDetails = (filter: { user2: number }) => {
 
 
 
-    return { messages, isLoading, loadMore, loading_more, socket, SyncMessages,API_PAGESIZE }
+    return { messages, isLoading, loadMore, loading_more, socket, SyncMessages, API_PAGESIZE }
 }

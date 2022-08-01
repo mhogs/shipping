@@ -2,7 +2,8 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { userType } from '../@types';
 import { ChatScreen, MessagesScreen } from '../screens';
-import { WSProvider } from '../state';
+import { ChatProvider } from '../screens/messages-screens/chatContext';
+
 
 
 
@@ -12,7 +13,7 @@ export const MessagesStackNavigator = () => {
 
 
     return (
-       
+        <ChatProvider>
             <Stack.Navigator
                 screenOptions={{
                     headerShown: false,
@@ -22,8 +23,7 @@ export const MessagesStackNavigator = () => {
                 <Stack.Screen name="Messages" component={MessagesScreen} />
                 <Stack.Screen name="MessageDetails" component={ChatScreen} />
             </Stack.Navigator>
-       
-
+        </ChatProvider>
     )
 }
 

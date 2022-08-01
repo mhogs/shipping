@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useCallback, useEffect } from 'react'
-import { View, StyleSheet, Text, Pressable, Image, TextStyle, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, StyleSheet, Text, Pressable, Image, TextStyle, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import { Actions, ActionsProps, AvatarProps, Bubble, BubbleProps, Composer, ComposerProps, GiftedChat, IMessage, InputToolbar, InputToolbarProps, LeftRightStyle, Message, MessageImage, MessageImageProps, MessageProps, MessageText, MessageTextProps, Send, SendProps, Time, TimeProps } from 'react-native-gifted-chat'
 import { WS_MSG_TYPE } from '../../@types';
 import { avatar_asset } from '../../assets';
@@ -24,7 +24,7 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
     const { theme } = useTheme()
     const styles = getStyles(theme)
 
-    const { messages,isLoading, dispatch,can_load_more,loadMore,  loading_more, socket,  } = useMessageDetails({ user2: sender.id || 0 })
+    const { messages, dispatch, can_load_more, loading_more, isLoading, loadMore, socket, } = useMessageDetails({ user2: sender.id || 0 })
 
 
 
@@ -114,22 +114,26 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
                 placeholder="Type your message "
                 alwaysShowSend
                 user={{ _id: 1, name: 'Bz', }}
-                loadEarlier={false && can_load_more}
-                onLoadEarlier={()=>{}}
+                loadEarlier={can_load_more}
+                onLoadEarlier={loadMore}
+
                 isLoadingEarlier={loading_more}
                 renderAvatar={(av) => (
                     <Image source={{ uri: av.currentMessage?.user.avatar as string | undefined }}
                         style={styles.chatAvatar}
                     />
                 )}
-
+                messagesContainerStyle={{ paddingBottom: 20 }}
                 renderMessageImage={(props) => customtImage(props, theme)}
                 renderInputToolbar={(toolbarProps) => customtInputToolbar(toolbarProps, theme)}
                 renderComposer={(props) => customtComposer(props, theme)}
                 renderSend={(props) => customtSend(props, theme)}
                 renderActions={(props) => customtAction(props, theme)}
-                messagesContainerStyle={{paddingBottom:20, backgroundColor:theme.palette.white[theme.mode][2]}}
-                
+                renderLoading={() => <ActivityIndicator size="large" color={theme.palette.primary[theme.mode].main} />}
+                listViewProps={{
+                    onEndReached: loadMore
+                }}
+
             />
 
         </View>

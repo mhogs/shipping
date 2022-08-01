@@ -78,7 +78,7 @@ export function formatMessageApiResponse_To_IMessage(msg: MessageResponseType, c
             name: msg.sender_username,
             avatar: msg.sender.picture
         },
-        received: true,
+        received: msg.read,
         sent:true,
     }
 }

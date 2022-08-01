@@ -43,6 +43,11 @@ export enum WS_MSG_TYPE {
     NewUnreadCount = 9,
     TypingStopped = 10
 }
+export type MessageApiQueryParamType={
+    user2:number,
+    offset?:number,
+    limit?:number
+}
 
 export type ws_incomingChatMsgType = {
     msg_type: WS_MSG_TYPE

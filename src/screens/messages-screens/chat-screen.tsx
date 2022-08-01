@@ -7,10 +7,10 @@ import { avatar_asset } from '../../assets';
 import { AttachmentIcon, LeftArrowIcon, PhoneCallIcon, SendIcon, ThreeDotsIcon } from '../../components/icons';
 import { useHideBottomBar } from '../../components/navigation';
 import { Space } from '../../components/util';
+import { generateRondomMessageID } from '../../helpers';
 import { MessagesStackParamList } from '../../navigation/MessagesStack';
 import { useTheme } from '../../state';
 import { ThemeType } from '../../theme';
-import { useChat } from './chatContext';
 import { useMessageDetails } from './useMessageDetails';
 
 const INPUT_HEIGHT = 44
@@ -23,28 +23,35 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
     useHideBottomBar(navigation, 1)
     const { theme } = useTheme()
     const styles = getStyles(theme)
-    
-    const { messages, SyncMessages, isLoading, loading_more, loadMore, socket,API_PAGESIZE } = useMessageDetails({ user2: sender.id || 0 })
+
+    const { messages,isLoading, dispatch,can_load_more,loadMore,  loading_more, socket,  } = useMessageDetails({ user2: sender.id || 0 })
 
 
 
     const onSend = (msgs: IMessage[] = []) => {
-
+        const random_id = generateRondomMessageID()
         if (msgs.length) {
             const msg = msgs[0]
+            dispatch({
+                type: 'PUSH',
+                payload: {
+                    message: { ...msg, _id: random_id }
+                }
+            })
             if (msg.text != "") {
-               
+
                 socket?.send(JSON.stringify(
                     {
                         msg_type: WS_MSG_TYPE.TextMessage,
                         text: msg.text,
                         user_pk: sender.id?.toString(),
-                        random_id: - Math.floor(Math.random() * 1000)
+                        random_id: random_id
                     }
                 ))
             }
+
         }
-        SyncMessages()
+
     }
 
     return (
@@ -55,7 +62,6 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
                         onPress={() => goBack()}
                         android_ripple={{ color: theme.palette.grey[theme.mode][3], borderless: true }}
                     >
-
                         <LeftArrowIcon />
                     </Pressable>
 
@@ -103,13 +109,13 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
             </View>
             {/** body chat */}
             <GiftedChat
-                messages={[...messages]}
+                messages={messages}
                 onSend={messages => onSend(messages)}
                 placeholder="Type your message "
                 alwaysShowSend
                 user={{ _id: 1, name: 'Bz', }}
-                loadEarlier={messages.length>=API_PAGESIZE}
-                onLoadEarlier={loadMore}
+                loadEarlier={false && can_load_more}
+                onLoadEarlier={()=>{}}
                 isLoadingEarlier={loading_more}
                 renderAvatar={(av) => (
                     <Image source={{ uri: av.currentMessage?.user.avatar as string | undefined }}
@@ -122,11 +128,8 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
                 renderComposer={(props) => customtComposer(props, theme)}
                 renderSend={(props) => customtSend(props, theme)}
                 renderActions={(props) => customtAction(props, theme)}
-                renderChatFooter={() => <View style={{ height: 24 }} />}
-                listViewProps={{
-                    onEndReached: loadMore
-                  }}
-
+                messagesContainerStyle={{paddingBottom:20, backgroundColor:theme.palette.white[theme.mode][2]}}
+                
             />
 
         </View>

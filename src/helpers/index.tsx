@@ -1,7 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import moment from "moment";
 import { Platform } from "react-native";
+import { IMessage } from "react-native-gifted-chat";
 import Toast from "react-native-toast-message";
-import { currentUserType, userType } from "../@types";
+import { currentUserType, MessageResponseType, MessageSocketResponseType, userType } from "../@types";
 import { USER_STORAGE_KEY } from "../constants";
 
 
@@ -64,6 +66,38 @@ export function showsuccessToast(message: string) {
         text1: "Ok",
         text2: message,
     });
+}
+
+export function formatMessageApiResponse_To_IMessage(msg: MessageResponseType, currentUserId?: number): IMessage {
+    return {
+        _id: msg.id,
+        text: msg.text,
+        createdAt: moment.unix(msg.created).toDate(),
+        user: {
+            _id: currentUserId === msg.sender.id ? 1 : 2,
+            name: msg.sender_username,
+            avatar: msg.sender.picture
+        },
+        received: true,
+        sent:true,
+    }
+}
+export function generateRondomMessageID(){
+    return - Math.floor(Math.random() * 100000)
+}
+
+export function formatSocketMessage_To_IMessage(msg: MessageSocketResponseType): IMessage {
+    return {
+        _id: msg.random_id,
+        text: msg.text,
+        createdAt: new Date(),
+        user: {
+            _id: 2,
+            name: msg.sender_username,
+            
+        },
+        received: true
+    }
 }
 
 

@@ -12,6 +12,15 @@ export type MessageResponseType = {
     out: boolean,
     sender_username: string
 }
+export type MessageSocketResponseType=
+{
+    msg_type: WS_MSG_TYPE.TextMessage
+    random_id: number
+    text: string
+    sender: string
+    receiver: string
+    sender_username: string
+}
 
 export type dialogResponseType = {
     id: number,
@@ -43,3 +52,12 @@ export type ws_incomingChatMsgType = {
     receiver: string
     sender_username: string
 }
+
+export type dialogType = {
+    picture?: string;
+    fullName: string;
+    messageText: string;
+    time: string;
+    unread: boolean;
+    sender: userType
+  }

@@ -2,7 +2,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { userType } from '../@types';
 import { ChatScreen, MessagesScreen } from '../screens';
-import { ChatProvider } from '../screens/messages-screens/chatContext';
+
 
 
 
@@ -13,17 +13,17 @@ export const MessagesStackNavigator = () => {
 
 
     return (
-        <ChatProvider>
-            <Stack.Navigator
-                screenOptions={{
-                    headerShown: false,
-                }}
-                initialRouteName='Messages'
-            >
-                <Stack.Screen name="Messages" component={MessagesScreen} />
-                <Stack.Screen name="MessageDetails" component={ChatScreen} />
-            </Stack.Navigator>
-        </ChatProvider>
+
+        <Stack.Navigator
+            screenOptions={{
+                headerShown: false,
+            }}
+            initialRouteName='Messages'
+        >
+            <Stack.Screen name="Messages" component={MessagesScreen} />
+            <Stack.Screen name="MessageDetails" component={ChatScreen} />
+        </Stack.Navigator>
+
     )
 }
 

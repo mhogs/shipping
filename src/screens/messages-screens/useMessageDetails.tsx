@@ -1,38 +1,25 @@
 import { useInfinitFetcher, useRefreshOnFocus } from '../../hooks';
-import { MessageResponseType, userType, ws_incomingChatMsgType, WS_MSG_TYPE } from '../../@types';
+import { MessageResponseType, MessageSocketResponseType, userType, ws_incomingChatMsgType, WS_MSG_TYPE } from '../../@types';
 import moment from 'moment';
 import { useAuthentication } from '../../state';
 import { IMessage } from 'react-native-gifted-chat';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { WEB_SOCKET_SERVER } from '../../constants';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useChat } from './chatContext';
 
+import { formatMessageApiResponse_To_IMessage, formatSocketMessage_To_IMessage } from '../../helpers';
+import axios from 'axios';
+import { ChatService } from '../../services';
 
-//queryClient.invalidateQueries(['mydialogs'])
-
-const API_PAGESIZE = 10
-
-export type dialogType = {
-    picture?: string;
-    fullName: string;
-    messageText: string;
-    time: string;
-    unread: boolean;
-    sender: userType
-}
-
+const MESSAGES_API_PAGESIZE = 10
 
 export const useMessageDetails = (filter: { user2: number }) => {
     const { currentUser } = useAuthentication()
     const [socket, setWsocket] = useState<WebSocket | null>(null)
+    const [queryPrams,setQueryPrams]=useState(filter)
     const queryClient = useQueryClient()
-    const { messages, dispatch } = useChat()
-    // return 1 for right , 2 for left
-    function getsenderSide(sender_id?: number) {
-        return currentUser?.id === sender_id ? 1 : 2
-    }
+    const [new_messages, dispatch] = useReducer<(state: IMessage[], action: actionType) => IMessage[], IMessage[]>(reducer, [], () => [])
 
     const {
         results: data,
@@ -40,27 +27,27 @@ export const useMessageDetails = (filter: { user2: number }) => {
         isFetchingNextPage: loading_more,
         fetchNextPage: loadMore,
         refetch,
-        resultsCount
-    } = useInfinitFetcher<MessageResponseType>("messages", filter, "/chat/messages/", API_PAGESIZE)
+        resultsCount,
+        hasNextPage: can_load_more
+    } = useInfinitFetcher<MessageResponseType>(
+        "messages",
+        { ...filter },
+        "/chat/messages/",
+        MESSAGES_API_PAGESIZE
+    )
 
-    async function SyncMessages() {
-        refetch({ refetchPage: (page, index) => index === 0 })
-    }
+   
+
+    const messages: IMessage[] = useMemo(
+        () => [
+            ...new_messages,
+            ...data.map(msg => formatMessageApiResponse_To_IMessage(msg, currentUser?.id))
+        ], [data, new_messages]
+    )
 
 
 
-    const formated_data = useMemo(() => data.map(msg => (
-        {
-            _id: msg.id,
-            text: msg.text,
-            createdAt: moment.unix(msg.created).toDate(),
-            user: {
-                _id: getsenderSide(msg.sender.id),
-                name: msg.sender_username,
-                avatar: msg.sender.picture
-            },
-            received: msg.read
-        })), [data])
+
 
     useEffect(() => {
         /** mark all not read msgs as read */
@@ -74,7 +61,7 @@ export const useMessageDetails = (filter: { user2: number }) => {
                         message_id: recieved_msg._id
                     }))
                 })
-                queryClient.invalidateQueries(['mydialogs'])
+                //queryClient.invalidateQueries(['mydialogs'])
             }
         }
 
@@ -92,9 +79,18 @@ export const useMessageDetails = (filter: { user2: number }) => {
                 const message_data = JSON.parse(ev.data)
                 switch (message_data.msg_type as WS_MSG_TYPE) {
                     case WS_MSG_TYPE.MessageIdCreated:
-                        SyncMessages()
+                        dispatch({ type: "MARK_AS_SENT", payload: { mid: message_data.random_id, db_id: message_data.db_id } })
+                        break;
+                    case WS_MSG_TYPE.TextMessage:
+                        dispatch(
+                            {
+                                type: "PUSH",
+                                payload: { message: formatSocketMessage_To_IMessage(message_data as MessageSocketResponseType) }
+                            })
+                        break;
                 }
             })
+
 
             ws.onerror = (ev: Event) => {
                 console.log("connected ........");
@@ -106,7 +102,45 @@ export const useMessageDetails = (filter: { user2: number }) => {
         }
     }, [])
 
+    return {
+        messages,
+        isLoading,
+        can_load_more,
+        loadMore,
+        loading_more,
+        socket,
+        dispatch,
+    }
+}
 
 
-    return { messages, isLoading, loadMore, loading_more, socket, SyncMessages, API_PAGESIZE }
+type actionType = {
+    type: "SET" | "PUSH" | "MARK_AS_SENT" | "MARK_as_READ",
+    payload?: { messages?: IMessage[], message?: IMessage, mid?: number, db_id?: number }
+
+}
+
+
+function reducer(state: IMessage[], action: actionType): IMessage[] {
+    const { type, payload } = action
+    switch (type) {
+        case 'SET':
+            return payload?.messages || []
+        case 'PUSH':
+            if (payload?.message)
+                return [payload?.message, ...state]
+            return state
+        case 'MARK_as_READ':
+            return state.map(m => {
+                if (m._id === payload?.mid)
+                    return { ...m, received: true }
+                return m
+            })
+        case 'MARK_AS_SENT':
+            return state.map(m => {
+                if (m._id === payload?.mid)
+                    return { ...m, sent: true, _id: payload.db_id as number }
+                return m
+            })
+    }
 }

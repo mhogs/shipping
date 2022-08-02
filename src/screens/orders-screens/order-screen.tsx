@@ -15,15 +15,15 @@ export type OrderSceneProps = {
   navigation: NativeStackNavigationProp<OrderStackParamList & RootStackParamList, "order", undefined>
   moveForward: () => void
   moveBackward: () => void
-  updateOrder:(data:OrdersRequestDataType)=>void
-  order?:OrdersRequestDataType
+  updateOrder: (data: OrdersRequestDataType) => void
+  order?: OrdersRequestDataType
 }
 type OrderScreenProps = NativeStackScreenProps<OrderStackParamList & RootStackParamList, 'order'>;
 export const OrderScreen = (props: OrderScreenProps) => {
-  const { navigation,route } = props;
+  const { navigation, route } = props;
   useHideBottomBar(navigation, 2)
   const layout = useWindowDimensions();
-  
+
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: "sender", title: "Sender Details" },
@@ -32,7 +32,8 @@ export const OrderScreen = (props: OrderScreenProps) => {
   ]);
   /**form state */
   const [order, setOrder] = useState<OrdersRequestDataType>({})
-  
+ 
+
   const renderScene = (props: SceneRendererProps & {
     route: {
       key: string;
@@ -48,7 +49,7 @@ export const OrderScreen = (props: OrderScreenProps) => {
           navigation={navigation}
           moveForward={() => setIndex(i => i + 1)}
           moveBackward={() => navigation.goBack()}
-          updateOrder={(data:OrdersRequestDataType)=>setOrder(prev=>({...prev,...data}))}
+          updateOrder={(data: OrdersRequestDataType) => setOrder(prev => ({ ...prev, ...data }))}
           order={order}
         />;
 
@@ -57,7 +58,7 @@ export const OrderScreen = (props: OrderScreenProps) => {
           navigation={navigation}
           moveForward={() => setIndex(i => i + 1)}
           moveBackward={() => setIndex(i => i - 1)}
-          updateOrder={(data:OrdersRequestDataType)=>setOrder(prev=>({...prev,...data}))}
+          updateOrder={(data: OrdersRequestDataType) => setOrder(prev => ({ ...prev, ...data }))}
           order={order}
         />;
 
@@ -66,7 +67,7 @@ export const OrderScreen = (props: OrderScreenProps) => {
           navigation={navigation}
           moveForward={() => { }}
           moveBackward={() => setIndex(i => i - 1)}
-          updateOrder={(data:OrdersRequestDataType)=>setOrder(prev=>({...prev,...data}))}
+          updateOrder={(data: OrdersRequestDataType) => setOrder(prev => ({ ...prev, ...data }))}
           order={order}
         />;
       default:

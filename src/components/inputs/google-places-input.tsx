@@ -82,11 +82,11 @@ export const GooglePlacesInput = (props: GooglePlacesInputProps) => {
 
                         ref={inputRef}
                         placeholder={placeholder ? placeholder : 'Search location'}
-                        onPress={(data, details = null) => {
+                        onPress={(data, details = null) => {  
                             onChange({ 
                                 place:data.description, 
                                 longitude:details?.geometry.location.lng,
-                                latitude:details?.geometry.location.lng,
+                                latitude:details?.geometry.location.lat,
                             });
                         }}
                         
@@ -104,7 +104,6 @@ export const GooglePlacesInput = (props: GooglePlacesInputProps) => {
                         styles={styles}
                         textInputProps={{
                             onChangeText: (location) => location === "" && onChange(null),
-                            
                         }}
                         
                         debounce={200}

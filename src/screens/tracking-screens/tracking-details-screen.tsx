@@ -2,11 +2,9 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { Fragment, useEffect, useState } from 'react'
 import { View, Text, StyleSheet, ScrollView, Image, Pressable } from 'react-native'
 import MapView, { LatLng, Marker, Region } from 'react-native-maps'
-
-
 import { useHideBottomBar } from '../../components/navigation'
 import { Devider, ModalTopBarIndicator, MyMarkerIcon, SimpleScreenHeader, Space } from '../../components/util'
-import { useAuth } from '../../state'
+
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 import * as Location from 'expo-location';
@@ -16,18 +14,12 @@ import { AdresseItem, DriverItem } from '../../components/content'
 import { SaveChangesButton } from '../../components/buttons'
 import { TrackingDetailsModal } from './modals'
 import { TrackingStackParamList } from '../../navigation/TrackingStack'
+import { useMapHandler } from '../../hooks'
 
-type MapstateType = {
-    mapRegion: Region,
-    hasLocationPermissions: boolean,
-    locationResult: Location.LocationObject | null,
-    errorMsg: string | null,
 
-}
 type TrackingDetailsScreenProps = NativeStackScreenProps<TrackingStackParamList, 'TrackingDetails'>;
 
 export const TrackingDetailsScreen = ({ navigation }: TrackingDetailsScreenProps) => {
-    // 1 is the depth of this screen relative to the stack
     useHideBottomBar(navigation, 2)
     const { navigate } = navigation
     const { goBack } = navigation
@@ -35,56 +27,9 @@ export const TrackingDetailsScreen = ({ navigation }: TrackingDetailsScreenProps
     const { palette, mode, text } = theme
     const styles = getStyles(theme)
     const [modalOpen, setModalOpen] = useState(false)
-    const [mapState, setMapState] = useState<MapstateType>({
-        mapRegion: {
-            latitude: 60,
-            longitude: 18,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-        },
-        hasLocationPermissions: false,
-        locationResult: null,
-        errorMsg: null
-    })
-
-
-    useEffect(() => {
-        async function initLocation() {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-
-            if (status === 'granted') {
-                const location = await Location.getCurrentPositionAsync({});
-                setMapState({
-                    ...mapState,
-                    locationResult: location,
-                    mapRegion: {
-                        latitude: location.coords.latitude,
-                        longitude: location.coords.longitude,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
-                    },
-                    errorMsg: null,
-                    hasLocationPermissions: true
-                });
-                return
-            }
-
-            setMapState(
-                {
-                    ...mapState,
-                    errorMsg: 'Permission to access location was denied',
-                    hasLocationPermissions: false
-                }
-            );
-        };
-        initLocation()
-
-
-    }, []);
-
-    function handleMapRegionChange(mapRegion: Region) {
-        // setMapState({ ...mapState, mapRegion });
-    }
+   
+    const {mapState, handleMapRegionChange}=useMapHandler()
+    
 
     return (
 

@@ -10,6 +10,7 @@ import { AuthActionButton, SaveChangesButton } from '../../../components/buttons
 import { OrderSceneProps } from '../order-screen';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { locationType, OrdersRequestDataType } from '../../../@types';
 
 
 const orderRouteShema = yup.object().shape({
@@ -29,7 +30,7 @@ export const OrderRouteScene = (props: OrderSceneProps) => {
             initialValues={{
                 pickup: order?.pickup || null,
                 destination:order?.destination || null,
-            }}
+            }as OrdersRequestDataType}
             validationSchema={orderRouteShema}
             onSubmit={values => {
                 updateOrder(values)
@@ -61,7 +62,7 @@ export const OrderRouteScene = (props: OrderSceneProps) => {
                             <GooglePlacesInput
                                 label='Pickup Adress'
                                 placeholder='where to pick from'
-                                onChange={(adress) => setFieldValue("pickup", adress)}
+                                onChange={(adress:locationType ) => setFieldValue("pickup", adress)}
                                 icon={<Image source={gpsIcon} />}
                                 touched={touched.pickup}
                                 error={errors.pickup}

@@ -17,6 +17,8 @@ import { ProfileServices } from '../../services'
 import { useMutation } from '@tanstack/react-query'
 import * as yup from 'yup';
 import { useAuthentication } from '../../state'
+import { ChoosePhotoFromMediaLib } from '../../helpers'
+
 
 
 const updateProfileSchema = yup.object().shape({
@@ -37,21 +39,9 @@ export const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
 
 
   /** */
-  const handleChoosePhoto = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 4],
-      quality: 1,
-    });
-    if (result.cancelled) return;
-    let localUri = result.uri;
-    let filename = localUri.split('/').pop() || new Date().toString();
-    let match = /\.(\w+)$/.exec(filename);
-    let type = match ? `image/${match[1]}` : `image`;
-    let formData = new FormData();
-    update_profile({ picture: { uri: localUri, name: filename, type } })
+  const handlePickPhoto = async () => {
+    const picture = await ChoosePhotoFromMediaLib()
+    update_profile({ picture })
   };
 
 
@@ -88,7 +78,7 @@ export const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
                 <Image source={{ uri: currentUser?.picture }} style={{ width: 100, height: 100, borderRadius: 100 }} />
                 <Pressable
                   style={{ position: "absolute", right: 20, top: -20 }}
-                  onPress={handleChoosePhoto}
+                  onPress={handlePickPhoto}
                 >
                   <Image source={ChangeImageIcon} />
                 </Pressable>

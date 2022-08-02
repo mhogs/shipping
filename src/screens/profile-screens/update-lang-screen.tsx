@@ -13,7 +13,6 @@ import { MenuItem, useHideBottomBar } from '../../components/navigation'
 import { SimpleScreenHeader, Space } from '../../components/util'
 import { changeLanguage, defaultLang, i18n, supportedLangCodeType } from '../../locales'
 import { ProfileStackParamList } from '../../navigation/ProfileStack'
-import { useAuth } from '../../state'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
 
@@ -87,19 +86,19 @@ function getLangsList(currentLang: supportedLangCodeType): LangType[] {
     {
       name: "العربية",
       code: 'ar',
-      icon: <Image source={ArabicIcon} width={24} height={24} />,
+      icon: <Image source={ArabicIcon} style={{width:24, height:24}}  />,
       selected: currentLang.includes("ar")
     },
     {
       name: "Français",
       code: 'fr',
-      icon: <Image source={FrenchIcon} width={24} height={24} />,
+      icon: <Image source={FrenchIcon}  style={{width:24, height:24}} />,
       selected: currentLang.includes("fr") ,
     },
     {
       name: "English",
       code: 'en',
-      icon: <Image source={EnglishIcon} width={24} height={24} />,
+      icon: <Image source={EnglishIcon} style={{width:24, height:24}}  />,
       selected: currentLang.includes("en")
     },
   ]

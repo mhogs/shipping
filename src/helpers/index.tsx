@@ -5,7 +5,36 @@ import { IMessage } from "react-native-gifted-chat";
 import Toast from "react-native-toast-message";
 import { currentUserType, MessageResponseType, MessageSocketResponseType, userType } from "../@types";
 import { USER_STORAGE_KEY } from "../constants";
+import * as ImagePicker from 'expo-image-picker';
 
+export async function ChoosePhotoFromMediaLib() {
+    let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 4],
+        quality: 1,
+    });
+    if (result.cancelled) return;
+    let localUri = result.uri;
+    let filename = localUri.split('/').pop() || new Date().toString();
+    let match = /\.(\w+)$/.exec(filename);
+    let type = match ? `image/${match[1]}` : `image`;
+    return { uri: localUri, name: filename, type }
+};
+export async function TakePhoto() {
+    let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 4],
+        quality: 1,
+    });
+    if (result.cancelled) return;
+    let localUri = result.uri;
+    let filename = localUri.split('/').pop() || new Date().toString();
+    let match = /\.(\w+)$/.exec(filename);
+    let type = match ? `image/${match[1]}` : `image`;
+    return { uri: localUri, name: filename, type }
+};
 
 export function listToMatrix(list: Array<any>, elementsPerSubArray: number) {
     let matrix: Array<Array<any>> = [], i, k;
@@ -79,10 +108,10 @@ export function formatMessageApiResponse_To_IMessage(msg: MessageResponseType, c
             avatar: msg.sender.picture
         },
         received: msg.read,
-        sent:true,
+        sent: true,
     }
 }
-export function generateRondomMessageID(){
+export function generateRondomMessageID() {
     return - Math.floor(Math.random() * 100000)
 }
 
@@ -94,7 +123,7 @@ export function formatSocketMessage_To_IMessage(msg: MessageSocketResponseType):
         user: {
             _id: 2,
             name: msg.sender_username,
-            
+
         },
         received: true
     }

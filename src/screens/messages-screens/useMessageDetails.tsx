@@ -18,14 +18,14 @@ type chatStateType = {
 export const useMessageDetails = (filter: { user2: number }) => {
     const { currentUser } = useAuthentication()
     const [socket, setWsocket] = useState<WebSocket | null>(null)
-    const [queryPrams, setQueryPrams] = useState<MessageApiQueryParamType>(filter)
     const [chatState, setChatState] = useState<chatStateType>({ isLoading: false, can_load_more: true, loading_more: false })
 
     const [messages, dispatch] = useReducer<(state: IMessage[], action: actionType) => IMessage[], IMessage[]>(reducer, [], () => [])
 
+    /** fetsh a page of messages */
     const loadPage = useCallback(() => {
         setChatState(prev => ({ ...prev, loading_more: true }))
-        ChatService.fetchMessages({ ...queryPrams, offset: messages.length, limit: MESSAGES_API_PAGESIZE }).then(data => {
+        ChatService.fetchMessages({ ...filter, offset: messages.length, limit: MESSAGES_API_PAGESIZE }).then(data => {
 
             setChatState(prev => ({ ...prev, can_load_more: data.next !== null }))
 
@@ -35,27 +35,28 @@ export const useMessageDetails = (filter: { user2: number }) => {
         })
     }, [messages, chatState])
 
+    /** initialy load first page */
     useEffect(() => {
         loadPage()
     }, [])
-
+    /** mark all visible and  not read msgs as read */
     useEffect(() => {
-        /** mark all not read msgs as read */
+
         if (socket) {
             const unreadMessges = messages.filter(msg => msg.user._id === 2 && !msg.received)
-            if (unreadMessges.length) {
-                unreadMessges.map(recieved_msg => {
+            unreadMessges.map(recieved_msg => {
+                if (recieved_msg._id > 0)
                     socket.send(JSON.stringify({
                         msg_type: WS_MSG_TYPE.MessageRead,
                         user_pk: filter.user2?.toString(),
                         message_id: recieved_msg._id
                     }))
-                })
-            }
+            })
         }
 
     }, [messages])
 
+    /** manage weSockets events */
     useEffect(() => {
         if (currentUser) {
 
@@ -66,16 +67,33 @@ export const useMessageDetails = (filter: { user2: number }) => {
             })
             ws.addEventListener("message", (ev: MessageEvent<any>) => {
                 const message_data = JSON.parse(ev.data)
+
+
                 switch (message_data.msg_type as WS_MSG_TYPE) {
                     case WS_MSG_TYPE.MessageIdCreated:
-                        dispatch({ type: "MARK_AS_SENT", payload: { mid: message_data.random_id, db_id: message_data.db_id } })
+                        dispatch({
+                            type: "MARK_AS_SENT",
+                            payload: { mid: message_data.random_id, db_id: message_data.db_id }
+                        })
                         break;
+
+                    /*case WS_MSG_TYPE.MessageRead:
+                        console.log(message_data);
+                        dispatch({
+                            type: "MARK_AS_READ",
+                            payload: { mid: message_data.message_id }
+                        })
+                        break;*/
+
                     case WS_MSG_TYPE.TextMessage:
+                        const new_recieved_message = formatSocketMessage_To_IMessage(message_data as MessageSocketResponseType)
                         dispatch(
                             {
                                 type: "PUSH",
-                                payload: { message: formatSocketMessage_To_IMessage(message_data as MessageSocketResponseType) }
+                                payload: { message: new_recieved_message }
                             })
+
+
                         break;
                 }
             })
@@ -87,7 +105,10 @@ export const useMessageDetails = (filter: { user2: number }) => {
             ws.onclose = (ev: Event) => {
                 console.log("disconnected ........");
             }
-            //return () => ws.close()
+            return () => {
+                ws.removeEventListener('message', () => { })
+                ws.close()
+            }
         }
     }, [])
 
@@ -104,7 +125,7 @@ export const useMessageDetails = (filter: { user2: number }) => {
 
 
 type actionType = {
-    type: "JOIN" | "PUSH" | "MARK_AS_SENT" | "MARK_as_READ",
+    type: "JOIN" | "PUSH" | "MARK_AS_SENT" | "MARK_AS_READ",
     payload?: { messages?: IMessage[], message?: IMessage, mid?: number, db_id?: number }
 
 }
@@ -121,10 +142,10 @@ function reducer(state: IMessage[], action: actionType): IMessage[] {
             if (payload?.message)
                 return [payload?.message, ...state]
             return state
-        case 'MARK_as_READ':
+        case 'MARK_AS_READ':
             return state.map(m => {
                 if (m._id === payload?.mid)
-                    return { ...m, received: true }
+                    return { ...m, received:true }
                 return m
             })
         case 'MARK_AS_SENT':

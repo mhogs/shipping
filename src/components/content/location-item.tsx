@@ -6,19 +6,19 @@ import { ThemeType } from '../../theme'
 
 type LocationItemProps = {
     icon?: any,
-    title: string,
-    description?: string,
-    time: string,
+    title?: string,
+    place?: string,
+    distance?: string,
     onPress?: () => void
 }
 export const LocationItem = (props: LocationItemProps) => {
-    const { icon, title, description, time, onPress } = props
+    const { icon, title, place, distance, onPress } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
     return (
         <View style={{borderRadius:8, overflow:'hidden'}}>
             <Pressable
-                style={styles.notificationContainer}
+                style={styles.locationContainer}
                 onPress={onPress}
                 android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
             >
@@ -26,18 +26,18 @@ export const LocationItem = (props: LocationItemProps) => {
                     <View style={styles.locationIconcontainer}>
                         {icon}
                     </View>
-                    <View style={styles.notificationDetailsContainer}>
-                        <Text style={styles.notificatioTitle}>
+                    <View style={styles.locationDetailsContainer}>
+                        <Text style={styles.locationTitle}>
                             {title}
                         </Text>
-                        <Text style={styles.notificatioBrief}>
-                            {description}
+                        <Text style={styles.locationBrief}>
+                            {place}
                         </Text>
                     </View>
                 </View>
 
-                <Text style={styles.notificatioTime}>
-                    {time}
+                <Text style={styles.locationTime}>
+                    {distance}
                 </Text>
             </Pressable>
         </View>
@@ -53,12 +53,12 @@ const getStyles = (theme: ThemeType) => {
     const marginH = 14
     return StyleSheet.create({
 
-        notificationContainer: {
+        locationContainer: {
             paddingVertical:5,
             paddingHorizontal:2,
             flexDirection: "row",
             justifyContent: "space-between",
-            alignItems: "flex-start"
+            alignItems: "center"
         },
         locationIconcontainer: {
             width: iconWidth,
@@ -67,20 +67,20 @@ const getStyles = (theme: ThemeType) => {
             justifyContent: 'center',
             alignItems: 'center'
         },
-        notificationDetailsContainer: {
-
+        locationDetailsContainer: {
             marginHorizontal: marginH,
-            maxWidth: width - (marginH * 2 + iconWidth + notifTimewidth) - 10
+            maxWidth: width - (marginH * 2 + iconWidth + notifTimewidth) - 10,
+            
         },
-        notificatioTitle: {
+        locationTitle: {
             ...text.medium.P14_Lh130,
             color: palette.black[mode].main
         },
-        notificatioBrief: {
+        locationBrief: {
             ...text.regular.P14_Lh130,
             color: palette.grey[mode].main
         },
-        notificatioTime: {
+        locationTime: {
             maxWidth: notifTimewidth,
             ...text.regular.P12_Lh180,
             color: palette.grey[mode].main

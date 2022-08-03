@@ -1,24 +1,35 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { Fragment, useState } from 'react'
 import { View, Text, Image, ScrollView, KeyboardAvoidingView, StyleSheet, Dimensions, TextInput, Modal, Pressable } from 'react-native'
-import MapView from 'react-native-maps';
-import { LocationIcon, searchIcon, searchIconGrey } from '../../assets';
+import MapView, { LatLng, Marker } from 'react-native-maps';
+import { OrdersResponseDataType } from '../../@types';
+import { comingIcon, searchIcon, searchIconGrey } from '../../assets';
 import { SaveChangesButton } from '../../components/buttons';
 import { LocationItem } from '../../components/content';
-import { ThreeDotsIcon } from '../../components/icons';
+import { DropLocationIcon, LocationIcon, PickUpLocationIcon, ThreeDotsIcon } from '../../components/icons';
 import { SearchInput } from '../../components/inputs';
 import { useHideBottomBar } from '../../components/navigation';
-import { Devider, SimpleScreenHeader, Space } from '../../components/util'
+import { Devider, LoadingBlock, MyMarkerIcon, SimpleScreenHeader, Space } from '../../components/util'
+import { useFetcher, useMapHandler, useRefreshOnFocus } from '../../hooks';
 import { NearByStackParamList } from '../../navigation/NearByStack';
 import { useTheme } from '../../state';
 import { ThemeType } from '../../theme';
+import { DeliveryPlaces } from './components';
 
 type NearByScreenProps = NativeStackScreenProps<NearByStackParamList, 'NearBy'>;
 export const NearByScreen = ({ navigation }: NearByScreenProps) => {
   useHideBottomBar(navigation, 2)
   const { theme } = useTheme()
   const styles = getStyles(theme)
-  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedOreder, setSelectedOrder] = useState<OrdersResponseDataType | null>(null);
+  const { mapState, handleMapRegionChange } = useMapHandler()
+  const {
+    data: orders,
+    isLoading,
+    refetch,
+  } = useFetcher<OrdersResponseDataType>("nearByPlaces", "/orders/orders/", { as_driver: true })
+
+  useRefreshOnFocus(refetch)
   return (
 
     <KeyboardAvoidingView style={styles.root} >
@@ -30,40 +41,74 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
         />
       </View>
       <ScrollView style={{ backgroundColor: "white", }}>
-        <MapView style={styles.map} />
+        <MapView
+          region={mapState.mapRegion}
+          onRegionChange={handleMapRegionChange}
+          style={styles.map}
+        >
+          {mapState.hasLocationPermissions &&
+            <>
+
+              <Marker
+                coordinate={
+                  {
+                    latitude: mapState?.locationResult?.coords.latitude,
+                    longitude: mapState?.locationResult?.coords.longitude,
+                  } as LatLng
+                }
+              >
+                <MyMarkerIcon
+                  maincolor={theme.palette.black[theme.mode].main}
+                  secondaryColor="rgba(25, 29, 49, 0.15)"
+                  icon={<Image source={comingIcon} />}
+                />
+              </Marker>
+
+            </>
+
+          }
+          <DeliveryPlaces orders={orders} />
+        </MapView>
 
         <View style={{ padding: 24 }}>
           <SearchInput
-            startIcon={<Image source={searchIconGrey} width={24} height={24} />}
+            startIcon={<Image source={searchIconGrey} />}
             placeholder='Search Location'
             placeholderTextColor={theme.palette.grey[theme.mode][3]}
             extraStyle={styles.searchBox}
+            
           />
         </View>
 
-
         <View style={{ paddingHorizontal: 24 }}>
-
-          {
-            locations.map((location, index) => (
+          {isLoading && <LoadingBlock />}
+          {orders &&
+            orders.map((order, index) => (
               <Fragment key={index}>
-                <LocationItem {...location}
-                  onPress={() => setModalVisible(true)}
+                <LocationItem
+                  icon={
+                    order.state == "on_progress" ?
+                      <DropLocationIcon size={24} color={theme.palette.primary[theme.mode].main} />
+                      :
+                      <PickUpLocationIcon size={24} color={theme.palette.warning[theme.mode].main} />
+                  }
+                  title={order.description}
+                  place={order.destination?.place}
+                  distance="3.7km"
+                  onPress={() => setSelectedOrder(order)}
                 />
-                <Space size={15} direction="vertical" />
+                <Devider spacing={8} />
               </Fragment>
             ))
           }
-
-
         </View>
       </ScrollView>
 
       <Modal
         animationType="slide"
         transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(!modalVisible)}
+        visible={selectedOreder !== null}
+        onRequestClose={() => { }}
       >
         <View
           style={styles.modalContainer}
@@ -71,25 +116,35 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
         >
           <Pressable
             style={styles.modalOverlay}
-            onPress={() => setModalVisible(!modalVisible)}
+            onPress={() => setSelectedOrder(null)}
           >
 
           </Pressable>
           <ScrollView style={{ backgroundColor: theme.palette.white[theme.mode].main }}>
             <View style={styles.modalContent}>
               <View style={styles.modalIcon}>
-                <Image source={LocationIcon} style={{ width: 32, height: 32 }} />
+                {
+                  selectedOreder?.state == "pending" ?
+                    <PickUpLocationIcon size={24} color={theme.palette.warning[theme.mode].main} />
+                    :
+                    <DropLocationIcon size={24} color={theme.palette.primary[theme.mode].main} />
+                }
+
               </View>
               <Space size={20} direction="vertical" />
               <Text style={styles.modelContentTitle}>
-                New Montgomery
+                {selectedOreder?.description}
               </Text>
               <Text style={styles.adressText}>
-                4517 Washington Ave. Manchester, Kentucky 39495
+                {
+                  selectedOreder?.state == "pending" ?
+                    selectedOreder.pickup?.place :
+                    selectedOreder?.destination?.place
+                }
               </Text>
               <Devider spacing={15} />
               <Text style={styles.phoneText} >
-                0799085706
+                {selectedOreder?.creator_details?.phonenumber}
               </Text>
               <Devider spacing={15} />
               <View style={{ alignSelf: "stretch", marginTop: 15 }}>
@@ -181,29 +236,3 @@ const getStyles = (theme: ThemeType) => {
 }
 
 
-const locations = [
-  {
-    icon: <Image source={LocationIcon} width={22} height={22} />,
-    title: "New Montgomery",
-    description: '4517 Washington Ave. Manchester. Washington Ave. Mancheste ',
-    time: "3.21 Km",
-  },
-  {
-    icon: <Image source={LocationIcon} width={22} height={22} />,
-    title: "New Montgomery",
-    description: '4517 Washington Ave. Manchester. Washington Ave. Mancheste ',
-    time: "3.21 Km",
-  },
-  {
-    icon: <Image source={LocationIcon} width={22} height={22} />,
-    title: "New Montgomery",
-    description: '4517 Washington Ave. Manchester. Washington Ave. Mancheste ',
-    time: "3.21 Km",
-  },
-  {
-    icon: <Image source={LocationIcon} width={22} height={22} />,
-    title: "New Montgomery",
-    description: '4517 Washington Ave. Manchester. Washington Ave. Mancheste ',
-    time: "3.21 Km",
-  }
-]

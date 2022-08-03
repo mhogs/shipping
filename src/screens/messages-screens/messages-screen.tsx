@@ -1,22 +1,18 @@
 
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import React, { FC, Fragment, useEffect } from 'react'
-import { View, StyleSheet, Image, StatusBar, Text, TextInput, KeyboardAvoidingView, Pressable, ScrollView, ActivityIndicator, FlatList } from 'react-native'
-import ReconnectingWebSocket from 'reconnecting-websocket'
-import { dialogResponseType } from '../../@types'
-import { add_squar_icon_asset, avatar_asset, checkRatesIcon, HelpCenterFeatureIcon, logo_asset, NearByFeatureIcon, notification_asset, OrderFeatureIcon, OtherFeatureIcon, scanIcon, searchIcon, WalletFeatureIcon } from '../../assets'
+import React, {  Fragment } from 'react'
+import { View, StyleSheet, Image, StatusBar, Text, KeyboardAvoidingView, Pressable, FlatList } from 'react-native'
+import {  dialogType } from '../../@types'
+import {  notification_asset, searchIcon } from '../../assets'
 import { MessageItem } from '../../components/content'
 import { SearchInput } from '../../components/inputs'
 import { Badge, Devider, LoadingBlock, Space } from '../../components/util'
-import { WEB_SOCKET_SERVER } from '../../constants'
-import { listToMatrix, showErrorToast, showsuccessToast } from '../../helpers'
 import { RootStackParamList } from '../../navigation/BottomNavigationBar'
 import { MessagesStackParamList } from '../../navigation/MessagesStack'
-import { useAuthentication } from '../../state'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
-import { dialogType, useDialogs } from './useDialogs'
+import { useDialogs } from './useDialogs'
 
 
 

@@ -41,6 +41,9 @@ export type OrdersResponseDataType = OrdersRequestDataType & {
     updated_at?: string,
     code?: string,
     creator?: number,
+    creator_details?: {
+        phonenumber: string
+    },
 }
 
 export type orderHistoryFilterType = {

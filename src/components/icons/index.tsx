@@ -9,6 +9,16 @@ type IconPropsType={
 }
 
 
+export const PickUpLocationIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <MaterialIcons name="add-location-alt"  color={color} size={size}  />
+    )
+}
+export const DropLocationIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <Entypo name="location"  color={color} size={size}  />
+    )
+}
 export const LeftArrowIcon = ({ color, size=24 }:IconPropsType) => {
     return (
         <AntDesign name="arrowleft" color={color} size={size}  />

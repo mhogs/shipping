@@ -27,9 +27,9 @@ export const TrackingDetailsScreen = ({ navigation }: TrackingDetailsScreenProps
     const { palette, mode, text } = theme
     const styles = getStyles(theme)
     const [modalOpen, setModalOpen] = useState(false)
-   
-    const {mapState, handleMapRegionChange}=useMapHandler()
-    
+
+    const { mapState, handleMapRegionChange } = useMapHandler()
+
 
     return (
 
@@ -46,37 +46,40 @@ export const TrackingDetailsScreen = ({ navigation }: TrackingDetailsScreenProps
                         style={styles.map}
                     >
                         {mapState.hasLocationPermissions &&
-                            <Marker
-                                coordinate={
-                                    {
-                                        latitude: mapState?.locationResult?.coords.latitude,
-                                        longitude: mapState?.locationResult?.coords.longitude,
-                                    } as LatLng
-                                }
-                            >
-                                <MyMarkerIcon
-                                    maincolor={theme.palette.primary[theme.mode].main}
-                                    secondaryColor="rgba(19, 59, 183, 0.15)"
-                                />
-                            </Marker>
+                            <>
 
+                                <Marker
+                                    coordinate={
+                                        {
+                                            latitude: mapState?.locationResult?.coords.latitude,
+                                            longitude: mapState?.locationResult?.coords.longitude,
+                                        } as LatLng
+                                    }
+                                >
+                                    <MyMarkerIcon
+                                        maincolor={theme.palette.primary[theme.mode].main}
+                                        secondaryColor="rgba(19, 59, 183, 0.15)"
+                                    />
+                                </Marker>
+                                <Marker
+                                    coordinate={
+                                        {
+                                            latitude: (mapState?.locationResult?.coords?.latitude || 0) + 0.02,
+                                            longitude: (mapState?.locationResult?.coords?.longitude || 0) + 0.02,
+                                        } as LatLng
+                                    }
+                                >
+                                    <MyMarkerIcon
+                                        maincolor={theme.palette.black[theme.mode].main}
+                                        secondaryColor="rgba(25, 29, 49, 0.15)"
+                                        icon={<Image source={comingIcon} />}
+                                    />
+                                </Marker>
+                            </>
                         }
-                        <Marker
-                            coordinate={
-                                {
-                                    latitude: (mapState?.locationResult?.coords?.latitude || 0) + 0.02,
-                                    longitude: (mapState?.locationResult?.coords?.longitude || 0) + 0.02,
-                                } as LatLng
-                            }
-                        >
-                            <MyMarkerIcon
-                                maincolor={theme.palette.black[theme.mode].main}
-                                secondaryColor="rgba(25, 29, 49, 0.15)"
-                                icon={<Image source={comingIcon} />}
-                            />
-                        </Marker>
+
                     </MapView>
-                    
+
                     <Pressable
                         style={styles.detailsBtn}
                         onPress={() => setModalOpen(true)}

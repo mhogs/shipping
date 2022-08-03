@@ -45,6 +45,7 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
           region={mapState.mapRegion}
           onRegionChange={handleMapRegionChange}
           style={styles.map}
+          
         >
           {mapState.hasLocationPermissions &&
             <>

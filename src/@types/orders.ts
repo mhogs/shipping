@@ -1,10 +1,5 @@
-export type locationType = {
-    id?: number
-    latitude: number,
-    longitude: number,
-    place?: string,
-    details?: string,
-} | null
+import { locationType } from "./map"
+
 
 export type PackageType = {
     id?: number

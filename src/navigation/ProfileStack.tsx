@@ -31,9 +31,5 @@ export type ProfileStackParamList = {
     ChangePasswordSetting: undefined;
     LanguageSetting: undefined;
     NotificationSetting: undefined;
-    FAQ:undefined
-    Policy:undefined
-    ContactUs:undefined
-    Share:undefined
-    UpdateApp:undefined
+   
   };

@@ -45,7 +45,7 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
           region={mapState.mapRegion}
           onRegionChange={handleMapRegionChange}
           style={styles.map}
-          
+
         >
           {mapState.hasLocationPermissions &&
             <>
@@ -77,7 +77,7 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
             placeholder='Search Location'
             placeholderTextColor={theme.palette.grey[theme.mode][3]}
             extraStyle={styles.searchBox}
-            
+
           />
         </View>
 

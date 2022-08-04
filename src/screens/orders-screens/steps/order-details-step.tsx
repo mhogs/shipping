@@ -13,6 +13,7 @@ import { ServiceType } from '../../../@types';
 import * as yup from 'yup';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { OrdersServices } from '../../../services';
+import { useServices } from '../../../hooks/orders/useServices';
 
 
 const orderPackageDetails = yup.object().shape({
@@ -39,8 +40,7 @@ export const OrderDetailsScene = (props: OrderSceneProps) => {
         },
         onError: (err: any) => { }
     })
-    const { data: services,  isLoading:loading_services } = useQuery<ServiceType[], Error>(['services'], OrdersServices.fetchServices,{retry: 1})
-
+    const { data: services,  isLoading:loading_services } = useServices()
 
     return (
         <Formik

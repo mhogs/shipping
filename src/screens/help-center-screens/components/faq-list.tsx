@@ -20,15 +20,16 @@ type QuestionsListViewProps = {
 export function QuestionsListView(props: QuestionsListViewProps) {
 
     const { params, navigation } = props
-    const PAGESIZE=4
+    const PAGESIZE = 4
     const { theme } = useTheme()
     const styles = getStyles(theme)
     const {
         results: faqs,
         isLoading: faqs_loading,
         isFetchingNextPage: loading_more,
-        fetchNextPage: loadMore
-    } = useInfinitFetcher<faqResponseDataType>("faqs", params, "/help/faqs/",PAGESIZE)
+        fetchNextPage: loadMore,
+        hasNextPage: can_load_more
+    } = useInfinitFetcher<faqResponseDataType>("faqs", params, "/help/faqs/", PAGESIZE)
 
 
     const [activeFAQs, setActiveFAQs] = useState<number[]>([])
@@ -77,7 +78,6 @@ export function QuestionsListView(props: QuestionsListViewProps) {
                         <Space size={15} />
                         <Pressable
                             android_ripple={{ color: theme.palette.grey[theme.mode][3], borderless: true }}
-                            onPress={() => "navigate to message details"}
                         >
                             <Text style={styles.reviewButtonsText}>
                                 No
@@ -118,16 +118,18 @@ export function QuestionsListView(props: QuestionsListViewProps) {
                 sectionContainerStyle={styles.sectionContainerStyle}
 
             />
-            {loading_more && <LoadingBlock/>}
+            {loading_more && <LoadingBlock />}
             <View style={{ alignItems: "center" }}>
                 <Pressable
                     style={{ paddingHorizontal: 10, paddingVertical: 5 }}
                     android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
                     onPress={() => loadMore()}
                 >
-                    <Text style={styles.seeMoreText}>
-                        see more
-                    </Text>
+                    {can_load_more &&
+                        <Text style={styles.seeMoreText}>
+                            see more
+                        </Text>
+                    }
                 </Pressable>
             </View>
         </View>

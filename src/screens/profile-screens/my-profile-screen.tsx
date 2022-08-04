@@ -5,13 +5,15 @@ import { globeIcon, HelpIcon, lockIcon, MobileIcon, notificationIcon, ProfilePic
 import { SignoutIcon } from '../../components/icons';
 import { MenuItem } from '../../components/navigation';
 import { Space } from '../../components/util';
+import { RootStackParamList } from '../../navigation/BottomNavigationBar';
+import { HelpCenterStackParamList } from '../../navigation/HelpCenterStack';
 import { ProfileStackParamList } from '../../navigation/ProfileStack';
 import { useAuthentication } from '../../state';
 import { useTheme } from '../../state/theming';
 import { ThemeType } from '../../theme'
 
 
-type MyProfileScreenProps = NativeStackScreenProps<ProfileStackParamList, 'MyProfile'>;
+type MyProfileScreenProps = NativeStackScreenProps<ProfileStackParamList&RootStackParamList , 'MyProfile'>;
 export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
     const { navigate } = navigation
     const {signOut, serverState, currentUser} =useAuthentication()
@@ -37,7 +39,8 @@ export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
                     {/** profile  */}
                     <View style={styles.profile_wraper}>
                         <View style={styles.info_wraper}>
-                            <Image style={styles.profile_pic} source={ProfilePicture} />
+                            <Image style={styles.profile_pic} source={{uri:currentUser?.picture}} />
+                            
                             <View style={{ justifyContent: 'center' }}>
                                 <Text style={styles.profile_name}>{`${currentUser?.first_name} ${currentUser?.last_name}`}</Text>
                                 <Text style={styles.phone}>{currentUser?.phonenumber}</Text>
@@ -67,7 +70,7 @@ export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
                                             <MenuItem
                                                 title={item.name}
                                                 icon={item.icon}
-                                                onPress={() => navigate(item.route)}
+                                                onPress={() => navigate(item.route,item.option)}
                                             />
                                             <Space size={15} direction='vertical' />
                                         </Fragment>
@@ -122,6 +125,9 @@ const getStyles = (theme: ThemeType) => {
         },
         profile_pic: {
             marginRight: 16,
+            width: 54,
+             height: 54,
+              borderRadius: 54
         },
         profile_name: {
             ...text.heading.H3,
@@ -177,7 +183,8 @@ const getStyles = (theme: ThemeType) => {
 type menuItemType = {
     name: string,
     icon: any,
-    route: keyof ProfileStackParamList
+    route: keyof ProfileStackParamList | keyof RootStackParamList,
+    option?:any
 }
 
 type sectionType = {
@@ -213,17 +220,18 @@ const settings: sectionType[] = [
             {
                 name: "FAQ",
                 icon: <Image source={HelpIcon}  />,
-                route: 'FAQ'
+                route: 'HomeStack',
+                option:{screen:'HelpCenterStack'}
             },
             {
                 name: "Policy & Security",
                 icon: <Image source={SecurityIcon}  />,
-                route: 'Policy'
+                route: 'MyProfile'
             },
             {
                 name: "Contact Us",
                 icon: <Image source={TeamIcon}  />,
-                route: 'ContactUs'
+                route: 'MyProfile'
             },
         ]
     },
@@ -233,12 +241,12 @@ const settings: sectionType[] = [
             {
                 name: "Share",
                 icon: <Image source={ShareIcon}  />,
-                route: 'Share'
+                route: 'MyProfile'
             },
             {
                 name: "Get The Latest Version",
                 icon: <Image source={MobileIcon}  />,
-                route: 'UpdateApp'
+                route: 'MyProfile'
             },
         ]
     }

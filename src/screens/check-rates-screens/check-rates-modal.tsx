@@ -5,34 +5,23 @@ import { ThemeType } from '../../theme';
 import { Devider, Space } from "../../components/util";
 import { ServiceItem } from "../../components/content/service-item";
 import { cargoIcon, expressIcon, regularIcon, doubleArrowIcon } from "../../assets";
+import { useServices } from "../../hooks/orders/useServices";
+import { directionType } from "../../@types";
 
 
-const data = {
-    pickup: "1304 Tiffin Ave, Findlay",
-    destination: '1410  Market St, Celina',
-    services: [
-        {
-            icon:regularIcon, title:'Regular', description:'2 - 3 Days', price:'$10'
-        },
-        {
-            icon:cargoIcon, title:'Cargo', description:'3 - 6 Days', price:'$24'
-        },
-        {
-            icon:expressIcon, title:'Express', description:'1 - 2 Days', price:'$40'
-        },
-    ]
-}
+
 
 type CheckRatesModalProps = {
     visible: boolean
+    route:directionType
     closeModal: () => void
 }
 
 export const CheckRatesModal = (props: CheckRatesModalProps) => {
-    const { visible, closeModal } = props
+    const { visible,route, closeModal } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
-
+    const { data: services, isLoading: loading_services } = useServices()
 
     return (
         <Modal
@@ -54,29 +43,29 @@ export const CheckRatesModal = (props: CheckRatesModalProps) => {
                         <Space direction='vertical' size={46} />
                         <View style={styles.headerContainer}>
                             <View style={styles.pickupPlaceContainer}>
-                                <Text style={styles.pickupPlace}>{data.pickup}</Text>
+                                <Text style={styles.pickupPlace}>{route.pickup?.place}</Text>
                                 <Text style={styles.type}>Pick Up</Text>
                             </View>
                             <Image source={doubleArrowIcon} />
                             <View style={styles.destinationPlaceContainer}>
-                                <Text style={styles.destinationPlace}>{data.destination}</Text>
+                                <Text style={styles.destinationPlace}>{route.destination?.place}</Text>
                                 <Text style={styles.type}>Destination</Text>
                             </View>
                         </View>
                         <Space direction='vertical' size={15} />
                         <Devider />
                         <Space direction='vertical' size={15} />
-                        <View  style={styles.servicesListe}>
+                        <View style={styles.servicesListe}>
                             {
-                                data.services?.map((item, index)=>{
+                                services?.map((item, index) => {
                                     return (
                                         <Fragment key={index}>
-                                            <ServiceItem icon={item.icon} title={item.title} description={item.description} price={item.price} />               
+                                            <ServiceItem id={item.id} icon={item.icon} name={item.name} price={'10$'} />
                                             <Space direction='vertical' size={15} />
                                         </Fragment>
                                     )
                                 })
-                            }    
+                            }
                         </View>
                     </View>
                 </View>
@@ -93,7 +82,7 @@ const getStyles = (theme: ThemeType) => {
         root: { flex: 1 },
         modalContainer: {
             flexGrow: 1,
-            justifyContent:"space-between"
+            justifyContent: "space-between"
         },
         modalContent: {
             position: 'relative',
@@ -106,7 +95,7 @@ const getStyles = (theme: ThemeType) => {
             width: 60,
             height: 6,
             position: 'absolute',
-            zIndex:10,
+            zIndex: 10,
             top: 10,
             backgroundColor: palette.lightGrey[mode].main,
             borderRadius: 10,
@@ -130,38 +119,38 @@ const getStyles = (theme: ThemeType) => {
             alignItems: 'center',
             justifyContent: 'flex-start'
         },
-        headerContainer:{
-            display:'flex',
-            flexDirection:'row',
-            justifyContent:'space-between',
-            alignItems:'center',
+        headerContainer: {
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
         },
-        pickupPlaceContainer:{
-            width:'40%',
-            display:'flex',
-            flexDirection:'column',
-            justifyContent:'center',
-            alignItems:'flex-start'
+        pickupPlaceContainer: {
+            width: '40%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'flex-start'
         },
-        destinationPlaceContainer:{
-            width:'40%',
-            display:'flex',
-            flexDirection:'column',
-            justifyContent:'center',
-            alignItems:'flex-end'
+        destinationPlaceContainer: {
+            width: '40%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'flex-end'
         },
-        pickupPlace:{
-            textAlign:'left',
+        pickupPlace: {
+            textAlign: 'left',
             color: palette.black[mode].main,
             ...text.medium.P14_Lh130
         },
-        destinationPlace:{
-            textAlign:'right',
+        destinationPlace: {
+            textAlign: 'right',
             color: palette.black[mode].main,
             ...text.medium.P14_Lh130
         },
-        type:{
-            marginTop:4,
+        type: {
+            marginTop: 4,
             color: palette.grey[mode].main,
             ...text.regular.P12_Lh130
         }

@@ -12,22 +12,25 @@ export type MessageResponseType = {
     out: boolean,
     sender_username: string
 }
-export type MessageSocketResponseType=
-{
-    msg_type: WS_MSG_TYPE.TextMessage
-    random_id: number
-    text: string
-    sender: string
-    receiver: string
-    sender_username: string
-}
+export type MessageSocketResponseType =
+    {
+        msg_type: WS_MSG_TYPE.TextMessage
+        random_id: number
+        text: string
+        sender: string
+        receiver: string
+        sender_username: string
+    }
 
 export type dialogResponseType = {
     id: number,
     created: 1659118517,
     modified: 1659118517,
     other_user: userType,
-    last_message: string,
+    last_message: {
+        text: string,
+        created: number
+    } | null,
     unread_count: number
 }
 
@@ -43,10 +46,10 @@ export enum WS_MSG_TYPE {
     NewUnreadCount = 9,
     TypingStopped = 10
 }
-export type MessageApiQueryParamType={
-    user2:number,
-    offset?:number,
-    limit?:number
+export type MessageApiQueryParamType = {
+    user2: number,
+    offset?: number,
+    limit?: number
 }
 
 export type ws_incomingChatMsgType = {
@@ -65,4 +68,4 @@ export type dialogType = {
     time: string;
     unread: boolean;
     sender: userType
-  }
+}

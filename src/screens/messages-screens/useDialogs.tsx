@@ -28,16 +28,16 @@ export const useDialogs = (filter?: any) => {
   } = useInfinitFetcher<dialogResponseType>("mydialogs", filter, "/chat/dialogs/", API_PAGESIZE)
 
   useRefreshOnFocus(refetch)
- 
+
   const dialogs: dialogType[] | undefined = data?.map(item => ({
     picture: item.other_user.picture,
     fullName: `${item.other_user.first_name} ${item.other_user.last_name}`,
-    messageText: item.last_message,
-    time: moment.unix(item.created).fromNow(),
+    messageText: item.last_message?.text || "",
+    time: item.last_message?.created ? moment.unix(item.last_message?.created).fromNow() : "",
     unread: item.unread_count > 0,
     sender: item.other_user
   }))
-  
+
   dialogs.sort((a, b) => a.unread ? -1 : 1)
 
   return { dialogs, isLoading, loadMore, loading_more }

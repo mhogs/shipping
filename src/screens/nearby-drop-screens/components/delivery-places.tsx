@@ -18,8 +18,8 @@ export const DeliveryPlaces = (props: { orders?: OrdersResponseDataType[] }) => 
                         key={index}
                         coordinate={
                             {
-                                latitude: order.destination?.latitude,
-                                longitude: order.destination?.longitude,
+                                latitude: order.pickup?.latitude,
+                                longitude: order.pickup?.longitude,
                             } as LatLng
                         }
                     >

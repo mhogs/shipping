@@ -21,6 +21,7 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
   useHideBottomBar(navigation, 2)
   const { theme } = useTheme()
   const styles = getStyles(theme)
+  const [search, setSearch] = useState("")
   const [selectedOreder, setSelectedOrder] = useState<OrdersResponseDataType | null>(null);
   const { mapState, handleMapRegionChange } = useMapHandler()
   const {
@@ -28,7 +29,7 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
     isLoading,
     refetch,
   } = useFetcher<OrdersResponseDataType>("nearByPlaces", "/orders/orders/", { as_driver: true })
-
+  const filteredOrders = orders?.filter(order => order.description?.includes(search))
   useRefreshOnFocus(refetch)
   return (
 
@@ -68,7 +69,7 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
             </>
 
           }
-          <DeliveryPlaces orders={orders} />
+          <DeliveryPlaces orders={filteredOrders} />
         </MapView>
 
         <View style={{ padding: 24 }}>
@@ -77,14 +78,14 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
             placeholder='Search Location'
             placeholderTextColor={theme.palette.grey[theme.mode][3]}
             extraStyle={styles.searchBox}
-
+            onChangeText={(text) => setSearch(text)}
           />
         </View>
 
         <View style={{ paddingHorizontal: 24 }}>
           {isLoading && <LoadingBlock />}
-          {orders &&
-            orders.map((order, index) => (
+          {filteredOrders &&
+            filteredOrders.map((order, index) => (
               <Fragment key={index}>
                 <LocationItem
                   icon={

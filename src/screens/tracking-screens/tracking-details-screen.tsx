@@ -19,7 +19,7 @@ import { useMapHandler } from '../../hooks'
 
 type TrackingDetailsScreenProps = NativeStackScreenProps<TrackingStackParamList, 'TrackingDetails'>;
 
-export const TrackingDetailsScreen = ({ navigation }: TrackingDetailsScreenProps) => {
+export const TrackingDetailsScreen = ({ navigation, route }: TrackingDetailsScreenProps) => {
     useHideBottomBar(navigation, 2)
     const { navigate } = navigation
     const { goBack } = navigation

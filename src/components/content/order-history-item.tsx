@@ -4,7 +4,7 @@ import { OrdersResponseDataType, orderStateType } from '../../@types'
 import { MessageNotifIcon, PackageColored } from '../../assets'
 import { useTheme } from '../../state'
 import { ThemeType } from '../../theme'
-
+import * as Clipboard from 'expo-clipboard';
 
 type orderItemProps = OrdersResponseDataType & {
     onPress?: () => void
@@ -14,12 +14,17 @@ export const OrderHistoryItem = (props: orderItemProps) => {
     const { code, description, state, onPress } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
+
+    const copyToClipboard = async (text: string) => {
+        await Clipboard.setStringAsync(text);
+    };
+
     return (
         <View style={styles.root}>
-            <Pressable
+            <View
                 style={styles.pressable}
-                onPress={onPress}
-                android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
+            //onPress={onPress}
+            //android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
             >
                 <View style={styles.orderContainer}>
                     <View style={{ flexDirection: 'row' }}>
@@ -27,9 +32,12 @@ export const OrderHistoryItem = (props: orderItemProps) => {
                             <Image source={PackageColored} />
                         </View>
                         <View style={styles.orderDetailsContainer}>
-                            <Text style={styles.orderTitle}>
-                                {code}
-                            </Text>
+                            <Pressable onPress={() => copyToClipboard(code as string)}>
+                                <Text style={styles.orderTitle}>
+                                    {code}
+                                </Text>
+                            </Pressable>
+
                             <Text style={styles.orderBrief}>
                                 {description}
                             </Text>
@@ -40,7 +48,7 @@ export const OrderHistoryItem = (props: orderItemProps) => {
                         {state}
                     </Text>
                 </View>
-            </Pressable>
+            </View>
         </View>
 
 

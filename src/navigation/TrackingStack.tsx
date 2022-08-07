@@ -24,6 +24,6 @@ export const TrakingStackNavigator = () => {
 
 export type TrackingStackParamList = {
     Tracking: undefined,
-    TrackingDetails:{packageId:string},
+    TrackingDetails:{code:string},
     Scan:undefined
 };

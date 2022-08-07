@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1659864553913" clover="3.2.0">
+  <project timestamp="1659864553914" name="All files">
+    <metrics statements="4" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0" elements="4" coveredelements="0" complexity="0" loc="4" ncloc="4" packages="1" files="1" classes="1"/>
+    <file name="metro.config.js" path="C:\Users\Lenovo\Desktop\repos\personal\shipping\metro.config.js">
+      <metrics statements="4" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <line num="1" count="0" type="stmt"/>
+      <line num="3" count="0" type="stmt"/>
+      <line num="5" count="0" type="stmt"/>
+      <line num="7" count="0" type="stmt"/>
+    </file>
+  </project>
+</coverage>

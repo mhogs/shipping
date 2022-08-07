@@ -73,7 +73,6 @@ export async function getUserFromStorage(): Promise<currentUserType> {
     if (user_str === null) return null
     const user: userType = JSON.parse(user_str)
     return user
-
 }
 
 export async function getAuthHeaders() {

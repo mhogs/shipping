@@ -96,8 +96,8 @@ export const GooglePlacesInput = (props: GooglePlacesInputProps) => {
                         enablePoweredByContainer={false}
                         query={{
                             key: 'AIzaSyBeg9OGJfQWY0CWyRh8PfW2ERQbsP-yEwc',
-                            language: 'fr',
-                            components: 'country:dz'
+                            language: 'en',
+                            //components: 'country:dz'
                         }}    
                         renderRow={renderListItem}
                         renderRightButton={renderIcon}

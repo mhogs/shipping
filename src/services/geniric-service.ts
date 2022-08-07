@@ -1,6 +1,6 @@
 
 import axios from "axios"
-import {  PaginatedResponse } from "../@types"
+import { PaginatedResponse } from "../@types"
 import { BACKEND_BASE_URL } from "../constants"
 import { extractErrorMessage, getAuthHeaders, showErrorToast, showsuccessToast } from "../helpers"
 
@@ -36,7 +36,7 @@ export class GenricServices {
         const url = `${BACKEND_BASE_URL}${route}`
         const AuthHeaders = await getAuthHeaders()
         try {
-            
+
             return await (await axios.get(url,
                 {
                     params: { ...filter },
@@ -50,13 +50,14 @@ export class GenricServices {
             throw Error(parsedError.detail);
         }
     }
-    
-    static async fetchOne<T>(params:{route:string,id:number}): Promise<T> {
-        const url = `${BACKEND_BASE_URL}${params.route}/${params.id}`
-        
+
+
+    static async fetchOneById<T>(route: string, id: number): Promise<T> {
+        const url = `${BACKEND_BASE_URL}${route}/${id}`
+
         const AuthHeaders = await getAuthHeaders()
         try {
-            
+
             return await (await axios.get(url,
                 {
                     headers: { ...AuthHeaders }
@@ -69,16 +70,36 @@ export class GenricServices {
             throw Error(parsedError.detail);
         }
     }
-    static async PostOne<REQ_BODY,RES_BODY>(route:string,data:REQ_BODY): Promise<RES_BODY> {
+    static async fetchOneByParams<T>(route: string, params: any): Promise<T> {
+        const url = `${BACKEND_BASE_URL}${route}`
+
+        const AuthHeaders = await getAuthHeaders()
+        try {
+
+            return await (await axios.get(url,
+                {
+                    params: params,
+                    headers: { ...AuthHeaders },
+                })
+            ).data
+
+        } catch (err: any) {
+            const parsedError = extractErrorMessage(err)
+            showErrorToast(parsedError.status, parsedError.detail)
+            throw Error(parsedError.detail);
+        }
+    }
+
+    static async PostOne<REQ_BODY, RES_BODY>(route: string, data: REQ_BODY): Promise<RES_BODY> {
         const url = `${BACKEND_BASE_URL}${route}`
         const AuthHeaders = await getAuthHeaders()
         try {
-            const response = await axios.post(url,data, {
+            const response = await axios.post(url, data, {
                 headers: { ...AuthHeaders },
             })
             showsuccessToast("created")
             return response.data
-            
+
         } catch (err: any) {
             const parsedError = extractErrorMessage(err)
             showErrorToast(parsedError.status, parsedError.detail)

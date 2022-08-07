@@ -3,7 +3,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { View, Text, StyleSheet, ScrollView, Image, Pressable } from 'react-native'
 import MapView, { LatLng, Marker, Region } from 'react-native-maps'
 import { useHideBottomBar } from '../../components/navigation'
-import { Devider, ModalTopBarIndicator, MyMarkerIcon, SimpleScreenHeader, Space } from '../../components/util'
+import { Devider, LoadingView, ModalTopBarIndicator, MyMarkerIcon, SimpleScreenHeader, Space } from '../../components/util'
 
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
@@ -14,7 +14,8 @@ import { AdresseItem, DriverItem } from '../../components/content'
 import { SaveChangesButton } from '../../components/buttons'
 import { TrackingDetailsModal } from './modals'
 import { TrackingStackParamList } from '../../navigation/TrackingStack'
-import { useMapHandler } from '../../hooks'
+import { useFetchOne, useMapHandler } from '../../hooks'
+import { OrdersResponseDataType } from '../../@types'
 
 
 type TrackingDetailsScreenProps = NativeStackScreenProps<TrackingStackParamList, 'TrackingDetails'>;
@@ -23,6 +24,8 @@ export const TrackingDetailsScreen = ({ navigation, route }: TrackingDetailsScre
     useHideBottomBar(navigation, 2)
     const { navigate } = navigation
     const { goBack } = navigation
+    const { code } = route.params
+
     const { theme } = useTheme()
     const { palette, mode, text } = theme
     const styles = getStyles(theme)
@@ -30,6 +33,17 @@ export const TrackingDetailsScreen = ({ navigation, route }: TrackingDetailsScre
 
     const { mapState, handleMapRegionChange } = useMapHandler()
 
+    const { data: order, isLoading } = useFetchOne<OrdersResponseDataType>(
+        "trackingOrder",
+        "/orders/orders/get_by_code/",
+        { code: code }
+    )
+    console.log(order);
+    
+    if (isLoading)
+        return <LoadingView />
+    
+    
 
     return (
 
@@ -79,20 +93,28 @@ export const TrackingDetailsScreen = ({ navigation, route }: TrackingDetailsScre
                         }
 
                     </MapView>
+                    {order !== undefined &&
+                        <>
+                            <Pressable
+                                style={styles.detailsBtn}
+                                onPress={() => setModalOpen(true)}
+                                android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
+                            >
+                                <Text style={styles.detailsBtnText}>Check Details</Text>
+                            </Pressable>
+                            {/**modal */}
 
-                    <Pressable
-                        style={styles.detailsBtn}
-                        onPress={() => setModalOpen(true)}
-                        android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
-                    >
-                        <Text style={styles.detailsBtnText}>Check Details</Text>
-                    </Pressable>
-                    {/**modal */}
-                    <TrackingDetailsModal
-                        visible={modalOpen}
-                        onBtnPress={() => navigate("Scan")}
-                        closeModal={() => setModalOpen(false)}
-                    />
+                            <TrackingDetailsModal
+                                visible={modalOpen}
+                                order={order}
+                                onBtnPress={() => navigate("Scan")}
+                                closeModal={() => setModalOpen(false)}
+                            />
+                        </>
+                    }
+
+
+
 
                 </View>
             </ScrollView>

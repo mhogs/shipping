@@ -1,5 +1,6 @@
 import React from "react"
 import { Modal, Pressable, ScrollView, View, Image, Text, StyleSheet } from "react-native"
+import { OrdersResponseDataType } from "../../../@types"
 import { SaveChangesButton } from "../../../components/buttons"
 import { AdresseItem, DriverItem } from "../../../components/content"
 import { LocationIcon, MyLocationIcon } from "../../../components/icons"
@@ -10,12 +11,13 @@ import { ThemeType } from "../../../theme"
 
 
 type TrackingDetailsModalProps = {
+    order:OrdersResponseDataType
     visible: boolean
     closeModal: () => void
     onBtnPress?: () => void
 }
 export const TrackingDetailsModal = (props: TrackingDetailsModalProps) => {
-    const { visible, closeModal, onBtnPress } = props
+    const { visible, closeModal, onBtnPress,order } = props
     const { theme } = useTheme()
     const styles = getStyles(theme)
     return (
@@ -56,7 +58,7 @@ export const TrackingDetailsModal = (props: TrackingDetailsModalProps) => {
                             <ScrollView horizontal>
                                 <View style={styles.packageInfocontainer}>
                                     <View>
-                                        <Text style={styles.packageInfovalue}>JT840284924</Text>
+                                        <Text style={styles.packageInfovalue}>{order.code}</Text>
                                         <Text style={styles.packageInfoLabel}>Track Number</Text>
                                     </View>
                                     <Space size={20} />
@@ -66,7 +68,7 @@ export const TrackingDetailsModal = (props: TrackingDetailsModalProps) => {
                                     </View>
                                     <Space size={20} />
                                     <View>
-                                        <Text style={styles.packageInfovalue}>4.8 kg</Text>
+                                        <Text style={styles.packageInfovalue}>{order.package?.weight || "--"}</Text>
                                         <Text style={styles.packageInfoLabel}>Package Weight</Text>
                                     </View>
                                 </View>
@@ -76,12 +78,12 @@ export const TrackingDetailsModal = (props: TrackingDetailsModalProps) => {
                             <View>
                                 <AdresseItem
                                     startIcon={<MyLocationIcon color={theme.palette.warning[theme.mode].main} />}
-                                    adress="1213 Washington Blvd, Belpre, OH"
+                                    adress={order.pickup?.place || "?"}
                                 />
                                 <View style={styles.pathlink} />
                                 <AdresseItem
                                     startIcon={<LocationIcon color={theme.palette.grey[theme.mode].main} />}
-                                    adress="1213 Washington Blvd, Belpre, OH"
+                                    adress={order.destination?.place || "?"}
                                 />
                             </View>
                             <Space size={30} direction="vertical" />

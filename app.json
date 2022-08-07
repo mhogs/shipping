@@ -2,6 +2,7 @@
   "expo": {
     "name": "shipping",
     "slug": "shipping",
+    "owner": "hemzatalha",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
@@ -29,7 +30,7 @@
     "web": {
       "favicon": "./src/assets/favicon.png"
     },
-    "description": "",
+    "description": "shipping service , react native with  django restfull backend ",
     "plugins": [
       [
         "expo-image-picker",

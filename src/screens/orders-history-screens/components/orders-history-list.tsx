@@ -1,15 +1,18 @@
 import React, { Fragment } from "react"
-import {  Text, StyleSheet, FlatList } from "react-native"
+import { Text, StyleSheet, FlatList } from "react-native"
 import { orderHistoryFilterType, OrdersResponseDataType } from "../../../@types"
 import { OrderHistoryItem } from "../../../components/content"
 import { LoadingBlock, Space } from "../../../components/util"
-import { useInfinitFetcher, useRefreshOnFocus } from "../../../hooks"
+import { useInfinitOrders, useRefreshOnFocus } from "../../../hooks"
+
 import { useTheme } from "../../../state"
 import { ThemeType } from "../../../theme"
 
 type OrdersHistoryListProps = {
     filter?: orderHistoryFilterType
 }
+
+
 export const OrdersHistoryList = (props: OrdersHistoryListProps) => {
     const { filter } = props
     const { theme } = useTheme()
@@ -22,7 +25,7 @@ export const OrdersHistoryList = (props: OrdersHistoryListProps) => {
         fetchNextPage: loadMore,
         refetch,
         resultsCount
-    } = useInfinitFetcher<OrdersResponseDataType>("orders_history", filter, "/orders/orders/", 3)
+    } = useInfinitOrders(filter)
 
     useRefreshOnFocus(refetch)
 
@@ -40,13 +43,13 @@ export const OrdersHistoryList = (props: OrdersHistoryListProps) => {
                 <Space size={50} direction='vertical' />
             }
             {loading_more && index >= orders.length - 1 &&
-                <LoadingBlock style={{justifyContent:"flex-start"}}  />
+                <LoadingBlock style={{ justifyContent: "flex-start" }} />
             }
         </Fragment>
     );
     if (isLoading) {
         return (
-            <LoadingBlock style={{height:50}} />
+            <LoadingBlock style={{ height: 50 }} />
         )
     }
     return (

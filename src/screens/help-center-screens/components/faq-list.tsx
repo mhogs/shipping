@@ -5,7 +5,7 @@ import Accordion from 'react-native-collapsible/Accordion';
 import { faqRequestParmsType, faqResponseDataType } from '../../../@types';
 import { MinusIcon, PlusIcon } from '../../../components/icons';
 import { Devider, LoadingBlock, Space } from '../../../components/util';
-import { useInfinitFetcher } from '../../../hooks';
+import { useInfinitFAQ } from '../../../hooks';
 import { useTheme } from '../../../state';
 import { ThemeType } from '../../../theme';
 
@@ -17,19 +17,21 @@ type QuestionsListViewProps = {
     navigation: any,
     params?: faqRequestParmsType
 }
+
+
 export function QuestionsListView(props: QuestionsListViewProps) {
 
     const { params, navigation } = props
-    const PAGESIZE = 4
+
     const { theme } = useTheme()
     const styles = getStyles(theme)
     const {
-        results: faqs,
-        isLoading: faqs_loading,
-        isFetchingNextPage: loading_more,
-        fetchNextPage: loadMore,
-        hasNextPage: can_load_more
-    } = useInfinitFetcher<faqResponseDataType>("faqs", params, "/help/faqs/", PAGESIZE)
+        faqs,
+        faqs_loading,
+        loading_more,
+        loadMore,
+        can_load_more
+    } = useInfinitFAQ(params)
 
 
     const [activeFAQs, setActiveFAQs] = useState<number[]>([])

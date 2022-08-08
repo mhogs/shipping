@@ -9,11 +9,11 @@ import { arrowDownIcon, noteIcon, packageIcon, regularIcon } from '../../../asse
 import { OrderSuccessfulModal, OrderPaymentMethodeModal, SelectServiceModal } from '../modals';
 import { OrderSceneProps } from '../order-screen';
 import { Formik, validateYupSchema } from 'formik';
-import { ServiceType } from '../../../@types';
+import { OrdersRequestDataType, OrdersResponseDataType, ServiceType } from '../../../@types';
 import * as yup from 'yup';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { OrdersServices } from '../../../services';
-import { useServices } from '../../../hooks/orders/useServices';
+import {  useServices } from '../../../hooks/orders';
+import { GenricService } from '../../../services';
 
 
 const orderPackageDetails = yup.object().shape({
@@ -34,13 +34,19 @@ export const OrderDetailsScene = (props: OrderSceneProps) => {
     const styles = getStyles(theme)
     const { currentUser } = useAuthentication()
     const [modals, setModals] = useState({ paymentMethodes: false, onPaymentSuccess: false, onSelectService: false });
-    const { mutate: saveOrder, isLoading: submeting_order } = useMutation(OrdersServices.createOrder, {
-        onSuccess: (data) => {
-            updateOrder(data)
-        },
-        onError: (err: any) => { }
-    })
-    const { data: services,  isLoading:loading_services } = useServices()
+    const {
+        mutate: saveOrder,
+        isLoading: submeting_order
+    } = useMutation(
+        (data: OrdersRequestDataType) =>
+            GenricService.PostOne<OrdersRequestDataType, OrdersResponseDataType>("/orders/orders", data),
+        {
+            onSuccess: (data) => {
+                updateOrder(data)
+            },
+            onError: (err: any) => { }
+        })
+    const { data: services, isLoading: loading_services } = useServices()
 
     return (
         <Formik
@@ -50,7 +56,7 @@ export const OrderDetailsScene = (props: OrderSceneProps) => {
                 width: (order?.package?.width || "").toString(),
                 length: (order?.package?.length || "").toString(),
                 height: (order?.package?.height || "").toString(),
-                service: services?.filter(ser=>ser.id===order?.service).pop() || null 
+                service: services?.filter(ser => ser.id === order?.service).pop() || null
             }}
 
             validationSchema={orderPackageDetails}

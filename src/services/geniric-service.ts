@@ -7,24 +7,20 @@ import { extractErrorMessage, getAuthHeaders, showErrorToast, showsuccessToast }
 
 
 
-export class GenricServices {
+export class GenricService {
 
-    static async fetchInfinit<T>(pageParam: any | string): Promise<PaginatedResponse<T>> {
-        let url = ""
+
+    static async fetchInfinit<T>(route: string, pageParam: any | string): Promise<PaginatedResponse<T>> {
+        let url = `${BACKEND_BASE_URL}${route}/`
         const AuthHeaders = await getAuthHeaders()
-        let query_parms = {}
-        const ready_url = typeof pageParam === "string"
-        if (ready_url) {
+        let params = {}
+        if (typeof pageParam === "string")
             url = pageParam
-        }
-        else {
-            const { route, ...rest_params } = pageParam
-            url = `${BACKEND_BASE_URL}${route}`
-            query_parms = rest_params
-        }
+        else
+            params = pageParam
 
         try {
-            return await (await axios.get(url, { params: { ...query_parms }, headers: { ...AuthHeaders } })).data
+            return (await axios.get(url, { params, headers: { ...AuthHeaders } })).data
         } catch (err: any) {
             const parsedError = extractErrorMessage(err)
             showErrorToast(parsedError.status, parsedError.detail)
@@ -32,17 +28,12 @@ export class GenricServices {
         }
     }
 
-    static async fetch<T>(route: string, filter: any): Promise<T[]> {
-        const url = `${BACKEND_BASE_URL}${route}`
+    static async fetch<T>(route: string, params: any): Promise<T[]> {
+        const url = `${BACKEND_BASE_URL}${route}/`
         const AuthHeaders = await getAuthHeaders()
         try {
 
-            return await (await axios.get(url,
-                {
-                    params: { ...filter },
-                    headers: { ...AuthHeaders }
-                })
-            ).data
+            return (await axios.get(url, { params, headers: { ...AuthHeaders } })).data
 
         } catch (err: any) {
             const parsedError = extractErrorMessage(err)
@@ -53,36 +44,22 @@ export class GenricServices {
 
 
     static async fetchOneById<T>(route: string, id: number): Promise<T> {
-        const url = `${BACKEND_BASE_URL}${route}/${id}`
-
+        const url = `${BACKEND_BASE_URL}${route}/${id}/`
         const AuthHeaders = await getAuthHeaders()
         try {
-
-            return await (await axios.get(url,
-                {
-                    headers: { ...AuthHeaders }
-                })
-            ).data
-
+            return (await axios.get(url, { headers: { ...AuthHeaders } })).data
         } catch (err: any) {
             const parsedError = extractErrorMessage(err)
             showErrorToast(parsedError.status, parsedError.detail)
             throw Error(parsedError.detail);
         }
     }
-    static async fetchOneByParams<T>(route: string, params: any): Promise<T> {
-        const url = `${BACKEND_BASE_URL}${route}`
 
+    static async fetchOneByParams<T>(route: string, params: any): Promise<T> {
+        const url = `${BACKEND_BASE_URL}${route}/`
         const AuthHeaders = await getAuthHeaders()
         try {
-
-            return await (await axios.get(url,
-                {
-                    params: params,
-                    headers: { ...AuthHeaders },
-                })
-            ).data
-
+            return (await axios.get(url, { params, headers: { ...AuthHeaders }, })).data
         } catch (err: any) {
             const parsedError = extractErrorMessage(err)
             showErrorToast(parsedError.status, parsedError.detail)
@@ -91,13 +68,29 @@ export class GenricServices {
     }
 
     static async PostOne<REQ_BODY, RES_BODY>(route: string, data: REQ_BODY): Promise<RES_BODY> {
-        const url = `${BACKEND_BASE_URL}${route}`
+        const url = `${BACKEND_BASE_URL}${route}/`
         const AuthHeaders = await getAuthHeaders()
         try {
             const response = await axios.post(url, data, {
                 headers: { ...AuthHeaders },
             })
             showsuccessToast("created")
+            return response.data
+        } catch (err: any) {
+            const parsedError = extractErrorMessage(err)
+            showErrorToast(parsedError.status, parsedError.detail)
+            throw Error(parsedError.detail);
+        }
+    }
+
+    static async PutOne<REQ_BODY, RES_BODY>(route: string, id: number, data: REQ_BODY): Promise<RES_BODY> {
+        const url = `${BACKEND_BASE_URL}${route}/${id}/`
+        const AuthHeaders = await getAuthHeaders()
+        try {
+            const response = await axios.put(url, data, {
+                headers: { ...AuthHeaders },
+            })
+            showsuccessToast("updated")
             return response.data
 
         } catch (err: any) {
@@ -107,9 +100,38 @@ export class GenricServices {
         }
     }
 
+    static async PatchOne<REQ_BODY, RES_BODY>(route: string, id: number, data: REQ_BODY): Promise<RES_BODY> {
+        const url = `${BACKEND_BASE_URL}${route}/${id}/`
+        const AuthHeaders = await getAuthHeaders()
+        try {
+            const response = await axios.put(url, data, {
+                headers: { ...AuthHeaders },
+            })
+            showsuccessToast("updated")
+            return response.data
 
+        } catch (err: any) {
+            const parsedError = extractErrorMessage(err)
+            showErrorToast(parsedError.status, parsedError.detail)
+            throw Error(parsedError.detail);
+        }
+    }
 
-
+    static async DeleteOne<REQ_BODY, RES_BODY>(route: string, id: number): Promise<RES_BODY> {
+        const url = `${BACKEND_BASE_URL}${route}/${id}/`
+        const AuthHeaders = await getAuthHeaders()
+        try {
+            const response = await axios.delete(url, {
+                headers: { ...AuthHeaders },
+            })
+            showsuccessToast("deleted")
+            return response.data
+        } catch (err: any) {
+            const parsedError = extractErrorMessage(err)
+            showErrorToast(parsedError.status, parsedError.detail)
+            throw Error(parsedError.detail);
+        }
+    }
 }
 
 

@@ -7,9 +7,8 @@ import { SceneRendererProps, TabView } from 'react-native-tab-view';
 import { ClientDetailsScene, OrderDetailsScene, OrderRouteScene } from './steps'
 import { RootStackParamList } from '../../navigation/BottomNavigationBar';
 import { OrdersRequestDataType } from '../../@types';
-import { useMutation } from '@tanstack/react-query';
-import { OrdersServices } from '../../services';
-import { useAuthentication } from '../../state';
+
+
 
 export type OrderSceneProps = {
   navigation: NativeStackNavigationProp<OrderStackParamList & RootStackParamList, "order", undefined>

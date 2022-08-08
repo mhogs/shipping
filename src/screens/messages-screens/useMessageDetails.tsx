@@ -1,12 +1,11 @@
-import { useInfinitFetcher, useRefreshOnFocus } from '../../hooks';
-import { MessageApiQueryParamType, MessageResponseType, MessageSocketResponseType, userType, ws_incomingChatMsgType, WS_MSG_TYPE } from '../../@types';
-import moment from 'moment';
+import { MessageSocketResponseType, WS_MSG_TYPE } from '../../@types';
 import { useAuthentication } from '../../state';
 import { IMessage } from 'react-native-gifted-chat';
-import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 import { WEB_SOCKET_SERVER } from '../../constants';
 import { formatMessageApiResponse_To_IMessage, formatSocketMessage_To_IMessage } from '../../helpers';
-import { ChatService } from '../../services';
+import { ChatService } from '../../services/chat-service';
+
 
 const MESSAGES_API_PAGESIZE = 10
 type chatStateType = {
@@ -100,7 +99,9 @@ export const useMessageDetails = (filter: { user2: number }) => {
 
 
             ws.onerror = (ev: Event) => {
-                console.log("connected ........");
+                console.log("error .....");
+               
+                
             }
             ws.onclose = (ev: Event) => {
                 console.log("disconnected ........");

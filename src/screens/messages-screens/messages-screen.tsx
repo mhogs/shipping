@@ -1,18 +1,18 @@
 
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import React, {  Fragment } from 'react'
+import React, { Fragment } from 'react'
 import { View, StyleSheet, Image, StatusBar, Text, KeyboardAvoidingView, Pressable, FlatList } from 'react-native'
-import {  dialogType } from '../../@types'
-import {  notification_asset, searchIcon } from '../../assets'
+import { dialogType } from '../../@types'
+import { notification_asset, searchIcon } from '../../assets'
 import { MessageItem } from '../../components/content'
 import { SearchInput } from '../../components/inputs'
 import { Badge, Devider, LoadingBlock, Space } from '../../components/util'
+import { useDialogs, useRefreshOnFocus } from '../../hooks'
 import { RootStackParamList } from '../../navigation/BottomNavigationBar'
 import { MessagesStackParamList } from '../../navigation/MessagesStack'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
-import { useDialogs } from './useDialogs'
 
 
 
@@ -23,11 +23,12 @@ export const MessagesScreen = ({ navigation }: MessagesScreenProps) => {
   const { theme } = useTheme()
   const styles = getStyles(theme)
 
-  const { dialogs, isLoading, loadMore, loading_more } = useDialogs()
+  const { dialogs, isLoading, loadMore, loading_more, refetch } = useDialogs()
+  useRefreshOnFocus(refetch)
 
   const _renderItem = ({ item, index }: { item: dialogType, index: number }) => (
     <Fragment >
-      <MessageItem {...item} onPress={() => navigate("MessageDetails",{sender:item.sender})} />
+      <MessageItem {...item} onPress={() => navigate("MessageDetails", { sender: item.sender })} />
 
       <Devider spacing={10} />
       {!loading_more && index >= dialogs.length - 1 &&
@@ -40,13 +41,7 @@ export const MessagesScreen = ({ navigation }: MessagesScreenProps) => {
   );
 
 
-
-
-
-
   return (
-
-
     <KeyboardAvoidingView style={styles.root}>
       <StatusBar backgroundColor={theme.palette.primary[theme.mode].main} />
       <View style={styles.head} >

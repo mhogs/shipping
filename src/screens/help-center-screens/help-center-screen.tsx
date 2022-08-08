@@ -12,7 +12,7 @@ import { SearchInput } from '../../components/inputs';
 import { useHideBottomBar } from '../../components/navigation';
 import { LoadingBlock, SimpleScreenHeader, Space } from '../../components/util'
 import { listToMatrix } from '../../helpers';
-import { useFetcher } from '../../hooks';
+import { useFaqCategories } from '../../hooks';
 import { HelpCenterStackParamList } from '../../navigation/HelpCenterStack';
 import { MessagesStackParamList } from '../../navigation/MessagesStack';
 import { useTheme } from '../../state';
@@ -26,9 +26,9 @@ export const HelpCenterScreen = ({ navigation }: HelpCenterScreenProps) => {
   const { theme } = useTheme()
   const styles = getStyles(theme)
   const {
-    data: fasq_categories,
-    isLoading: faqs_cats_loading
-  } = useFetcher<faqCategoriesResponseDataType>("faq_categories", "/help/faq_categories/",{})
+    fasq_categories,
+    faqs_cats_loading
+  } = useFaqCategories()
 
   return (
     <Formik

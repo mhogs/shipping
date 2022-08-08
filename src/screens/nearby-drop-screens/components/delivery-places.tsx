@@ -3,7 +3,6 @@ import { LatLng, Marker } from 'react-native-maps'
 import { OrdersResponseDataType } from '../../../@types'
 import { DropLocationIcon, PickUpLocationIcon } from '../../../components/icons'
 import { MyMarkerIcon } from '../../../components/util'
-import { useFetcher } from '../../../hooks'
 import { useTheme } from '../../../state'
 
 export const DeliveryPlaces = (props: { orders?: OrdersResponseDataType[] }) => {

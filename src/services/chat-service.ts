@@ -1,7 +1,7 @@
 import axios from "axios"
-import { MessageApiQueryParamType, MessageResponseType, OrdersRequestDataType, OrdersResponseDataType, PaginatedResponse, ServiceType } from "../@types"
+import { MessageApiQueryParamType, MessageResponseType,  PaginatedResponse } from "../@types"
 import { BACKEND_BASE_URL } from "../constants"
-import { extractErrorMessage, getAuthHeaders, showErrorToast, showsuccessToast } from "../helpers"
+import { extractErrorMessage, getAuthHeaders, showErrorToast } from "../helpers"
 
 
 
@@ -24,16 +24,4 @@ export class ChatService {
         }
     }
 
-
 }
-
-
-
-
-
-
-
-
-
-
-

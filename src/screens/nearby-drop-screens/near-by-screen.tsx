@@ -1,16 +1,16 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { Fragment, useState } from 'react'
-import { View, Text, Image, ScrollView, KeyboardAvoidingView, StyleSheet, Dimensions, TextInput, Modal, Pressable } from 'react-native'
+import { View, Text, Image, ScrollView, KeyboardAvoidingView, StyleSheet, Dimensions, Modal, Pressable } from 'react-native'
 import MapView, { LatLng, Marker } from 'react-native-maps';
 import { OrdersResponseDataType } from '../../@types';
-import { comingIcon, searchIcon, searchIconGrey } from '../../assets';
+import { comingIcon, searchIconGrey } from '../../assets';
 import { SaveChangesButton } from '../../components/buttons';
 import { LocationItem } from '../../components/content';
-import { DropLocationIcon, LocationIcon, PickUpLocationIcon, ThreeDotsIcon } from '../../components/icons';
+import { DropLocationIcon, PickUpLocationIcon, ThreeDotsIcon } from '../../components/icons';
 import { SearchInput } from '../../components/inputs';
 import { useHideBottomBar } from '../../components/navigation';
 import { Devider, LoadingBlock, MyMarkerIcon, SimpleScreenHeader, Space } from '../../components/util'
-import { useFetcher, useMapHandler, useRefreshOnFocus } from '../../hooks';
+import { useMapHandler, useOrders, useRefreshOnFocus } from '../../hooks';
 import { NearByStackParamList } from '../../navigation/NearByStack';
 import { useTheme } from '../../state';
 import { ThemeType } from '../../theme';
@@ -28,7 +28,8 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
     data: orders,
     isLoading,
     refetch,
-  } = useFetcher<OrdersResponseDataType>("nearByPlaces", "/orders/orders/", { as_driver: true })
+  } = useOrders({ as_driver: true })
+
   const filteredOrders = orders?.filter(order => order.description?.includes(search))
   useRefreshOnFocus(refetch)
   return (
@@ -46,7 +47,7 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
           region={mapState.mapRegion}
           onRegionChange={handleMapRegionChange}
           style={styles.map}
-
+          
         >
           {mapState.hasLocationPermissions &&
             <>

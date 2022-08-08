@@ -4,9 +4,9 @@ import { useTheme } from '../../state';
 import { ThemeType } from '../../theme';
 import { Devider, Space } from "../../components/util";
 import { ServiceItem } from "../../components/content/service-item";
-import { cargoIcon, expressIcon, regularIcon, doubleArrowIcon } from "../../assets";
-import { useServices } from "../../hooks/orders/useServices";
+import { doubleArrowIcon } from "../../assets";
 import { directionType } from "../../@types";
+import { useServices } from "../../hooks/orders";
 
 
 

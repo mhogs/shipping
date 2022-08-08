@@ -1,21 +1,16 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { Fragment, useEffect, useState } from 'react'
 import { View, Text, StyleSheet, ScrollView, Image, Pressable } from 'react-native'
-import MapView, { LatLng, Marker, Region } from 'react-native-maps'
+import MapView, { LatLng, Marker } from 'react-native-maps'
 import { useHideBottomBar } from '../../components/navigation'
-import { Devider, LoadingView, ModalTopBarIndicator, MyMarkerIcon, SimpleScreenHeader, Space } from '../../components/util'
+import {  LoadingView,  MyMarkerIcon, SimpleScreenHeader } from '../../components/util'
 
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../theme'
-import * as Location from 'expo-location';
-import { ChatlIcon, EmailIcon, InfoIcon, LocationIcon, MyLocationIcon, PhoneCallIcon, StarIcon } from '../../components/icons'
 import { comingIcon } from '../../assets'
-import { AdresseItem, DriverItem } from '../../components/content'
-import { SaveChangesButton } from '../../components/buttons'
 import { TrackingDetailsModal } from './modals'
 import { TrackingStackParamList } from '../../navigation/TrackingStack'
-import { useFetchOne, useMapHandler } from '../../hooks'
-import { OrdersResponseDataType } from '../../@types'
+import {  useMapHandler, useOrderByCode } from '../../hooks'
 
 
 type TrackingDetailsScreenProps = NativeStackScreenProps<TrackingStackParamList, 'TrackingDetails'>;
@@ -33,12 +28,7 @@ export const TrackingDetailsScreen = ({ navigation, route }: TrackingDetailsScre
 
     const { mapState, handleMapRegionChange } = useMapHandler()
 
-    const { data: order, isLoading } = useFetchOne<OrdersResponseDataType>(
-        "trackingOrder",
-        "/orders/orders/get_by_code/",
-        { code: code }
-    )
-    console.log(order);
+    const { data: order, isLoading } = useOrderByCode(code)
     
     if (isLoading)
         return <LoadingView />

@@ -13,7 +13,7 @@ import { NotificationsStackParamList } from '../../navigation/NotificationsStack
 import { ProfileStackParamList } from '../../navigation/ProfileStack'
 import { TrackingStackParamList } from '../../navigation/TrackingStack'
 import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 
 type TrackingScreenProps = NativeStackScreenProps<TrackingStackParamList, 'Tracking'>;
 
@@ -178,7 +178,7 @@ const getStyles = (theme: ThemeType) => {
       marginTop: 50,
       textAlign: 'center',
       ...text.heading.H2,
-      color: palette.black[mode].main
+      color: palette.text[mode].main
     },
     EmptyOrderDescription: {
       marginTop: 10,
@@ -189,7 +189,7 @@ const getStyles = (theme: ThemeType) => {
 
     headTitle: {
       ...text.heading.H2,
-      color: palette.black[mode].main
+      color: palette.text[mode].main
     },
     clearText: {
       ...text.regular.P14_Lh180,

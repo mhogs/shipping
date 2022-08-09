@@ -2,7 +2,7 @@ import React from 'react'
 import { Pressable, View, StyleSheet, Image, Text, Dimensions } from 'react-native'
 import { MessageNotifIcon, PackageColored } from '../../assets'
 import { useTheme } from '../../state'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 
 
 type TransactionItemProps = {
@@ -86,7 +86,7 @@ function getStyles(theme: ThemeType) {
         },
         transactionTitle: {
             ...text.medium.P14_Lh130,
-            color: palette.black[mode].main
+            color: palette.text[mode].main
         },
         transactionDate: {
             ...text.regular.P14_Lh130,
@@ -94,7 +94,7 @@ function getStyles(theme: ThemeType) {
         },
         transactionAmount: {
             ...text.medium.P12_Lh180,
-            color: palette.black[mode].main
+            color: palette.text[mode].main
         },
 
     })

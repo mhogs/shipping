@@ -7,7 +7,7 @@ import { MinusIcon, PlusIcon } from '../../../components/icons';
 import { Devider, LoadingBlock, Space } from '../../../components/util';
 import { useInfinitFAQ } from '../../../hooks';
 import { useTheme } from '../../../state';
-import { ThemeType } from '../../../theme';
+import { ThemeType } from '../../../constants/theme';
 
 
 
@@ -157,7 +157,7 @@ const getStyles = (theme: ThemeType) => {
         },
         questionHeaderText: {
             ...text.medium.P14_Lh180,
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
         },
 
         mutedText: {

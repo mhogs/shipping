@@ -1,7 +1,7 @@
 import React from 'react'
 import { Pressable, View,Text,StyleSheet } from 'react-native'
 import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import { LeftArrowIcon } from '../icons'
 
 type SimpleScreenHeaderProps={
@@ -21,7 +21,7 @@ export const SimpleScreenHeader = (props:SimpleScreenHeaderProps) => {
                     onPress={goBack}
                     android_ripple={{ color: theme.palette.grey[theme.mode].main }}
                 >
-                    <LeftArrowIcon color={theme.palette.black[theme.mode].main} size={20} />
+                    <LeftArrowIcon color={theme.palette.text[theme.mode].main} size={20} />
                 </Pressable>
             </View>
 
@@ -53,7 +53,7 @@ const getStyles = (theme: ThemeType) => {
       },
       screenHeaderText: {
         ...text.medium.P16_Lh130,
-        color: palette.black[mode].main,
+        color: palette.text[mode].main,
         flex: 1,
         textAlign: "center"
       }

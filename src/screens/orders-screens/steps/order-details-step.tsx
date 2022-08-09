@@ -1,7 +1,7 @@
 import { View, StyleSheet, StatusBar, Image, ScrollView, Text, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import { useAuthentication, useTheme } from '../../../state';
-import { ThemeType } from '../../../theme';
+import { ThemeType } from '../../../constants/theme';
 import { SimpleScreenHeader, Space, WarningText } from '../../../components/util';
 import { MyTextInput } from '../../../components/inputs';
 import { SaveChangesButton } from '../../../components/buttons';
@@ -256,11 +256,11 @@ const getStyles = (theme: ThemeType) => {
         },
         groupLabel: {
             ...text.medium.P16_Lh180,
-            color: palette.black[mode].main
+            color: palette.text[mode].main
         },
         unit: {
             ...text.medium.P14_Lh130,
-            color: palette.black[mode].main
+            color: palette.text[mode].main
         },
         contentContainer: {
             flex: 1,
@@ -269,7 +269,7 @@ const getStyles = (theme: ThemeType) => {
         },
         selectServiceTitle: {
             ...text.medium.P18_Lh180,
-            color: palette.black[mode].main
+            color: palette.text[mode].main
         },
         servicesListe: {
             display: 'flex',

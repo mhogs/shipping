@@ -9,7 +9,7 @@ import { useHideBottomBar } from '../../components/navigation'
 import { SimpleScreenHeader, Space } from '../../components/util'
 import { ProfileStackParamList } from '../../navigation/ProfileStack'
 import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import * as ImagePicker from 'expo-image-picker';
 import { Formik } from 'formik'
 import { updateProfileRequestDataType } from '../../@types'

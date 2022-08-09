@@ -1,7 +1,7 @@
 import React, { Fragment } from "react"
 import { Modal, View, Text, StyleSheet, Pressable, ActivityIndicator } from "react-native"
 import { useTheme } from '../../../state';
-import { ThemeType } from '../../../theme';
+import { ThemeType } from '../../../constants/theme';
 import { Space } from "../../../components/util";
 import { ServiceItem } from "../../../components/content/service-item";
 import { cargoIcon, expressIcon, regularIcon } from "../../../assets";
@@ -123,7 +123,7 @@ const getStyles = (theme: ThemeType) => {
         },
         selectServiceTitle: {
             ...text.medium.P18_Lh180,
-            color: palette.black[mode].main
+            color: palette.text[mode].main
         },
         servicesListe: {
             display: 'flex',

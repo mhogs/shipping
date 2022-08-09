@@ -1,7 +1,7 @@
 import { View, Text, Pressable, Image } from 'react-native'
 import React from 'react'
 import { useTheme } from '../../state';
-import { ThemeType } from '../../theme';
+import { ThemeType } from '../../constants/theme';
 import { ServiceType } from '../../@types';
 
 type serviceItemProps = {
@@ -58,7 +58,7 @@ export const ServiceItem = (props: serviceItemProps) => {
                         }}>
                             <Text style={{
                                 ...theme.text.medium.P14_Lh130,
-                                color: theme.palette.black[theme.mode].main
+                                color: theme.palette.text[theme.mode].main
                             }}>
                                 {name}
                             </Text>
@@ -73,7 +73,7 @@ export const ServiceItem = (props: serviceItemProps) => {
 
                     <Text style={{
                         ...theme.text.medium.P12_Lh130,
-                        color: theme.palette.black[theme.mode].main
+                        color: theme.palette.text[theme.mode].main
                     }}>
                         {price}
                     </Text>

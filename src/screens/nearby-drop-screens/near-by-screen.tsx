@@ -13,7 +13,7 @@ import { Devider, LoadingBlock, MyMarkerIcon, SimpleScreenHeader, Space } from '
 import { useMapHandler, useOrders, useRefreshOnFocus } from '../../hooks';
 import { NearByStackParamList } from '../../navigation/NearByStack';
 import { useTheme } from '../../state';
-import { ThemeType } from '../../theme';
+import { ThemeType } from '../../constants/theme';
 import { DeliveryPlaces } from './components';
 
 type NearByScreenProps = NativeStackScreenProps<NearByStackParamList, 'NearBy'>;
@@ -61,7 +61,7 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
                 }
               >
                 <MyMarkerIcon
-                  maincolor={theme.palette.black[theme.mode].main}
+                  maincolor={theme.palette.text[theme.mode].main}
                   secondaryColor="rgba(25, 29, 49, 0.15)"
                   icon={<Image source={comingIcon} />}
                 />
@@ -157,7 +157,7 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
                   text='Direction'
                   onPress={() => { }}
                   bgColor={theme.palette.white[theme.mode].main}
-                  textColor={theme.palette.black[theme.mode].main}
+                  textColor={theme.palette.text[theme.mode].main}
                 />
               </View>
             </View>
@@ -223,7 +223,7 @@ const getStyles = (theme: ThemeType) => {
     },
     modelContentTitle: {
       ...text.medium.P18_Lh130,
-      color: palette.black[mode].main
+      color: palette.text[mode].main
     },
     adressText: {
       ...text.regular.P14_Lh130,

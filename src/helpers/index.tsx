@@ -4,7 +4,7 @@ import { Platform } from "react-native";
 import { IMessage } from "react-native-gifted-chat";
 import Toast from "react-native-toast-message";
 import { currentUserType, MessageResponseType, MessageSocketResponseType, userType } from "../@types";
-import { USER_STORAGE_KEY } from "../constants";
+import { THEME_STORAGE_KEY, USER_STORAGE_KEY } from "../constants";
 import * as ImagePicker from 'expo-image-picker';
 
 export async function ChoosePhotoFromMediaLib() {
@@ -74,6 +74,12 @@ export async function getUserFromStorage(): Promise<currentUserType> {
     const user: userType = JSON.parse(user_str)
     return user
 }
+export async function getModeFromStorage(): Promise<"light" | "dark"> {
+    const theme_mode = await AsyncStorage.getItem(THEME_STORAGE_KEY) as "light" | "dark"
+    return theme_mode || "light"
+}
+
+
 
 export async function getAuthHeaders() {
     const user = await getUserFromStorage()

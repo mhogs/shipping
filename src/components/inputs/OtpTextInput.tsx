@@ -1,7 +1,7 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native'
 import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import { Space } from '../util'
 
 type OtpTextInputProps = {

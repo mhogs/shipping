@@ -2,7 +2,7 @@ import React from 'react'
 import { Pressable, View, StyleSheet, Image, Text, Dimensions } from 'react-native'
 import { MessageNotifIcon } from '../../assets'
 import { useTheme } from '../../state'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 
 type LocationItemProps = {
     icon?: any,
@@ -74,7 +74,7 @@ const getStyles = (theme: ThemeType) => {
         },
         locationTitle: {
             ...text.medium.P14_Lh130,
-            color: palette.black[mode].main
+            color: palette.text[mode].main
         },
         locationBrief: {
             ...text.regular.P14_Lh130,

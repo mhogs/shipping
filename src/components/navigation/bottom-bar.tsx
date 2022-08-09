@@ -2,7 +2,7 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import React, { useEffect } from 'react';
 import { Pressable, View, Text, Image, StyleSheet } from 'react-native';
 import { useTheme } from '../../state/theming';
-import { ThemeType } from '../../theme';
+import { ThemeType } from '../../constants/theme';
 import { HomeIcon, HomeIconActive, MessageIcon, MessageIconActive, OrdersIcon, OrdersIconActive, ProfileIcon, ProfileIconActive } from '../../assets';
 import { RootStackParamList } from '../../navigation/BottomNavigationBar';
 import { OrdersHistoryStackParamList } from '../../navigation/OrderHistoryStack';
@@ -21,7 +21,7 @@ export function MyBottomTabBar(props: BottomTabBarProps) {
 
 
     return (
-        <View style={[styles.root, extraStyle]}>
+        <View style={[extraStyle,styles.root ]}>
             <View style={styles.menu}>
                 {
                     BottomTabs.map(tab => (
@@ -50,8 +50,7 @@ const getStyles = (theme: ThemeType) => {
     const { palette, mode, text } = theme
     return StyleSheet.create({
         root: {
-            backgroundColor: palette.white[mode].main,
-
+            backgroundColor: mode==="light"?"#ffffff":"#0F1621",
         },
         menu: {
             flexDirection: 'row',

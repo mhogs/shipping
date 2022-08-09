@@ -5,7 +5,7 @@ import { SaveChangesButton } from "../../../components/buttons"
 import { PaymentMethodeCard } from "../../../components/content"
 import { Space } from "../../../components/util"
 import { useTheme } from "../../../state"
-import { ThemeType } from "../../../theme"
+import { ThemeType } from "../../../constants/theme"
 
 
 type PaymentMethodeModalProps = {
@@ -90,7 +90,7 @@ const getStyles = (theme: ThemeType) => {
         },
         ModalHeaderText: {
             ...text.heading.H2,
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
             marginBottom: 20
         },
         modalOverlay: {
@@ -111,7 +111,7 @@ const getStyles = (theme: ThemeType) => {
         },
         addPaymentMethodeButtonText: {
             ...text.medium.P14_Lh130,
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
             marginLeft: 14
         }
     })

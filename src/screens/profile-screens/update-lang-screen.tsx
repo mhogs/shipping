@@ -14,7 +14,7 @@ import { SimpleScreenHeader, Space } from '../../components/util'
 import { changeLanguage, defaultLang, i18n, supportedLangCodeType } from '../../locales'
 import { ProfileStackParamList } from '../../navigation/ProfileStack'
 import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 
 type UpdateLanguageScreenProps = NativeStackScreenProps<ProfileStackParamList, 'LanguageSetting'>;
 
@@ -67,7 +67,7 @@ const getStyles = (theme: ThemeType) => {
     root: {
       flex: 1,
       padding: 24,
-      backgroundColor: palette.lightGrey[theme.mode][3],
+      backgroundColor: palette.bg[mode].main,
     },
   })
 }

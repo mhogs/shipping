@@ -2,7 +2,7 @@
 import { View, StyleSheet, StatusBar, Image, Text, KeyboardAvoidingView } from 'react-native'
 import React, { useState } from 'react'
 import { useTheme } from '../../state';
-import { ThemeType } from '../../theme';
+import { ThemeType } from '../../constants/theme';
 import { SimpleScreenHeader, Space } from '../../components/util';
 import { AuthActionButton, SaveChangesButton } from '../../components/buttons';
 import { CheckRatesModal } from './check-rates-modal';
@@ -139,7 +139,7 @@ const getStyles = (theme: ThemeType) => {
     },
     unit: {
       ...text.medium.P14_Lh130,
-      color: palette.black[mode].main
+      color: palette.text[mode].main
     },
   })
 }

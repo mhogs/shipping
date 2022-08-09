@@ -11,7 +11,7 @@ import { SimpleScreenHeader } from '../../components/util'
 import { HelpCenterStackParamList } from '../../navigation/HelpCenterStack';
 import { MessagesStackParamList } from '../../navigation/MessagesStack';
 import { useTheme } from '../../state';
-import { ThemeType } from '../../theme';
+import { ThemeType } from '../../constants/theme';
 import { QuestionsListView } from './components/faq-list';
 
 type HelpCenterCategoryScreenProps = NativeStackScreenProps<HelpCenterStackParamList & MessagesStackParamList, 'HelpCategory'>;
@@ -96,7 +96,7 @@ const getStyles = (theme: ThemeType) => {
         },
         sectionTitle: {
             ...text.heading.H3,
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
             marginTop: 20,
             marginBottom: 15
         },
@@ -106,7 +106,7 @@ const getStyles = (theme: ThemeType) => {
 
         customerServiceText: {
             ...text.heading.H3,
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
             marginVertical: 20
         }
     })

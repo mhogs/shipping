@@ -6,7 +6,7 @@ import { useHideBottomBar } from '../../components/navigation'
 import {  LoadingView,  MyMarkerIcon, SimpleScreenHeader } from '../../components/util'
 
 import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import { comingIcon } from '../../assets'
 import { TrackingDetailsModal } from './modals'
 import { TrackingStackParamList } from '../../navigation/TrackingStack'
@@ -74,7 +74,7 @@ export const TrackingDetailsScreen = ({ navigation, route }: TrackingDetailsScre
                                     }
                                 >
                                     <MyMarkerIcon
-                                        maincolor={theme.palette.black[theme.mode].main}
+                                        maincolor={theme.palette.text[theme.mode].main}
                                         secondaryColor="rgba(25, 29, 49, 0.15)"
                                         icon={<Image source={comingIcon} />}
                                     />

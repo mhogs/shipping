@@ -15,7 +15,7 @@ import { WalletStackParamList } from '../../navigation/WalletStack'
 
 
 import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import { PaymentMethodeModal, OperationSuccessfulModal } from '../../components/modals'
 
 type TopUpScreenProps = NativeStackScreenProps<WalletStackParamList & RootStackParamList, 'TopUp'>;
@@ -111,7 +111,7 @@ const getStyles = (theme: ThemeType) => {
         },
         sectionHeaderText: {
             ...text.heading.H3,
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
             marginBottom: 4
         },
         sectionBubHeaderText: {
@@ -172,7 +172,7 @@ const getStyles = (theme: ThemeType) => {
         },
         ModalHeaderText: {
             ...text.heading.H2,
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
             marginBottom: 20
         },
         modalOverlay: {
@@ -193,7 +193,7 @@ const getStyles = (theme: ThemeType) => {
         },
         addPaymentMethodeButtonText: {
             ...text.medium.P14_Lh130,
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
             marginLeft: 14
         }
 

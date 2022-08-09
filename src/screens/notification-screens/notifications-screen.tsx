@@ -9,9 +9,8 @@ import { NotificationItem, useHideBottomBar } from '../../components/navigation'
 import { Devider, SimpleScreenHeader, Space } from '../../components/util'
 import { NotificationsStackParamList } from '../../navigation/NotificationsStack'
 import { ProfileStackParamList } from '../../navigation/ProfileStack'
-import { useAuth } from '../../state'
 import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 
 type NotificationsScreenProps = NativeStackScreenProps<NotificationsStackParamList, 'Notifications'>;
 
@@ -78,7 +77,7 @@ const getStyles = (theme: ThemeType) => {
     root: {
       flex: 1,
       padding: 24,
-      backgroundColor: palette.lightGrey[theme.mode][3],
+      backgroundColor: palette.bg[theme.mode].main,
 
     },
     head: {
@@ -91,7 +90,7 @@ const getStyles = (theme: ThemeType) => {
 
     headTitle: {
       ...text.heading.H2,
-      color: palette.black[mode].main
+      color: palette.text[mode].main
     },
     clearText: {
       ...text.regular.P14_Lh180,
@@ -118,55 +117,55 @@ const getStyles = (theme: ThemeType) => {
 
 const data = [
   {
-    icon: <Image source={PackageIcon} width={22} height={22} />,
+    icon: <Image source={PackageIcon}  />,
     title: "Kathryn Sent You a Message",
     description: 'Tap to see the message',
     time: "1 h ago",
   },
   {
-    icon: <Image source={PackageIcon} width={22} height={22} />,
+    icon: <Image source={PackageIcon} />,
     title: "Your Shipping Already Delivered",
     description: 'Tap to  see the detail shipping',
     time: "1 h ago",
   },
   {
-    icon: <Image source={DiscountIcon} width={22} height={22} />,
+    icon: <Image source={DiscountIcon} />,
     title: "Get 20% Discount for First Transaction!",
     description: 'For all transaction without requirements',
     time: "1 h ago",
   },
   {
-    icon: <Image source={PackageIcon} width={22} height={22} />,
+    icon: <Image source={PackageIcon}  />,
     title: "Kathryn Sent You a Message",
     description: 'Tap to see the message',
     time: "1 h ago",
   },
   {
-    icon: <Image source={PackageIcon} width={22} height={22} />,
+    icon: <Image source={PackageIcon}  />,
     title: "Your Shipping Already Delivered",
     description: 'Tap to  see the detail shipping',
     time: "1 h ago",
   },
   {
-    icon: <Image source={DiscountIcon} width={22} height={22} />,
+    icon: <Image source={DiscountIcon} />,
     title: "Get 20% Discount for First Transaction!",
     description: 'For all transaction without requirements',
     time: "1 h ago",
   },
   {
-    icon: <Image source={PackageIcon} width={22} height={22} />,
+    icon: <Image source={PackageIcon}  />,
     title: "Kathryn Sent You a Message",
     description: 'Tap to see the message',
     time: "1 h ago",
   },
   {
-    icon: <Image source={PackageIcon} width={22} height={22} />,
+    icon: <Image source={PackageIcon}  />,
     title: "Your Shipping Already Delivered",
     description: 'Tap to  see the detail shipping',
     time: "1 h ago",
   },
   {
-    icon: <Image source={DiscountIcon} width={22} height={22} />,
+    icon: <Image source={DiscountIcon} />,
     title: "Get 20% Discount for First Transaction!",
     description: 'For all transaction without requirements',
     time: "1 h ago",

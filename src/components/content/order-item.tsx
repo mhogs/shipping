@@ -2,7 +2,7 @@ import React from 'react'
 import { Pressable, View, StyleSheet, Image, Text, Dimensions } from 'react-native'
 import { MessageNotifIcon } from '../../assets'
 import { useTheme } from '../../state'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import { ClockIcon, CloseIcon } from '../icons'
 
 type OrderItemProps = {
@@ -79,7 +79,7 @@ const getStyles = (theme: ThemeType) => {
         },
         orderCode: {
             ...text.medium.P14_Lh130,
-            color: palette.black[mode].main
+            color: palette.text[mode].main
         },
 
 

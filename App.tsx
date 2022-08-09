@@ -8,7 +8,7 @@ import { I18nManager } from 'react-native';
 import { useFonts, Outfit_400Regular, Outfit_500Medium, Outfit_600SemiBold, } from '@expo-google-fonts/outfit';
 import { Image } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthProvider } from './src/state';
+import { AuthProvider, ThemeProvider } from './src/state';
 import Toast, { ToastProps } from 'react-native-toast-message';
 import * as Location from 'expo-location'
 const queryClient = new QueryClient();
@@ -25,12 +25,14 @@ export default function App() {
 
 
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <NavigationContainer>
-          <Navigation />
-        </NavigationContainer>
-        <Toast visibilityTime={5000} />
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <NavigationContainer>
+            <Navigation />
+          </NavigationContainer>
+          <Toast visibilityTime={5000} />
+        </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
 
 

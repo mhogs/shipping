@@ -14,6 +14,12 @@ export const PickUpLocationIcon = ({ color, size=24 }:IconPropsType) => {
         <MaterialIcons name="add-location-alt"  color={color} size={size}  />
     )
 }
+export const LightDarkModeIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <MaterialCommunityIcons name="theme-light-dark"  color={color} size={size}  />
+    )
+}
+
 export const DropLocationIcon = ({ color, size=24 }:IconPropsType) => {
     return (
         <Entypo name="location"  color={color} size={size}  />
@@ -34,6 +40,12 @@ export const EyeIcon = ({ color, size=24 }:IconPropsType) => {
         <AntDesign name="eyeo" color={color} size={size} />
     )
 }
+export const EyeOffIcon = ({ color, size=24 }:IconPropsType) => {
+    return (
+        <Ionicons name="eye-off-outline" color={color} size={size} />
+    )
+}
+
 export const CheckIcon = ({ color, size=24 }:IconPropsType) => {
     return (
         <AntDesign name="check" color={color} size={size} />

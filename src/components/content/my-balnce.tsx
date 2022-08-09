@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { useTheme } from '../../state'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import { PlusIcon, PlusSquareIcon } from '../icons'
 
 type MyBalnceProps = {
@@ -17,7 +17,7 @@ export const MyBalnce = (props: MyBalnceProps) => {
     const styles = getStyles(theme)
     const {
         bgColor = theme.palette.white[theme.mode].main,
-        balanceColor = theme.palette.black[theme.mode].main,
+        balanceColor = theme.palette.text[theme.mode].main,
         titleColor=theme.palette.grey[theme.mode].main,
         topUpColor = theme.palette.primary[theme.mode].main,
         rippleColor = theme.palette.grey[theme.mode][3],

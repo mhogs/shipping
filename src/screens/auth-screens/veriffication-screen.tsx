@@ -1,7 +1,7 @@
 import { View, Text, StatusBar, KeyboardAvoidingView, StyleSheet, Platform, Pressable, ImageBackground, Keyboard, ActivityIndicator } from 'react-native'
 import React, { useMemo, useRef, useCallback, useState, useEffect, Fragment } from 'react'
 import { useTheme } from "../../state/theming";
-import { ThemeType } from "../../theme";
+import { ThemeType } from "../../constants/theme";
 import { LeftArrowIcon } from "../../components/icons";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../../navigation/AuthStack';
@@ -71,7 +71,7 @@ export const VerifficationScreen = (props: VerificationScreenProps) => {
               >
                 <LeftArrowIcon
                   size={24}
-                  color={theme.palette.black[theme.mode].main}
+                  color={theme.palette.text[theme.mode].main}
                 />
               </Pressable>
             </View>
@@ -159,7 +159,7 @@ const getStyles = (theme: ThemeType) => {
     },
     title: {
       ...text.heading.H2,
-      color: palette.black[mode].main,
+      color: palette.text[mode].main,
     },
     description: {
       flexDirection: 'row',
@@ -176,7 +176,7 @@ const getStyles = (theme: ThemeType) => {
     },
     descriptionNumber: {
       ...text.medium.P14_Lh130,
-      color: palette.black[mode].main,
+      color: palette.text[mode].main,
     },
 
     contentContainer: {
@@ -193,7 +193,7 @@ const getStyles = (theme: ThemeType) => {
     },
     successText: {
       ...text.heading.H1,
-      color: palette.black[mode].main,
+      color: palette.text[mode].main,
       textAlign: 'center'
     },
     successDesc: {

@@ -2,7 +2,7 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { AnimatedRegion, LatLng, Marker } from 'react-native-maps'
 import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import { LocationIcon } from '../icons'
 
 type MyMarkerProps = {

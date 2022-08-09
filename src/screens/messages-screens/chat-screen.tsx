@@ -10,7 +10,7 @@ import { Space } from '../../components/util';
 import { generateRondomMessageID } from '../../helpers';
 import { MessagesStackParamList } from '../../navigation/MessagesStack';
 import { useTheme } from '../../state';
-import { ThemeType } from '../../theme';
+import { ThemeType } from '../../constants/theme';
 import { useMessageDetails } from './useMessageDetails';
 
 const INPUT_HEIGHT = 44
@@ -173,7 +173,7 @@ const getStyles = (theme: ThemeType) => {
 
         notificatioTitle: {
             ...text.medium.P14_Lh130,
-            color: palette.black[mode].main
+            color: palette.text[mode].main
         },
         notificatioBrief: {
             ...text.regular.P14_Lh130,

@@ -18,7 +18,7 @@ import {
 } from "react-native-tab-view";
 
 import { useTheme } from "../../state/theming";
-import { ThemeType } from "../../theme";
+import { ThemeType } from "../../constants/theme";
 import { LeftArrowIcon } from "../../components/icons";
 import { AuthScreenProps } from "../../navigation/AuthStack";
 import { MyTabView } from "../../components/navigation";
@@ -44,18 +44,18 @@ export const AuthScreen = (props: AuthScreenProps) => {
     { key: "register", title: "Sign Up" },
     { key: "login", title: "Sign In" },
   ]
-  const renderScene = (props: SceneRendererProps & {
+  const renderScene = (params: SceneRendererProps & {
     route: {
         key: string;
         title: string;
     };
   }) => {
-    const {route}= props;
+    const {route}= params;
     switch (route.key) {
       case 'login':
-        return <LoginScreen navigation={navigation} />;
+        return <LoginScreen {...props} />;
       case 'register':
-        return <RegisterScreen navigation={navigation} />;
+        return <RegisterScreen {...props} />;
       default:
         return null;
     }
@@ -76,7 +76,7 @@ export const AuthScreen = (props: AuthScreenProps) => {
           >
             <LeftArrowIcon
               size={24}
-              color={theme.palette.black[theme.mode].main}
+              color={theme.palette.text[theme.mode].main}
             ></LeftArrowIcon>
           </Pressable>
         </View>
@@ -94,7 +94,7 @@ const getStyles = (theme: ThemeType) => {
   return StyleSheet.create({
     root: {
       flex: 1,
-      backgroundColor: palette.white[theme.mode].main,
+      backgroundColor: palette.bg[theme.mode].main,
       paddingLeft: 24,
       paddingRight: 24,
     },
@@ -120,7 +120,7 @@ const getStyles = (theme: ThemeType) => {
     title: {
       marginTop: 20,
       ...text.heading.H2,
-      color: palette.black[mode].main,
+      color: palette.text[mode].main,
     },
     description: {
       marginTop: 10,

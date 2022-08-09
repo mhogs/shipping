@@ -13,7 +13,7 @@ import { WalletStackParamList } from '../../navigation/WalletStack'
 
 
 import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 
 type WalletScreenProps = NativeStackScreenProps<WalletStackParamList, "Wallet">;
 
@@ -95,7 +95,7 @@ const getStyles = (theme: ThemeType) => {
     },
     sectionHeaderText: {
       ...text.heading.H3,
-      color: palette.black[mode].main,
+      color: palette.text[mode].main,
 
     },
     /**card */
@@ -123,7 +123,7 @@ const getStyles = (theme: ThemeType) => {
     },
     paymentCardName: {
       ...text.medium.P14_Lh130,
-      color: palette.black[mode].main,
+      color: palette.text[mode].main,
     },
     paymentCardnumber: {
       ...text.regular.P14_Lh180,

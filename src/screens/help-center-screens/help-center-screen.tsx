@@ -16,7 +16,7 @@ import { useFaqCategories } from '../../hooks';
 import { HelpCenterStackParamList } from '../../navigation/HelpCenterStack';
 import { MessagesStackParamList } from '../../navigation/MessagesStack';
 import { useTheme } from '../../state';
-import { ThemeType } from '../../theme';
+import { ThemeType } from '../../constants/theme';
 import { QuestionsListView } from './components/faq-list';
 
 
@@ -103,7 +103,7 @@ export const HelpCenterScreen = ({ navigation }: HelpCenterScreenProps) => {
                 <Space direction='vertical' size={15} />
                 <SocialLoginButton
                   label='Contact With Email'
-                  textColor={theme.palette.black[theme.mode].main}
+                  textColor={theme.palette.text[theme.mode].main}
                   borderColor={theme.palette.grey[theme.mode].main}
                   icon={<EmailIcon color={theme.palette.primary[theme.mode].main} />}
                   onClick={() => { }}
@@ -136,7 +136,7 @@ const getStyles = (theme: ThemeType) => {
     },
     sectionTitle: {
       ...text.heading.H3,
-      color: palette.black[mode].main,
+      color: palette.text[mode].main,
       marginTop: 20,
       marginBottom: 15
     },
@@ -158,12 +158,12 @@ const getStyles = (theme: ThemeType) => {
     },
     categoryName: {
       ...text.medium.P14_Lh180,
-      color: palette.black[mode].main,
+      color: palette.text[mode].main,
       marginLeft: 10
     },
     customerServiceText: {
       ...text.heading.H3,
-      color: palette.black[mode].main,
+      color: palette.text[mode].main,
       marginVertical: 20
     }
   })

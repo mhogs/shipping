@@ -1,7 +1,7 @@
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
 import { useTheme } from '../../../state/theming'
-import { ThemeType } from '../../../theme'
+import { ThemeType } from '../../../constants/theme'
 import { SceneRendererProps } from 'react-native-tab-view';
 import { orderHistoryFilterType } from '../../../@types';
 import { OrdersHistoryList } from './orders-history-list';
@@ -88,8 +88,8 @@ const getStyles = (theme: ThemeType) => {
             height: 28,
             flexDirection: "row",
             alignItems: "center",
-            marginBottom: 20
-
+            marginBottom: 20,
+            backgroundColor:palette.lightGrey[mode].main
         },
         tabItemFocused: {
             borderRadius: 25,

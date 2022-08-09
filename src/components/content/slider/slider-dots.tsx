@@ -1,7 +1,7 @@
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
 import { useTheme } from "../../../state/theming";
-import { ThemeType } from "../../../theme";
+import { ThemeType } from "../../../constants/theme";
 
 type SliderDotsProps = {
     lenght: number,

@@ -2,7 +2,7 @@ import React from 'react'
 import { TextInput, View, Image, StyleSheet, Pressable } from 'react-native'
 import { searchIcon } from '../../assets'
 import { useTheme } from '../../state'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import { ClockIcon, CloseIcon } from '../icons'
 import { Space } from '../util'
 
@@ -63,7 +63,7 @@ const getStyles = (theme: ThemeType) => {
     const { palette, mode, text } = theme
     return StyleSheet.create({
         searchBox: {
-            backgroundColor: palette.primary[mode][2],
+            backgroundColor: palette.primary["light"][2],
             flexDirection: 'row',
             justifyContent: 'space-between',
             borderRadius: 12,

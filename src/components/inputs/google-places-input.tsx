@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, Pressable, ScrollView, Dimensions, useWi
 import { GooglePlaceData, GooglePlacesAutocomplete, GooglePlacesAutocompleteRef } from 'react-native-google-places-autocomplete';
 
 import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import { Space } from '../util';
 
 type GooglePlacesInputProps = {
@@ -50,7 +50,7 @@ export const GooglePlacesInput = (props: GooglePlacesInputProps) => {
                 paddingVertical: 15,
             }}>
                 <Text style={{
-                    color: theme.palette.black[theme.mode].main,
+                    color: theme.palette.text[theme.mode].main,
                     ...theme.text.regular.P14_Lh180,
                 }}>
                     {data.description || data.formatted_address || data.name}
@@ -127,7 +127,7 @@ const getStyles = (theme: ThemeType, error?: boolean) => {
         },
         inputLabel: {
             ...text.medium.P16_Lh180,
-            color: palette.black[mode].main
+            color: palette.text[mode].main
         },
         textInputContainer: {
             height: 52,
@@ -144,7 +144,7 @@ const getStyles = (theme: ThemeType, error?: boolean) => {
         },
         textInput: {
             flex: 1,
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
             ...text.regular.P14_Lh180,
         },
         listView: {

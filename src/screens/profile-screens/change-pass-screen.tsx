@@ -12,7 +12,7 @@ import { SimpleScreenHeader, Space } from '../../components/util'
 import { ProfileStackParamList } from '../../navigation/ProfileStack'
 import { AuthService, ProfileServices } from '../../services'
 import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import * as yup from 'yup';
 import { Formik } from 'formik'
 import { changePasswordRequestType } from '../../@types'
@@ -63,8 +63,8 @@ export const ChangePasswordScreen = ({ navigation }: ChangePasswordScreenProps) 
                 <View>
                   <MyTextInput
                     label='Current Password'
+                    placeholder='Current password'
                     startIcon={<Image source={lockIcon} />}
-                    endIcon={<EyeIcon color={theme.palette.grey[theme.mode].main} />}
                     endIconAction="TOGGLE_SECRET"
                     secureTextEntry={true}
                     value={values.current_password}
@@ -84,7 +84,6 @@ export const ChangePasswordScreen = ({ navigation }: ChangePasswordScreenProps) 
                   label='New Password'
                   placeholder='New password'
                   startIcon={<LockOutLineIcon color={theme.palette.grey[theme.mode].main} size={24} />}
-                  endIcon={<EyeIcon color={theme.palette.grey[theme.mode].main} />}
                   endIconAction="TOGGLE_SECRET"
                   secureTextEntry={true}
                   value={values.new_password}
@@ -100,7 +99,6 @@ export const ChangePasswordScreen = ({ navigation }: ChangePasswordScreenProps) 
                   label='Confirm Password'
                   placeholder='Confirm your password'
                   startIcon={<LockOutLineIcon color={theme.palette.grey[theme.mode].main} size={24} />}
-                  endIcon={<EyeIcon color={theme.palette.grey[theme.mode].main} />}
                   endIconAction="TOGGLE_SECRET"
                   secureTextEntry={true}
                   value={values.re_new_password}
@@ -138,7 +136,7 @@ const getStyles = (theme: ThemeType) => {
     root: {
       flex: 1,
       padding: 24,
-      backgroundColor: palette.lightGrey[theme.mode][3],
+      backgroundColor: palette.bg[theme.mode].main,
       justifyContent: 'space-between',
 
     },

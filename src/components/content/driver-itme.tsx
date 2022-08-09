@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, Image, Text } from 'react-native'
 import { useTheme } from '../../state'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import { ChatlIcon, PhoneCallIcon, StarIcon } from '../icons'
 import { Space } from '../util'
 

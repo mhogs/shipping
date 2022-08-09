@@ -8,7 +8,7 @@ import { Space } from '../../components/util'
 import { listToMatrix } from '../../helpers'
 import { RootStackParamList } from '../../navigation/BottomNavigationBar'
 import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'HomeStack'>;
@@ -134,10 +134,10 @@ const getStyles = (theme: ThemeType) => {
     return StyleSheet.create({
         root: {
             flex: 1,
-            backgroundColor: palette.lightGrey[theme.mode][3],
+            backgroundColor: palette.bg[theme.mode].main,
         },
         head: {
-            backgroundColor: palette.primary[theme.mode].main,
+            backgroundColor: palette.primary["light"].main,
             padding: 24
         },
         title: {
@@ -176,48 +176,9 @@ const getStyles = (theme: ThemeType) => {
             right: 2,
             zIndex: 1
         },
-        /**balance fragment */
-        balanceBaner: {
-            marginTop: 30,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: 14,
-            borderRadius: 12,
-            backgroundColor: palette.white[mode].main
-        },
-        addBalanceWraper: {
-            flexDirection: 'row',
-            alignItems: 'center'
-        },
-        balancetitle: {
-            ...text.regular.P12_Lh180,
-            color: palette.grey[mode].main
-        },
-        balanceAmount: {
-            ...text.heading.H2,
-            color: palette.black[mode].main
-        },
-        addBalanceText: {
-            ...text.medium.P12_Lh130,
-            color: palette.primary[mode][2],
-            marginRight: 12
-        },
-        /**search box fragment */
-        searchBox: {
-            marginTop: 20,
-            backgroundColor: palette.primary[mode][2],
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            borderRadius: 12,
-            alignItems: 'center',
-            padding: 14,
-        },
-        searchInput: {
-            flex: 1,
-            paddingLeft: 14,
-            color: palette.grey[mode][3]
-        },
+      
+      
+       
         /** Body */
         body: {
             flex: 1,
@@ -227,7 +188,7 @@ const getStyles = (theme: ThemeType) => {
         },
         featuresText: {
             ...text.heading.H3,
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
             marginBottom: 20
         },
         featuresWraper: {
@@ -239,7 +200,7 @@ const getStyles = (theme: ThemeType) => {
             flex: 1,
             overflow: 'hidden',
             borderWidth: 1.5,
-            borderColor: palette.lightGrey[mode].main,
+            borderColor: palette.lightGrey[mode][2],
             alignItems: 'center',
             borderRadius: 12
         },
@@ -251,7 +212,7 @@ const getStyles = (theme: ThemeType) => {
         },
         featureName: {
             ...text.medium.P12_Lh130,
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
             marginTop: 6
         }
     })

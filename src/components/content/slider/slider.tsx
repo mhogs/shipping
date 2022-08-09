@@ -8,7 +8,7 @@ import { sliderProps } from "./types";
 import { OnboardingItem } from "./onboarding-item";
 import { SliderDots } from "./slider-dots";
 import { useTheme } from "../../../state/theming";
-import { ThemeType } from "../../../theme";
+import { ThemeType } from "../../../constants/theme";
 import { Space } from "../../util";
 
 

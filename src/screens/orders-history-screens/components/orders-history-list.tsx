@@ -6,7 +6,7 @@ import { LoadingBlock, Space } from "../../../components/util"
 import { useInfinitOrders, useRefreshOnFocus } from "../../../hooks"
 
 import { useTheme } from "../../../state"
-import { ThemeType } from "../../../theme"
+import { ThemeType } from "../../../constants/theme"
 
 type OrdersHistoryListProps = {
     filter?: orderHistoryFilterType
@@ -78,7 +78,7 @@ const getStyles = (theme: ThemeType) => {
     return StyleSheet.create({
         resultsText: {
             ...text.heading.H3,
-            color: palette.black[mode].main
+            color: palette.text[mode].main
         }
     })
 }

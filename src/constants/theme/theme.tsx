@@ -1,7 +1,7 @@
 export type BasicColorType = {
-    main: string,
-    2: string,
-    3: string,
+    main: string
+    2: string
+    3: string
 }
 export type ColorType = {
     light: BasicColorType,
@@ -12,7 +12,7 @@ export type TextStyleType = {
     fontSize: number,
     fontWeight: "600" | "500" | "400",
     lineHeight?: number,
-    fontFamily:string
+    fontFamily: string
 }
 export type TypographyType = {
     P20_Lh180: TextStyleType,
@@ -25,8 +25,8 @@ export type TypographyType = {
     P16_Lh130: TextStyleType,
     P14_Lh130: TextStyleType,
     P12_Lh130: TextStyleType,
-    P10_Lh130?:TextStyleType,
-    P8_Lh130?:TextStyleType
+    P10_Lh130?: TextStyleType,
+    P8_Lh130?: TextStyleType
 }
 export type ThemeType = {
     mode: "dark" | "light",
@@ -39,6 +39,8 @@ export type ThemeType = {
         warning: ColorType,
         success: ColorType,
         danger: ColorType,
+        bg: ColorType,
+        text: ColorType
     },
     text: {
         heading: {
@@ -60,22 +62,22 @@ export const defaultTheme: ThemeType = {
             light: {
                 main: "#133BB7",
                 2: "#10329B",
-                3: "#0D277A"
+                3: "#BBCBFF"
             },
             dark: {
                 main: "#3264FF",
                 2: "#7698FF",
-                3: "#BBCBFF"
+                3: "#0D277A"
             }
         },
         black: {
             light: {
                 main: "#191D31",
                 2: "#666876",
-                3: "#8C8E98"
+                3: "#8C8E98",
             },
             dark: {
-                main: "#0F1621",
+                main: "#ffffff",
                 2: "#29303C",
                 3: "#757788"
             }
@@ -88,8 +90,8 @@ export const defaultTheme: ThemeType = {
             },
             dark: {
                 main: "#FFFFFF",
-                2: "#FFFFFF",
-                3: "#FFFFFF"
+                2: "#000000",
+                3: "#000000"
             }
         },
         grey: {
@@ -111,9 +113,9 @@ export const defaultTheme: ThemeType = {
                 3: "#F8F9FB"
             },
             dark: {
-                main: "#F3F3F3",
-                2: "#F9F9F9",
-                3: "#F8F9FB"
+                main: "#0F1621",
+                2: "#182231",
+                3: "#757788"
             },
         },
         warning: {
@@ -152,6 +154,31 @@ export const defaultTheme: ThemeType = {
                 3: "#FFDBDB"
             }
         },
+        bg: {
+            light: {
+                main: "#ffffff",
+                2: "#F8F9FB",
+                3: "#FFFFFF"
+            },
+            dark: {
+                main: "#0F1621",
+                2: "#182231",
+                3: "#000000"
+            }
+        },
+        text: {
+            light: {
+                main: "#191D31",
+                2: "#666876",
+                3: "#8C8E98",
+            },
+            dark: {
+                main: "#ffffff",
+                2: "#29303C",
+                3: "#757788"
+            }
+        }
+
     },
     text: {
         heading: {
@@ -186,13 +213,13 @@ export const defaultTheme: ThemeType = {
                 fontFamily: 'Outfit_600SemiBold'
             },
         },
-        regular:{
+        regular: {
             P20_Lh180: {
                 fontSize: 20,
                 fontWeight: "400",
                 lineHeight: 36,
                 fontFamily: 'Outfit_400Regular'
-                
+
             },
             P20_Lh130: {
                 fontSize: 20,

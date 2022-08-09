@@ -12,7 +12,7 @@ import { ProfileStackParamList } from '../../navigation/ProfileStack'
 import { TrackingStackParamList } from '../../navigation/TrackingStack'
 import { useAuth } from '../../state'
 import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { OperationSuccessfulModal } from '../../components/modals'
 

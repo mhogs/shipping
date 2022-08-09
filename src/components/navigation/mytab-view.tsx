@@ -2,7 +2,7 @@ import { View, Text, Pressable, useWindowDimensions, StyleSheet, StyleProp, View
 import React, { useState } from "react";
 
 import { useTheme } from "../../state/theming";
-import { ThemeType } from "../../theme";
+import { ThemeType } from "../../constants/theme";
 
 import {
   TabView,
@@ -25,7 +25,7 @@ type MyTabViewType = {
   tabItemNotFocusedStyle?: StyleProp<ViewStyle>,
   focusedLabelstyle?: StyleProp<TextStyle>,
   nonFocusedLabelStyle?: StyleProp<TextStyle>,
-  scrollable?:boolean
+  scrollable?: boolean
   sceneRendrer: (props: SceneRendererProps & {
     route: {
       key: string;
@@ -44,7 +44,7 @@ export const MyTabView = (props: MyTabViewType) => {
     tabItemNotFocusedStyle = undefined,
     focusedLabelstyle = undefined,
     nonFocusedLabelStyle = undefined,
-    scrollable=false,
+    scrollable = false,
   } = props
 
 
@@ -65,11 +65,11 @@ export const MyTabView = (props: MyTabViewType) => {
     }
   ) => {
     return (
-      <View style={[tapBarstyle ? tapBarstyle : styles.tapBar,{zIndex:10}]}>
-        <ScrollView 
-        horizontal={scrollable} 
-        contentContainerStyle={{flexDirection:'row', height:"100%"}}
-        showsHorizontalScrollIndicator={false}
+      <View style={[tapBarstyle ? tapBarstyle : styles.tapBar, { zIndex: 10, marginBottom: 30 }]}>
+        <ScrollView
+          horizontal={scrollable}
+          contentContainerStyle={{ flexDirection: 'row', height: "100%" }}
+          showsHorizontalScrollIndicator={false}
         >
           {props.navigationState.routes.map((route, i) => {
             return (
@@ -128,30 +128,30 @@ const getStyles = (theme: ThemeType) => {
     tapBar: {
       flexDirection: "row",
       alignItems: "center",
-      height:50,
+      height: 50,
       borderRadius: 25,
       padding: 4,
       elevation: 0,
-      backgroundColor: palette.lightGrey[theme.mode][3],
+      backgroundColor: palette.bg[theme.mode][2],
     },
     tabItemFocused: {
       flex: 1,
       borderRadius: 25,
-      paddingVertical:12,
+      paddingVertical: 12,
       height: "100%",
-      backgroundColor: palette.white[theme.mode].main,
+      backgroundColor: palette.bg[theme.mode].main,
       justifyContent: "center",
     },
     tabItemNotFocused: {
       flex: 1,
       borderRadius: 25,
-      paddingVertical:12,
+      paddingVertical: 12,
       height: "100%",
       backgroundColor: "transparent",
       justifyContent: "center",
     },
     focusedLabel: {
-      color: palette.black[mode].main,
+      color: palette.text[mode].main,
       ...text.medium.P14_Lh130,
       textAlign: "center",
     },

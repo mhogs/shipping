@@ -3,7 +3,7 @@ import { Modal, Pressable, ScrollView, View, Image, Text, StyleSheet } from "rea
 import { sucessfulPaymentImage } from "../../assets"
 import { SaveChangesButton } from "../buttons"
 import { useTheme } from "../../state"
-import { ThemeType } from "../../theme"
+import { ThemeType } from "../../constants/theme"
 
 
 type OperationSuccessfulModalProps = {
@@ -84,7 +84,7 @@ const getStyles = (theme: ThemeType) => {
         },
         ModalHeaderText: {
             ...text.heading.H2,
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
             marginBottom: 20
         },
         modalOverlay: {
@@ -95,7 +95,7 @@ const getStyles = (theme: ThemeType) => {
 
         headerText: {
             ...text.heading.H1,
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
             marginBottom: 10,
         },
         subheaderText: {

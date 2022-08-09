@@ -1,7 +1,7 @@
 import React, { Fragment } from "react"
 import { Modal, Image, View, Text, StyleSheet, Pressable } from "react-native"
 import { useTheme } from '../../state';
-import { ThemeType } from '../../theme';
+import { ThemeType } from '../../constants/theme';
 import { Devider, Space } from "../../components/util";
 import { ServiceItem } from "../../components/content/service-item";
 import { doubleArrowIcon } from "../../assets";
@@ -111,7 +111,7 @@ const getStyles = (theme: ThemeType) => {
         },
         selectServiceTitle: {
             ...text.medium.P18_Lh180,
-            color: palette.black[mode].main
+            color: palette.text[mode].main
         },
         servicesListe: {
             display: 'flex',
@@ -141,12 +141,12 @@ const getStyles = (theme: ThemeType) => {
         },
         pickupPlace: {
             textAlign: 'left',
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
             ...text.medium.P14_Lh130
         },
         destinationPlace: {
             textAlign: 'right',
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
             ...text.medium.P14_Lh130
         },
         type: {

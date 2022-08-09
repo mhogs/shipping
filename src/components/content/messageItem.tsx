@@ -3,7 +3,7 @@ import { Pressable, View, StyleSheet, Image, Text, Dimensions } from 'react-nati
 import { avatar_asset, MessageNotifIcon } from '../../assets'
 import { dialogType } from '../../screens/messages-screens/useDialogs'
 import { useTheme } from '../../state'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import { ChatlIcon } from '../icons'
 import { Badge } from '../util'
 
@@ -78,12 +78,12 @@ const getStyles = (theme: ThemeType, unread: boolean) => {
         senderName: unread ?
             {
                 ...text.heading.H4,
-                color: palette.black[mode].main,
+                color: palette.text[mode].main,
             }
             :
             {
                 ...text.medium.P14_Lh130,
-                color: palette.black[mode].main,
+                color: palette.text[mode].main,
             },
         messageText: {
             ...text.regular.P14_Lh130,
@@ -92,7 +92,7 @@ const getStyles = (theme: ThemeType, unread: boolean) => {
         messageTime: {
             maxWidth: notifTimewidth,
             ...text.regular.P10_Lh130,
-            color: unread?palette.black[mode].main : palette.grey[mode].main
+            color: unread?palette.text[mode].main : palette.grey[mode].main
         },
         picture: {
             width: 44,

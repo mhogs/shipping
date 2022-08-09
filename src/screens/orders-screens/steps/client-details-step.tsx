@@ -1,7 +1,7 @@
 import { View, StyleSheet, Image, StatusBar } from 'react-native'
 import React from 'react'
 import { useAuthentication, useTheme } from '../../../state';
-import { ThemeType } from '../../../theme';
+import { ThemeType } from '../../../constants/theme';
 import { SimpleScreenHeader, Space, WarningText } from '../../../components/util';
 import { ScrollView } from 'react-native-gesture-handler';
 import { MyTextAreaInput, MyTextInput } from '../../../components/inputs';

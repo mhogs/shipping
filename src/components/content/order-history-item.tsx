@@ -3,7 +3,7 @@ import { Pressable, View, StyleSheet, Image, Text, Dimensions } from 'react-nati
 import { OrdersResponseDataType, orderStateType } from '../../@types'
 import { MessageNotifIcon, PackageColored } from '../../assets'
 import { useTheme } from '../../state'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import * as Clipboard from 'expo-clipboard';
 
 type orderItemProps = OrdersResponseDataType & {
@@ -103,7 +103,7 @@ function getStyles(theme: ThemeType) {
         },
         orderTitle: {
             ...text.medium.P14_Lh130,
-            color: palette.black[mode].main
+            color: palette.text[mode].main
         },
         orderBrief: {
             ...text.regular.P14_Lh130,

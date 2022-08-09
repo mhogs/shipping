@@ -1,7 +1,7 @@
 import React from "react"
 import { Modal, View, Text, StyleSheet, ImageBackground, Pressable } from "react-native"
 import { useTheme } from '../../../state';
-import { ThemeType } from '../../../theme';
+import { ThemeType } from '../../../constants/theme';
 import { orderSuccessImage } from "../../../assets"
 import { Space } from "../../../components/util";
 import { SaveChangesButton } from "../../../components/buttons";
@@ -93,7 +93,7 @@ const getStyles = (theme: ThemeType) => {
         headerText: {
             textAlign: 'center',
             ...text.heading.H1,
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
             marginBottom: 10,
         },
         subheaderText: {

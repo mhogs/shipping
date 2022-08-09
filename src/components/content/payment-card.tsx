@@ -2,7 +2,7 @@ import React from 'react'
 import { Pressable, View, Image, Text, StyleSheet } from 'react-native'
 import { MasterCardIcon } from '../../assets'
 import { useTheme } from '../../state'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import { CircleIcon } from '../icons'
 
 type PaymentCardProps = {
@@ -71,7 +71,7 @@ const getStyles = (theme: ThemeType) => {
     },
     paymentCardName: {
       ...text.medium.P14_Lh130,
-      color: palette.black[mode].main,
+      color: palette.text[mode].main,
     },
     paymentCardnumber: {
       ...text.regular.P14_Lh180,

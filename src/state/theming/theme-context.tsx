@@ -1,37 +1,56 @@
-import { createContext, FC, useContext, useMemo, useState } from "react";
-import { defaultTheme, ThemeType } from "../../theme";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createContext, Dispatch, FC, SetStateAction, useContext, useEffect, useMemo, useState } from "react";
+import { THEME_STORAGE_KEY } from "../../constants";
+import { defaultTheme, ThemeType } from "../../constants/theme";
+import { getModeFromStorage } from "../../helpers";
 
 type ThemeContextType = {
     theme: ThemeType
     switchMode: () => void
-    changeTheme: (theme: ThemeType) => void
+    setTheme: Dispatch<SetStateAction<ThemeType>>
 }
 const ThemeContext = createContext<ThemeContextType>({
     theme: defaultTheme,
     switchMode: () => { },
-    changeTheme: (theme: ThemeType) => { }
+    setTheme: () => { }
 })
 
-export const ThemeProvider: FC<{}> = (props) => {
+
+
+export const ThemeProvider: FC<{}> = ({ children }) => {
     const [theme, setTheme] = useState<ThemeType>(defaultTheme)
-    const switchMode = () => {
-        setTheme(prev => prev.mode === "light" ? { ...prev, mode: "dark" } : { ...prev, mode: 'light' })
-    }
-    const changeTheme = (theme: ThemeType) => {
-        setTheme(theme)
+    function switchMode() {
+        setTheme(prev => prev.mode === "light" ? ({ ...prev, mode: "dark" }) : ({ ...prev, mode: 'light' }))
     }
     const contextValue: ThemeContextType = useMemo(() => (
         {
             theme,
             switchMode,
-            changeTheme
+            setTheme
         }
-    ), [])
+    ), [theme])
+
+
+    useEffect(() => {
+        async function loadThemeMode() {
+            const mode = await getModeFromStorage()
+            setTheme(prev => ({ ...prev, mode }))
+        }
+        loadThemeMode()
+    }, [])
+
+    useEffect(() => {
+        async function saveThemeMode() {
+            await AsyncStorage.setItem(THEME_STORAGE_KEY, theme.mode)
+        }
+        saveThemeMode()
+    }, [theme.mode])
+
     return (
         <ThemeContext.Provider value={contextValue}>
-            {props.children}
+            {children}
         </ThemeContext.Provider>
     )
 }
 
-export const useTheme= ()=> useContext(ThemeContext)
+export const useTheme = () => useContext(ThemeContext)

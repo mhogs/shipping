@@ -1,7 +1,7 @@
 import React from 'react'
 import { Pressable, View, StyleSheet, Text } from 'react-native'
 import { useTheme } from '../../state'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import { CheckIcon } from '../icons'
 
 type MenuItemProps = {
@@ -40,13 +40,13 @@ const getStyles = (theme: ThemeType) => {
 
         sectionTitle: {
             ...text.heading.H3,
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
         },
         settingWraper: {
             borderRadius: 12,
             overflow: 'hidden',
             borderWidth: 1.5,
-            borderColor: palette.lightGrey[mode].main
+            borderColor: palette.lightGrey[mode][2]
         },
         selectedMenu: {
             borderColor: palette.primary[mode].main
@@ -60,7 +60,7 @@ const getStyles = (theme: ThemeType) => {
         },
         MenuItemText: {
             ...text.medium.P14_Lh180,
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
             marginLeft: 14,
         }
 

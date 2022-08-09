@@ -1,7 +1,7 @@
 import React from 'react'
 import { Pressable, View, StyleSheet, Text, StyleProp, ViewStyle, ActivityIndicator } from 'react-native'
 import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 
 type SaveChangesButtonProps = {
   text: string
@@ -55,8 +55,8 @@ const getStyles = (theme: ThemeType) => {
       overflow: 'hidden',
       borderRadius: 30,
       backgroundColor: palette.primary[mode].main,
-      borderColor: palette.grey[mode].main,
-      borderWidth: 1,
+      //borderColor: palette.grey[mode].main,
+      //borderWidth: 1,
 
     },
     savebutton: {

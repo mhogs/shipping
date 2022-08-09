@@ -2,7 +2,7 @@ import { View, StyleSheet, Image, Text, ScrollView } from 'react-native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react'
 import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import { MyTextInput } from '../../components/inputs'
 import { Space } from '../../components/util'
 import { callIcon, googleIcon, appleIcon } from '../../assets'
@@ -20,7 +20,7 @@ const SigninSchema = yup.object().shape({
     password: yup.string().required("password is required").min(8, "password must be at least 8 characters long"),
 });
 
-export const LoginScreen = (props: any) => {
+export const LoginScreen = (props: AuthScreenProps) => {
     const { navigation } = props;
     const { theme } = useTheme()
     const styles = getStyles(theme)
@@ -40,7 +40,7 @@ export const LoginScreen = (props: any) => {
             {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid }) => (
                 <ScrollView showsVerticalScrollIndicator={false} style={styles.root}>
 
-                    <View style={styles.form}>
+                    <View >
                         <MyTextInput
                             label='Phone Number'
                             placeholder='Enter your number'
@@ -80,25 +80,6 @@ export const LoginScreen = (props: any) => {
 
                     <Devider />
 
-                    <Space direction='vertical' size={15} />
-                    <Text style={styles.otherOptions}>Or Sign In With</Text>
-                    <Space direction='vertical' size={15} />
-
-                    <SocialLoginButton
-                        label={'Sign Up with Google'}
-                        bgColor={theme.palette.white[theme.mode].main}
-                        textColor={theme.palette.black[theme.mode].main}
-                        onClick={() => { }}
-                        icon={<Image source={googleIcon} />}
-                    />
-                    <Space direction='vertical' size={15} />
-                    <SocialLoginButton
-                        label={'Sign Up with Apple'}
-                        bgColor={theme.palette.black[theme.mode].main}
-                        textColor={theme.palette.white[theme.mode].main}
-                        onClick={() => { }}
-                        icon={<Image source={appleIcon} />}
-                    />
                 </ScrollView>
 
             )}
@@ -114,11 +95,8 @@ const getStyles = (theme: ThemeType) => {
     return StyleSheet.create({
         root: {
             flex: 1,
-            backgroundColor: palette.white[theme.mode].main,
         },
-        form: {
-            marginTop: 30,
-        },
+       
         otherOptions: {
             textAlign: 'center',
             ...text.regular.P14_Lh180,

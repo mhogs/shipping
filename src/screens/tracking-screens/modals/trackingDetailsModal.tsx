@@ -6,7 +6,7 @@ import { AdresseItem, DriverItem } from "../../../components/content"
 import { LocationIcon, MyLocationIcon } from "../../../components/icons"
 import { Devider, ModalTopBarIndicator, Space } from "../../../components/util"
 import { useTheme } from "../../../state"
-import { ThemeType } from "../../../theme"
+import { ThemeType } from "../../../constants/theme"
 
 
 
@@ -132,11 +132,11 @@ const getStyles = (theme: ThemeType) => {
         },
         packageInfovalue: {
             ...text.medium.P14_Lh180,
-            color: palette.black[mode].main,
+            color: palette.text[mode].main,
         },
         deliverystateHeading: {
             ...text.heading.H2,
-            color: palette.black[mode].main
+            color: palette.text[mode].main
         },
         deliverystateSubText: {
             ...text.regular.P14_Lh180,

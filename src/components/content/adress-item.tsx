@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { useTheme } from '../../state'
-import { ThemeType } from '../../theme';
+import { ThemeType } from '../../constants/theme';
 
 
 type AdresseItemProps = {
@@ -32,7 +32,7 @@ const getStyles = (theme: ThemeType) => {
         adresseText: {
             marginLeft: 14,
             ...text.medium.P14_Lh130,
-            color: palette.black[mode].main
+            color: palette.text[mode].main
         }
     })
 }

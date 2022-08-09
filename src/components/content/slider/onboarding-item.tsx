@@ -1,7 +1,7 @@
 import { View, Text, Image, useWindowDimensions, StyleSheet } from 'react-native'
 import React from 'react'
 import { useTheme } from "../../../state/theming";
-import { ThemeType } from "../../../theme";
+import { ThemeType } from "../../../constants/theme";
 import { onboardingItemProps } from './types';
 import { Space } from '../../util';
 
@@ -35,7 +35,8 @@ const getStyles = (theme: ThemeType) => {
         image: {
             flex: 1,
             justifyContent: 'center',
-            resizeMode: 'cover'
+            resizeMode: 'cover',
+            backgroundColor:palette.primary[mode][3]
         },
         infoContainer: {
             paddingHorizontal: 24,
@@ -44,7 +45,7 @@ const getStyles = (theme: ThemeType) => {
             textAlign: 'center',
             marginBottom: 10,
             ...text.heading.H1,
-            color: palette.black[mode].main
+            color: palette.text[mode].main
         },
         subTitle : {
             textAlign: 'center',

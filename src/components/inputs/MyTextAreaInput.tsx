@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TextInput } from 'react-native'
 import React from 'react'
 import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 
 type TextAreaInputProps = {
     label: string,
@@ -48,7 +48,7 @@ const getStyles = (theme: ThemeType) => {
     return StyleSheet.create({
         inputLabel: {
             ...text.medium.P16_Lh180,
-            color: palette.black[mode].main
+            color: palette.text[mode].main
         },
         inputWraper: {
             marginTop: 10,

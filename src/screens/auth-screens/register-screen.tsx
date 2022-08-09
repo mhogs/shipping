@@ -1,7 +1,7 @@
 import { View, StyleSheet, Image, Text, ScrollView, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../theme'
+import { ThemeType } from '../../constants/theme'
 import { MyTextInput } from '../../components/inputs'
 import { LoadingView, Space } from '../../components/util'
 import { ProfileIcon, callIcon, googleIcon, appleIcon } from '../../assets'
@@ -54,7 +54,7 @@ export const RegisterScreen = (props: AuthScreenProps) => {
         >
             {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid }) => (
                 <ScrollView showsVerticalScrollIndicator={false} style={styles.root}>
-                    <View style={styles.form}>
+                    <View >
 
                         <MyTextInput
                             label='First Name'
@@ -113,25 +113,6 @@ export const RegisterScreen = (props: AuthScreenProps) => {
 
                     <Devider />
 
-                    <Space direction='vertical' size={15} />
-                    <Text style={styles.otherOptions}>Or Sign In With</Text>
-                    <Space direction='vertical' size={15} />
-
-                    <SocialLoginButton
-                        label={'Sign Up with Google'}
-                        bgColor={theme.palette.white[theme.mode].main}
-                        textColor={theme.palette.black[theme.mode].main}
-                        onClick={() => { }}
-                        icon={<Image source={googleIcon} />}
-                    />
-                    <Space direction='vertical' size={15} />
-                    <SocialLoginButton
-                        label={'Sign Up with Apple'}
-                        bgColor={theme.palette.black[theme.mode].main}
-                        textColor={theme.palette.white[theme.mode].main}
-                        onClick={() => { }}
-                        icon={<Image source={appleIcon} />}
-                    />
                 </ScrollView>
             )}
 
@@ -148,10 +129,6 @@ const getStyles = (theme: ThemeType) => {
     return StyleSheet.create({
         root: {
             flex: 1,
-            backgroundColor: palette.white[theme.mode].main,
-        },
-        form: {
-            marginTop: 30,
         },
         otherOptions: {
             textAlign: 'center',

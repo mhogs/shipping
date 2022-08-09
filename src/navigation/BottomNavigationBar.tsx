@@ -5,7 +5,7 @@ import { Octicons } from '@expo/vector-icons';
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { changeLanguage, useTranslation } from '../locales';
 import { HomeScreen } from '../screens';
-import { ThemeType } from '../theme';
+import { ThemeType } from '../constants/theme';
 import { useTheme } from '../state/theming';
 import { OrdersStackNavigator } from './OrdersStack';
 import { MessagesStackNavigator } from './MessagesStack';

@@ -24,7 +24,7 @@ type HelpCenterScreenProps = NativeStackScreenProps<HelpCenterStackParamList & M
 export const HelpCenterScreen = ({ navigation }: HelpCenterScreenProps) => {
   useHideBottomBar(navigation, 2)
   const { theme } = useTheme()
-  const styles = getStyles(theme)
+  const styles = React.useMemo(() => getStyles(theme), [theme])  
   const {
     fasq_categories,
     faqs_cats_loading
@@ -104,8 +104,9 @@ export const HelpCenterScreen = ({ navigation }: HelpCenterScreenProps) => {
                 <SocialLoginButton
                   label='Contact With Email'
                   textColor={theme.palette.text[theme.mode].main}
-                  borderColor={theme.palette.grey[theme.mode].main}
-                  icon={<EmailIcon color={theme.palette.primary[theme.mode].main} />}
+                 
+                  bgColor={theme.palette.bg[theme.mode][2]}
+                  icon={<EmailIcon color={theme.palette.text[theme.mode].main} />}
                   onClick={() => { }}
                 />
               </View>

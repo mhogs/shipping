@@ -1,11 +1,11 @@
 import React from 'react'
 import { Pressable, View, StyleSheet, Image, Text, Dimensions } from 'react-native'
 import { avatar_asset, MessageNotifIcon } from '../../assets'
-import { dialogType } from '../../screens/messages-screens/useDialogs'
 import { useTheme } from '../../state'
 import { ThemeType } from '../../constants/theme'
 import { ChatlIcon } from '../icons'
 import { Badge } from '../util'
+import { dialogType } from '../../@types'
 
 type MessageItemProps = dialogType & {
     onPress?: () => void

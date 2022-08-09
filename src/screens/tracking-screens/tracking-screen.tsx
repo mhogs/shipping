@@ -37,7 +37,7 @@ export const TrackingScreen = ({ navigation }: TrackingScreenProps) => {
     }
   })
 
-  const styles = getStyles(theme)
+  const styles = React.useMemo(() => getStyles(theme), [theme])  
   const [codes, setCodes] = useState<{ code: string }[]>([])
 
   useEffect (() => {

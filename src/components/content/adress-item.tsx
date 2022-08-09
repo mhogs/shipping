@@ -10,7 +10,7 @@ type AdresseItemProps = {
 }
 export const AdresseItem = (props: AdresseItemProps) => {
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     return (
         <View style={styles.adresse}>
             {props.startIcon}

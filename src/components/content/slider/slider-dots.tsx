@@ -10,7 +10,7 @@ type SliderDotsProps = {
 
 export const SliderDots = ({lenght, active} : SliderDotsProps) => {
     const { theme } = useTheme();
-    const styles = getStyles(theme);
+    const styles = React.useMemo(() => getStyles(theme), [theme])  ;
 
     return (
         <View style={[styles.container]}>

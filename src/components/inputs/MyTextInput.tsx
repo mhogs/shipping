@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useMemo, useState } from 'react'
 import { View, Image, Text, StyleSheet, TextInput, Pressable, GestureResponderEvent } from 'react-native'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../constants/theme'
@@ -40,7 +40,7 @@ export const MyTextInput = (props: TextInputProps) => {
         touched,
     } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     const [isSecret, setIsSecret] = useState(secureTextEntry)
 
     const onIconPress = (action: iconPressActionType) => {
@@ -69,12 +69,12 @@ export const MyTextInput = (props: TextInputProps) => {
             <View style={[
                 styles.inputWraper,
                 (touched && error) ? { borderColor: theme.palette.danger[theme.mode].main } : {},
-                editable ? {} : { backgroundColor: theme.palette.lightGrey[theme.mode].main }
+                editable ? {} : { backgroundColor: theme.palette.bg[theme.mode].main }
             ]}>
                 {startIcon &&
                     <Pressable
                         onPress={onIconPress(startIconAction)}
-                        style={{ paddingLeft: 13 }}
+                        style={styles.startIonWraper}
                     >
                         {startIcon}
                     </Pressable>
@@ -84,13 +84,14 @@ export const MyTextInput = (props: TextInputProps) => {
                     style={styles.input}
                     value={value}
                     placeholder={placeholder}
-                    placeholderTextColor={theme.palette.text[theme.mode].main}
+                    placeholderTextColor={theme.palette.grey[theme.mode].main}
                     defaultValue={value}
                     secureTextEntry={isSecret}
                     editable={editable}
                     keyboardType={isNumeric ? "numeric" : undefined}
                     onChangeText={text => onChangeText && onChangeText(text)}
                     onBlur={onBlur}
+                    
                 />
                 <Pressable
                     onPress={onIconPress(endIconAction)}
@@ -122,13 +123,14 @@ const getStyles = (theme: ThemeType) => {
 
         inputLabel: {
             ...text.medium.P16_Lh180,
-            color: palette.text[mode].main
+            color: palette.text[mode].main,
+            
         },
         inputWraper: {
             flexDirection: 'row',
             alignItems: 'center',
             borderWidth: 1.5,
-            borderColor: palette.lightGrey[mode][2],
+            borderColor: palette.bg[mode][2],
             borderRadius: 12
         },
         input: {
@@ -136,7 +138,12 @@ const getStyles = (theme: ThemeType) => {
             paddingVertical: 13,
             flex: 1,
             textAlign: "left",
-            color: palette.text[mode].main
+            color: palette.text[mode].main,
+           
+        },
+        startIonWraper:{
+            paddingLeft:13,
+            
         },
         errorText: {
             fontSize: 10,

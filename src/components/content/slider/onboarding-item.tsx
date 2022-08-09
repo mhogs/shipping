@@ -9,7 +9,7 @@ import { Space } from '../../util';
 
 export const OnboardingItem = ({item} : onboardingItemProps) => {
     const { theme } = useTheme();
-    const styles = getStyles(theme);
+    const styles = React.useMemo(() => getStyles(theme), [theme])  ;
 
     const { width } = useWindowDimensions();
 

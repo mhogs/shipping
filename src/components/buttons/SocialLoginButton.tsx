@@ -15,7 +15,7 @@ type AuthButtonProps = {
 export const SocialLoginButton = (props: AuthButtonProps) => {
     const { label, icon, bgColor = "white", textColor, borderColor, onClick } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
 
     return (
         <View style={[{ ...styles.buttonContainer, backgroundColor: bgColor, }, borderColor ? { borderWidth: 1, borderColor } : {}]} >

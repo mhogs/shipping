@@ -23,14 +23,9 @@ export const GooglePlacesInput = (props: GooglePlacesInputProps) => {
     const styles = getStyles(theme, Boolean(error)&&touched)
 
     const inputRef = useRef<GooglePlacesAutocompleteRef>(null);
-
-    
-
     const clear = () => {
         inputRef?.current?.clear()
     }
-
-
     const renderIcon = () => {
         return (
             <Pressable
@@ -82,6 +77,7 @@ export const GooglePlacesInput = (props: GooglePlacesInputProps) => {
 
                         ref={inputRef}
                         placeholder={placeholder ? placeholder : 'Search location'}
+                        
                         onPress={(data, details = null) => {  
                             onChange({ 
                                 place:data.description, 
@@ -104,6 +100,7 @@ export const GooglePlacesInput = (props: GooglePlacesInputProps) => {
                         styles={styles}
                         textInputProps={{
                             onChangeText: (location) => location === "" && onChange(null),
+                            placeholderTextColor:theme.palette.grey[theme.mode].main
                         }}
                         
                         debounce={200}
@@ -138,9 +135,9 @@ const getStyles = (theme: ThemeType, error?: boolean) => {
             alignItems: 'center',
             justifyContent: 'space-between',
             borderRadius: 12,
-            borderWidth: 1,
-            borderColor: error ? palette.danger[mode].main : palette.lightGrey[mode].main,
-            backgroundColor: palette.white[mode].main,
+            borderWidth: 1, 
+            borderColor: error ? palette.danger[mode].main : palette.bg[mode][2],
+            
         },
         textInput: {
             flex: 1,
@@ -148,8 +145,8 @@ const getStyles = (theme: ThemeType, error?: boolean) => {
             ...text.regular.P14_Lh180,
         },
         listView: {
-            backgroundColor: palette.white[mode].main,
-            borderColor: palette.lightGrey[mode].main,
+            backgroundColor: palette.bg[mode].main,
+            borderColor: palette.bg[mode][2],
             marginTop: 5,
             zIndex: 10,
             paddingHorizontal: 14,
@@ -158,7 +155,7 @@ const getStyles = (theme: ThemeType, error?: boolean) => {
         },
         separator: {
             height: 1,
-            backgroundColor: palette.lightGrey[mode].main,
+            backgroundColor: palette.bg[mode][2],
         },
         errorText: {
             fontSize: 10,

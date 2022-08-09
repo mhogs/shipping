@@ -16,7 +16,7 @@ type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'HomeStack'>;
 export const HomeScreen = ({ navigation }: HomeScreenProps) => {
     const { navigate } = navigation
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
 
     return (
         <>
@@ -200,7 +200,7 @@ const getStyles = (theme: ThemeType) => {
             flex: 1,
             overflow: 'hidden',
             borderWidth: 1.5,
-            borderColor: palette.lightGrey[mode][2],
+            borderColor: palette.bg[mode][2],
             alignItems: 'center',
             borderRadius: 12
         },

@@ -1,17 +1,17 @@
 import { View, StyleSheet, Image, Text, ScrollView } from 'react-native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react'
-import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../constants/theme'
-import { MyTextInput } from '../../components/inputs'
-import { Space } from '../../components/util'
-import { callIcon, googleIcon, appleIcon } from '../../assets'
-import { LockOutLineIcon } from '../../components/icons'
-import { AuthActionButton, SaveChangesButton, SocialLoginButton } from '../../components/buttons'
-import { Devider } from '../../components/util/Devider'
-import { AuthScreenProps, AuthStackParamList } from '../../navigation/AuthStack';
-import { SignInRequestDataType } from '../../@types';
-import { useAuthentication } from '../../state';
+import { useTheme } from '../../../state/theming'
+import { ThemeType } from '../../../constants/theme'
+import { MyTextInput } from '../../../components/inputs'
+import { Space } from '../../../components/util'
+import { callIcon, googleIcon, appleIcon } from '../../../assets'
+import { LockOutLineIcon } from '../../../components/icons'
+import { AuthActionButton, SaveChangesButton, SocialLoginButton } from '../../../components/buttons'
+import { Devider } from '../../../components/util/Devider'
+import { AuthScreenProps, AuthStackParamList } from '../../../navigation/AuthStack';
+import { SignInRequestDataType } from '../../../@types';
+import { useAuthentication } from '../../../state';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
@@ -20,10 +20,10 @@ const SigninSchema = yup.object().shape({
     password: yup.string().required("password is required").min(8, "password must be at least 8 characters long"),
 });
 
-export const LoginScreen = (props: AuthScreenProps) => {
+export const LoginScene = (props: AuthScreenProps) => {
     const { navigation } = props;
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     const { signIn, serverState } = useAuthentication()
 
     return (

@@ -16,7 +16,7 @@ type OrdersHistoryListProps = {
 export const OrdersHistoryList = (props: OrdersHistoryListProps) => {
     const { filter } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
 
     const {
         results: orders,

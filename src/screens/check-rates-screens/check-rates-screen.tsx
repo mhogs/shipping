@@ -28,7 +28,7 @@ export const ChackRatesScreen = (props: ChackRatesScreenProps) => {
   const { navigation } = props;
   useHideBottomBar(navigation, 2)
   const { theme } = useTheme()
-  const styles = getStyles(theme)
+  const styles = React.useMemo(() => getStyles(theme), [theme])  
   const [modal, setModal] = useState(false);
 
   const { handleChange, handleBlur, handleSubmit, values, errors, touched, isValid, setFieldValue } = useFormik({

@@ -11,7 +11,7 @@ type PaymentCardProps = {
 export const PaymentCard = (props: PaymentCardProps) => {
   const { selected = false } = props
   const { theme } = useTheme()
-  const styles = getStyles(theme)
+  const styles = React.useMemo(() => getStyles(theme, selected), [theme])
   return (
     <View style={styles.paymentCardWraper}>
       <Pressable
@@ -29,9 +29,11 @@ export const PaymentCard = (props: PaymentCardProps) => {
             5638 **** **** ****
           </Text>
         </View>
-        {selected &&
+        {
           <View style={{ alignSelf: "center" }}>
-            <CircleIcon size={20} color={theme.palette.primary[theme.mode].main} />
+            <CircleIcon
+              size={20}
+              color={selected ? theme.palette.primary[theme.mode].main : theme.palette.bg[theme.mode][2]} />
           </View>
         }
 
@@ -40,7 +42,7 @@ export const PaymentCard = (props: PaymentCardProps) => {
   )
 }
 
-const getStyles = (theme: ThemeType) => {
+const getStyles = (theme: ThemeType, selected: boolean) => {
   const { palette, mode, text } = theme
   return StyleSheet.create({
 
@@ -49,7 +51,7 @@ const getStyles = (theme: ThemeType) => {
       width: "100%",
       borderRadius: 12,
       overflow: "hidden",
-      borderColor: palette.primary[mode].main,
+      borderColor: selected ? palette.primary[mode].main : palette.bg[mode][2],
       borderWidth: 1
     },
     paymentCardPressable: {

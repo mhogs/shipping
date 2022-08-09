@@ -31,7 +31,7 @@ const orderPackageDetails = yup.object().shape({
 export const OrderDetailsScene = (props: OrderSceneProps) => {
     const { moveForward, moveBackward, navigation, updateOrder, order } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     const { currentUser } = useAuthentication()
     const [modals, setModals] = useState({ paymentMethodes: false, onPaymentSuccess: false, onSelectService: false });
     const {
@@ -176,6 +176,7 @@ export const OrderDetailsScene = (props: OrderSceneProps) => {
                                     setModals({ ...modals, onSelectService: true })
                                     setTouched({ ...touched, service: true })
                                 }}
+                               
                             >
                                 <MyTextInput
                                     label='Services'
@@ -184,8 +185,9 @@ export const OrderDetailsScene = (props: OrderSceneProps) => {
                                     onChangeText={handleChange('service')}
                                     onBlur={handleBlur('service')}
                                     editable={false}
-                                    startIcon={<Image source={noteIcon} />}
+                                    startIcon={<Image source={noteIcon}  />}
                                     endIcon={<Image source={arrowDownIcon} />}
+                                    
 
                                 />
                             </Pressable>
@@ -245,7 +247,6 @@ const getStyles = (theme: ThemeType) => {
             position: 'relative',
             paddingTop: 24,
             paddingHorizontal: 24,
-            backgroundColor: palette.white[theme.mode][3],
         },
         actionContainer: {
             marginBottom: 20
@@ -266,6 +267,9 @@ const getStyles = (theme: ThemeType) => {
             flex: 1,
             paddingHorizontal: 24,
             marginBottom: 47,
+        },
+        selectInput:{
+            backgroundColor:palette.bg[mode][2]
         },
         selectServiceTitle: {
             ...text.medium.P18_Lh180,

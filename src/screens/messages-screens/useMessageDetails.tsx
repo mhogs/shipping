@@ -3,7 +3,7 @@ import { useAuthentication } from '../../state';
 import { IMessage } from 'react-native-gifted-chat';
 import { useCallback, useEffect, useReducer, useState } from 'react';
 import { WEB_SOCKET_SERVER } from '../../constants';
-import { formatMessageApiResponse_To_IMessage, formatSocketMessage_To_IMessage } from '../../helpers';
+import { formatMessageApiResponse_To_IMessage, formatSocketMessage_To_IMessage, generateRondomMessageID } from '../../helpers';
 import { ChatService } from '../../services/chat-service';
 
 
@@ -33,6 +33,33 @@ export const useMessageDetails = (filter: { user2: number }) => {
             setChatState(prev => ({ ...prev, loading_more: false }))
         })
     }, [messages, chatState])
+
+    const onSend = (msgs: IMessage[] = []) => {
+        const random_id = generateRondomMessageID()
+        if (msgs.length) {
+            const msg = msgs[0]
+            dispatch({
+                type: 'PUSH',
+                payload: {
+                    message: { ...msg, _id: random_id }
+                }
+            })
+            if (msg.text != "") {
+
+                socket?.send(JSON.stringify(
+                    {
+                        msg_type: WS_MSG_TYPE.TextMessage,
+                        text: msg.text,
+                        user_pk: filter.user2?.toString(),
+                        random_id: random_id
+                    }
+                ))
+            }
+
+        }
+
+    }
+
 
     /** initialy load first page */
     useEffect(() => {
@@ -119,7 +146,7 @@ export const useMessageDetails = (filter: { user2: number }) => {
         can_load_more: chatState.can_load_more,
         loadMore: loadPage,
         loading_more: chatState.loading_more,
-        socket,
+        onSend,
         dispatch,
     }
 }

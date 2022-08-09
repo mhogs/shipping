@@ -14,13 +14,13 @@ import { useMapHandler, useOrders, useRefreshOnFocus } from '../../hooks';
 import { NearByStackParamList } from '../../navigation/NearByStack';
 import { useTheme } from '../../state';
 import { ThemeType } from '../../constants/theme';
-import { DeliveryPlaces } from './components';
+import { DeliveryPlaces, LocationModal } from './components';
 
 type NearByScreenProps = NativeStackScreenProps<NearByStackParamList, 'NearBy'>;
 export const NearByScreen = ({ navigation }: NearByScreenProps) => {
   useHideBottomBar(navigation, 2)
   const { theme } = useTheme()
-  const styles = getStyles(theme)
+  const styles = React.useMemo(() => getStyles(theme), [theme])
   const [search, setSearch] = useState("")
   const [selectedOreder, setSelectedOrder] = useState<OrdersResponseDataType | null>(null);
   const { mapState, handleMapRegionChange } = useMapHandler()
@@ -39,15 +39,16 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
         <SimpleScreenHeader
           title='NearBy Drop'
           goBack={() => navigation.goBack()}
-          endIcon={<ThreeDotsIcon size={16} />}
+          endIcon={<ThreeDotsIcon size={16} color={theme.palette.text[theme.mode].main} />}
         />
       </View>
-      <ScrollView style={{ backgroundColor: "white", }}>
+      <ScrollView >
         <MapView
           region={mapState.mapRegion}
           onRegionChange={handleMapRegionChange}
           style={styles.map}
-          
+          mapType="standard"
+
         >
           {mapState.hasLocationPermissions &&
             <>
@@ -61,7 +62,7 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
                 }
               >
                 <MyMarkerIcon
-                  maincolor={theme.palette.text[theme.mode].main}
+                  maincolor={theme.palette.black["light"].main}
                   secondaryColor="rgba(25, 29, 49, 0.15)"
                   icon={<Image source={comingIcon} />}
                 />
@@ -106,65 +107,7 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
           }
         </View>
       </ScrollView>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={selectedOreder !== null}
-        onRequestClose={() => { }}
-      >
-        <View
-          style={styles.modalContainer}
-
-        >
-          <Pressable
-            style={styles.modalOverlay}
-            onPress={() => setSelectedOrder(null)}
-          >
-
-          </Pressable>
-          <ScrollView style={{ backgroundColor: theme.palette.white[theme.mode].main }}>
-            <View style={styles.modalContent}>
-              <View style={styles.modalIcon}>
-                {
-                  selectedOreder?.state == "pending" ?
-                    <PickUpLocationIcon size={24} color={theme.palette.warning[theme.mode].main} />
-                    :
-                    <DropLocationIcon size={24} color={theme.palette.primary[theme.mode].main} />
-                }
-
-              </View>
-              <Space size={20} direction="vertical" />
-              <Text style={styles.modelContentTitle}>
-                {selectedOreder?.description}
-              </Text>
-              <Text style={styles.adressText}>
-                {
-                  selectedOreder?.state == "pending" ?
-                    selectedOreder.pickup?.place :
-                    selectedOreder?.destination?.place
-                }
-              </Text>
-              <Devider spacing={15} />
-              <Text style={styles.phoneText} >
-                {selectedOreder?.creator_details?.phonenumber}
-              </Text>
-              <Devider spacing={15} />
-              <View style={{ alignSelf: "stretch", marginTop: 15 }}>
-                <SaveChangesButton text='Dial' onPress={() => { }} />
-                <Space direction='vertical' size={15} />
-                <SaveChangesButton
-                  text='Direction'
-                  onPress={() => { }}
-                  bgColor={theme.palette.white[theme.mode].main}
-                  textColor={theme.palette.text[theme.mode].main}
-                />
-              </View>
-            </View>
-          </ScrollView>
-
-        </View>
-      </Modal>
+      <LocationModal selectedOreder={selectedOreder} setSelectedOrder={setSelectedOrder} />
 
     </KeyboardAvoidingView>
 
@@ -182,6 +125,7 @@ const getStyles = (theme: ThemeType) => {
       paddingTop: 24,
       backgroundColor: palette.white[theme.mode][3],
     },
+
     map: {
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height / 2.5,

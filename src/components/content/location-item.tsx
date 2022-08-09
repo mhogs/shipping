@@ -14,7 +14,7 @@ type LocationItemProps = {
 export const LocationItem = (props: LocationItemProps) => {
     const { icon, title, place, distance, onPress } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     return (
         <View style={{borderRadius:8, overflow:'hidden'}}>
             <Pressable

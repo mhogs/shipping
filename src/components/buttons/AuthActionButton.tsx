@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native'
-import React from 'react'
+import React,{useMemo} from 'react'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../constants/theme'
 
@@ -11,7 +11,7 @@ type AuthButtonProps = {
 export const AuthActionButton = (props: AuthButtonProps) => {
     const { label, onClick } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
 
     return (
         <Pressable 

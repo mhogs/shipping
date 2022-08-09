@@ -14,7 +14,7 @@ import { Space } from "../../util";
 
 export const Slider = ({slides}: sliderProps) => {
   const { theme } = useTheme();
-  const styles = getStyles(theme);
+  const styles = React.useMemo(() => getStyles(theme), [theme])  ;
 
   const [currentIndex, setCurrentIndex]= useState(0);
 

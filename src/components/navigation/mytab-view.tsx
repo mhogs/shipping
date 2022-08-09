@@ -49,7 +49,7 @@ export const MyTabView = (props: MyTabViewType) => {
 
 
   const { theme } = useTheme();
-  const styles = getStyles(theme);
+  const styles = React.useMemo(() => getStyles(theme), [theme])  ;
 
   const layout = useWindowDimensions();
 

@@ -16,7 +16,7 @@ export const OrdersListScene = (props: OrdersFormMeSceneProps) => {
     const { filter } = props;
 
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
 
 
     // 👇️ type T1 = string
@@ -80,16 +80,13 @@ const getStyles = (theme: ThemeType) => {
     return StyleSheet.create({
         root: {
             flex: 1,
-            marginTop: 20,
-            backgroundColor: palette.white[theme.mode].main,
-
         },
         tapBar: {
             height: 28,
             flexDirection: "row",
             alignItems: "center",
             marginBottom: 20,
-            backgroundColor:palette.lightGrey[mode].main
+           
         },
         tabItemFocused: {
             borderRadius: 25,
@@ -105,8 +102,8 @@ const getStyles = (theme: ThemeType) => {
             paddingHorizontal: 17,
             paddingVertical: 6,
             height: "100%",
-            backgroundColor: palette.lightGrey[mode].main,
-            borderColor: palette.lightGrey[mode].main,
+            backgroundColor: palette.bg[mode].main,
+            borderColor: palette.bg[mode][2],
             borderWidth: 0.5,
             justifyContent: "center",
             marginRight: 10

@@ -30,7 +30,7 @@ export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
   const {t} = useTranslation("orders_history")
   
 
-  const styles = getStyles(theme)
+  const styles = React.useMemo(() => getStyles(theme), [theme])  
   const { currentUser } = useAuthentication()
   const { values, handleChange } = useFormik({
     initialValues: {
@@ -105,7 +105,7 @@ const getStyles = (theme: ThemeType) => {
   return StyleSheet.create({
     root: {
       flex: 1,
-      backgroundColor: palette.white[mode].main,
+      backgroundColor: palette.bg[mode].main,
     },
     head: {
       backgroundColor: palette.primary[mode].main,

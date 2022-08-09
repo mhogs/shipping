@@ -23,7 +23,7 @@ export const OrderPaymentMethodeModal = (props: PaymentMethodeModalProps) => {
     const { visible, closeModal, onBtnPress } = props
     const { theme } = useTheme()
     const [methode, setMethode] = useState(0);
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     return (
         <Modal
             animationType="slide"

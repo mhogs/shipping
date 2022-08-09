@@ -2,19 +2,11 @@ import {
   View,
   Text,
   StyleSheet,
-  StatusBar,
-  Pressable,
-  useWindowDimensions,
 } from "react-native";
 import React, { useState } from "react";
 
-import { LoginScreen } from "./login-screen";
-import { RegisterScreen } from "./register-screen";
 import {
-  TabView,
-  SceneMap,
   SceneRendererProps,
-  NavigationState,
 } from "react-native-tab-view";
 
 import { useTheme } from "../../state/theming";
@@ -22,6 +14,8 @@ import { ThemeType } from "../../constants/theme";
 import { LeftArrowIcon } from "../../components/icons";
 import { AuthScreenProps } from "../../navigation/AuthStack";
 import { MyTabView } from "../../components/navigation";
+import { LoginScene, RegisterScene } from "./components";
+import { MyStatusBar, SimpleScreenHeader } from "../../components/util";
 
 
 
@@ -37,7 +31,7 @@ const renderScene = SceneMap({
 
 export const AuthScreen = (props: AuthScreenProps) => {
   const { theme } = useTheme();
-  const styles = getStyles(theme);
+  const styles = React.useMemo(() => getStyles(theme), [theme])  ;
   const { navigation } = props
 
   const authTabRoutes = [
@@ -46,16 +40,16 @@ export const AuthScreen = (props: AuthScreenProps) => {
   ]
   const renderScene = (params: SceneRendererProps & {
     route: {
-        key: string;
-        title: string;
+      key: string;
+      title: string;
     };
   }) => {
-    const {route}= params;
+    const { route } = params;
     switch (route.key) {
       case 'login':
-        return <LoginScreen {...props} />;
+        return <LoginScene {...props} />;
       case 'register':
-        return <RegisterScreen {...props} />;
+        return <RegisterScene {...props} />;
       default:
         return null;
     }
@@ -63,22 +57,11 @@ export const AuthScreen = (props: AuthScreenProps) => {
 
   return (
     <>
-      <StatusBar
-        barStyle={"dark-content"}
-        backgroundColor={theme.palette.white[theme.mode].main}
-      />
-
+      <MyStatusBar />
       <View style={styles.root}>
         <View style={styles.header}>
-          <Pressable
-            onPress={() => navigation.goBack()}
-            style={styles.back_wraper}
-          >
-            <LeftArrowIcon
-              size={24}
-              color={theme.palette.text[theme.mode].main}
-            ></LeftArrowIcon>
-          </Pressable>
+          <SimpleScreenHeader goBack={navigation.goBack} />
+
         </View>
         <Text style={styles.title}>Shipping and Track Anytime</Text>
         <Text style={styles.description}>Get great experience with tracky</Text>

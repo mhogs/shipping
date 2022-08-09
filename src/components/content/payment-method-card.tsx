@@ -15,7 +15,7 @@ type PaymentCardProps = {
 export const PaymentMethodeCard = (props: PaymentCardProps) => {
   const { selected = false, id, icon, title, subTitle, onClick=()=>{} } = props
   const { theme } = useTheme()
-  const styles = getStyles(theme)
+  const styles = React.useMemo(() => getStyles(theme), [theme])  
   return (
     <View style={selected? styles.selectedaymentCardWraper:styles.notSelectedaymentCardWraper}>
       <Pressable

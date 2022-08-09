@@ -14,7 +14,7 @@ type MenuItemProps = {
 export const MenuItem = (props: MenuItemProps) => {
     const { title, icon, selected = false, onPress } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
 
     return (
         <View style={[styles.settingWraper, selected ? styles.selectedMenu : {}]}>
@@ -46,7 +46,7 @@ const getStyles = (theme: ThemeType) => {
             borderRadius: 12,
             overflow: 'hidden',
             borderWidth: 1.5,
-            borderColor: palette.lightGrey[mode][2]
+            borderColor: palette.bg[mode][2]
         },
         selectedMenu: {
             borderColor: palette.primary[mode].main

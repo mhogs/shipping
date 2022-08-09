@@ -10,21 +10,20 @@ import { OnboardingScreenProps } from "../../navigation/AuthStack";
 import { onboarding1, onboarding2, onboarding3 } from "../../assets";
 import { Slider } from "../../components/content";
 import { SaveChangesButton } from "../../components/buttons";
-import { Space } from "../../components/util";
+import { MyStatusBar, Space } from "../../components/util";
 
 
 
 
 export const OnboardingScreen = (props: OnboardingScreenProps) => {
   const { theme } = useTheme();
-  const styles = getStyles(theme);
+  const styles = React.useMemo(() => getStyles(theme), [theme])  ;
   const { navigation } = props
 
   return (
     <>
-      <StatusBar
-        barStyle={"dark-content"}
-        backgroundColor={theme.palette.white[theme.mode].main}
+      <MyStatusBar
+        bg={theme.palette.primary[theme.mode][3]}
       />
       <View style={styles.root}>
         <View style={styles.sliderContainer}>

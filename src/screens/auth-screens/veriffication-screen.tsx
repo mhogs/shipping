@@ -5,7 +5,7 @@ import { ThemeType } from "../../constants/theme";
 import { LeftArrowIcon } from "../../components/icons";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../../navigation/AuthStack';
-import { LoadingView, Space } from '../../components/util';
+import { LoadingView, SimpleScreenHeader, Space } from '../../components/util';
 import { AuthActionButton, SaveChangesButton } from '../../components/buttons';
 import {
   BottomSheetModal,
@@ -13,7 +13,7 @@ import {
   BottomSheetBackdrop
 } from '@gorhom/bottom-sheet';
 import { successGradient, successImage } from '../../assets';
-import { OtpTextInput } from '../../components/inputs/OtpTextInput';
+import { OtpTextInput } from '../../components/inputs';
 import { useAuthentication } from '../../state';
 import { OperationSuccessfulModal } from '../../components/modals';
 import { Formik } from 'formik';
@@ -32,7 +32,7 @@ export const VerifficationScreen = (props: VerificationScreenProps) => {
 
 
   const { theme } = useTheme();
-  const styles = getStyles(theme);
+  const styles = React.useMemo(() => getStyles(theme), [theme])  ;
 
   const { sendOTP, signIn, requestOTP, serverState } = useAuthentication()
 
@@ -54,7 +54,7 @@ export const VerifficationScreen = (props: VerificationScreenProps) => {
       validationSchema={SignupSchema}
       initialErrors={{ code: 'code is required' }}
     >
-      {({ handleChange, handleBlur, handleSubmit, values,setFieldValue, errors, touched, isValid }) => (
+      {({ handleChange, handleBlur, handleSubmit, values, setFieldValue, errors, touched, isValid }) => (
         <Fragment>
           <StatusBar
             barStyle={"dark-content"}
@@ -64,17 +64,9 @@ export const VerifficationScreen = (props: VerificationScreenProps) => {
           <KeyboardAvoidingView style={styles.root}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
           >
-            <View style={styles.header}>
-              <Pressable
-                onPress={() => navigation.goBack()}
-                style={styles.back_wraper}
-              >
-                <LeftArrowIcon
-                  size={24}
-                  color={theme.palette.text[theme.mode].main}
-                />
-              </Pressable>
-            </View>
+
+            <SimpleScreenHeader goBack={navigation.goBack} />
+
             <Space direction='vertical' size={20} />
             <Text style={styles.title}>Verification Code</Text>
             <Space direction='vertical' size={10} />
@@ -91,7 +83,7 @@ export const VerifficationScreen = (props: VerificationScreenProps) => {
 
             <Space direction='vertical' size={30} />
 
-            <OtpTextInput digits={6} onceFilled={(otp: number) => setFieldValue("code",otp)} />
+            <OtpTextInput digits={6} onceFilled={(otp: number) => setFieldValue("code", otp)} />
 
 
             <Space direction='vertical' size={40} />
@@ -134,29 +126,10 @@ const getStyles = (theme: ThemeType) => {
   return StyleSheet.create({
     root: {
       flex: 1,
-      backgroundColor: palette.white[theme.mode].main,
-      paddingLeft: 24,
-      paddingRight: 24,
+      backgroundColor: palette.bg[mode].main,
+      padding:24
     },
-    header: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "flex-start",
-      marginTop: 30,
-    },
-    back_wraper: {
-      justifyContent: "center",
-      alignItems: "center",
-      width: 46,
-      height: 46,
-      borderRadius: 46,
-      borderWidth: 1,
-      borderColor: palette.grey[theme.mode][3],
-    },
-    back_arrow: {
-      width: 23,
-      height: 23,
-    },
+
     title: {
       ...text.heading.H2,
       color: palette.text[mode].main,

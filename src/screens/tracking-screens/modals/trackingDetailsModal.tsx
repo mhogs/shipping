@@ -19,7 +19,7 @@ type TrackingDetailsModalProps = {
 export const TrackingDetailsModal = (props: TrackingDetailsModalProps) => {
     const { visible, closeModal, onBtnPress,order } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     return (
         <Modal
             animationType="slide"

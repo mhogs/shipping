@@ -1,16 +1,16 @@
 import { View, StyleSheet, Image, Text, ScrollView, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useTheme } from '../../state/theming'
-import { ThemeType } from '../../constants/theme'
-import { MyTextInput } from '../../components/inputs'
-import { LoadingView, Space } from '../../components/util'
-import { ProfileIcon, callIcon, googleIcon, appleIcon } from '../../assets'
-import { LockOutLineIcon } from '../../components/icons'
-import { AuthActionButton, SaveChangesButton, SocialLoginButton } from '../../components/buttons'
-import { Devider } from '../../components/util/Devider'
-import { AuthScreenProps } from '../../navigation/AuthStack'
-import { useAuthentication } from '../../state'
-import { SignUpRequestDataType } from '../../@types'
+import { useTheme } from '../../../state/theming'
+import { ThemeType } from '../../../constants/theme'
+import { MyTextInput } from '../../../components/inputs'
+import { LoadingView, Space } from '../../../components/util'
+import { ProfileIcon, callIcon, googleIcon, appleIcon } from '../../../assets'
+import { LockOutLineIcon } from '../../../components/icons'
+import { AuthActionButton, SaveChangesButton, SocialLoginButton } from '../../../components/buttons'
+import { Devider } from '../../../components/util/Devider'
+import { AuthScreenProps } from '../../../navigation/AuthStack'
+import { useAuthentication } from '../../../state'
+import { SignUpRequestDataType } from '../../../@types'
 import { Formik } from 'formik'
 import * as yup from 'yup';
 
@@ -21,10 +21,10 @@ const SignupSchema = yup.object().shape({
     password: yup.string().required("password is required").min(8, "password must be at least 8 characters long"),
 });
 
-export const RegisterScreen = (props: AuthScreenProps) => {
+export const RegisterScene = (props: AuthScreenProps) => {
     const { navigation } = props;
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     const { signUp, serverState } = useAuthentication()
     const [params, setParams] = useState({ phone: "", password: "" })
 

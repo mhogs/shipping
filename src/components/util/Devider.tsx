@@ -13,7 +13,7 @@ export const Devider = (props: DeviderProps) => {
         <View style={
             {
                 height: 1.5,
-                backgroundColor: color ? color : theme.palette.lightGrey[theme.mode].main,
+                backgroundColor: color ? color : theme.palette.bg[theme.mode][2],
                 marginVertical: spacing,
                 alignSelf:'stretch'
             }

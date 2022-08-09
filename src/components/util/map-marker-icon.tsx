@@ -13,7 +13,7 @@ type MyMarkerProps = {
 export const MyMarkerIcon = (props: MyMarkerProps) => {
     const { icon = <LocationIcon size={14} color="#ffffff" />, maincolor, secondaryColor } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
 
     return (
             <View

@@ -5,14 +5,14 @@ import { ThemeType } from '../../constants/theme'
 import { LeftArrowIcon } from '../icons'
 
 type SimpleScreenHeaderProps={
-    title:string,
+    title?:string,
     goBack:()=>void,
     endIcon?:any
 }
 export const SimpleScreenHeader = (props:SimpleScreenHeaderProps) => {
     const {title,endIcon,goBack}= props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     return (
         <View style={styles.screenHeader}>
             <View style={{ borderRadius: 100, overflow: 'hidden' }}>
@@ -48,7 +48,7 @@ const getStyles = (theme: ThemeType) => {
       backButton: {
         padding: 12,
         borderWidth: 1.5,
-        borderColor: palette.lightGrey[mode].main,
+        borderColor: palette.bg[mode][2],
         borderRadius: 100
       },
       screenHeaderText: {

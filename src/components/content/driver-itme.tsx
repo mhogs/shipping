@@ -14,7 +14,7 @@ type DriverItemProps = {
 export const DriverItem = (props: DriverItemProps) => {
     const { picture, name, rating } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
 
     return (
         <View style={styles.root}>

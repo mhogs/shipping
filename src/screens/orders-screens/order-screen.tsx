@@ -7,6 +7,7 @@ import { SceneRendererProps, TabView } from 'react-native-tab-view';
 import { ClientDetailsScene, OrderDetailsScene, OrderRouteScene } from './steps'
 import { RootStackParamList } from '../../navigation/BottomNavigationBar';
 import { OrdersRequestDataType } from '../../@types';
+import { useTheme } from '../../state';
 
 
 
@@ -22,7 +23,7 @@ export const OrderScreen = (props: OrderScreenProps) => {
   const { navigation, route } = props;
   useHideBottomBar(navigation, 2)
   const layout = useWindowDimensions();
-
+  const { theme } = useTheme()
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: "sender", title: "Sender Details" },
@@ -31,7 +32,7 @@ export const OrderScreen = (props: OrderScreenProps) => {
   ]);
   /**form state */
   const [order, setOrder] = useState<OrdersRequestDataType>({})
- 
+
 
   const renderScene = (props: SceneRendererProps & {
     route: {
@@ -75,7 +76,7 @@ export const OrderScreen = (props: OrderScreenProps) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor:theme.palette.bg[theme.mode].main }}>
       <TabView
         navigationState={{ index, routes }}
         renderTabBar={() => null}

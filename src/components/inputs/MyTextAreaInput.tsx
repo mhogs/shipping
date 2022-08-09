@@ -17,7 +17,7 @@ type TextAreaInputProps = {
 export const MyTextAreaInput = (props: TextAreaInputProps) => {
     const { label, placeholder, value, h, onChangeText,onBlur,error,touched } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     return (
         <View>
             <View style={{flexDirection:"row"}}>
@@ -31,6 +31,7 @@ export const MyTextAreaInput = (props: TextAreaInputProps) => {
                         (touched && error)?{ borderColor:theme.palette.danger[theme.mode].main}:{},
                     ]}
                     placeholder={placeholder}
+                    placeholderTextColor={theme.palette.grey[theme.mode].main}
                     defaultValue={value}
                     multiline={true}
                     onChangeText={(text)=>onChangeText && onChangeText(text)}
@@ -57,7 +58,7 @@ const getStyles = (theme: ThemeType) => {
             paddingLeft: 14,
             paddingRight: 14,
             borderWidth: 1.5,
-            borderColor: palette.lightGrey[mode].main,
+            borderColor: palette.bg[mode][2],
             borderRadius: 12
         },
         input: {

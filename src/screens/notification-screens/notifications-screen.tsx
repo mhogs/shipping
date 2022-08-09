@@ -19,7 +19,7 @@ export const NotificationsScreen = ({ navigation }: NotificationsScreenProps) =>
   useHideBottomBar(navigation, 1)
   const { goBack } = navigation
   const { theme } = useTheme()
-  const styles = getStyles(theme)
+  const styles = React.useMemo(() => getStyles(theme), [theme])  
   const [notifications, setNotifications] = useState(data)
   return (
     <View style={styles.root}>

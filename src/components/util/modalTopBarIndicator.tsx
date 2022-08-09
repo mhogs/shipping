@@ -5,7 +5,7 @@ import { ThemeType } from '../../constants/theme'
 
 export const ModalTopBarIndicator = () => {
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     return (
         <View style={styles.modalTopBa} />
     )
@@ -16,7 +16,7 @@ function getStyles(theme: ThemeType) {
         modalTopBa: {
             width: 60,
             height: 6,
-            backgroundColor: theme.palette.lightGrey[theme.mode].main,
+            backgroundColor: theme.palette.bg[theme.mode][2],
             borderRadius: 10,
             marginBottom: 30,
             alignSelf: "center"

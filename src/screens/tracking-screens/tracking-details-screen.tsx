@@ -23,7 +23,7 @@ export const TrackingDetailsScreen = ({ navigation, route }: TrackingDetailsScre
 
     const { theme } = useTheme()
     const { palette, mode, text } = theme
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     const [modalOpen, setModalOpen] = useState(false)
 
     const { mapState, handleMapRegionChange } = useMapHandler()

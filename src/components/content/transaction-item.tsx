@@ -15,7 +15,7 @@ type TransactionItemProps = {
 export const TransactionItem = (props: TransactionItemProps) => {
     const { icon, title, date, amount, onPress } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     return (
         <View style={styles.root}>
             <Pressable
@@ -59,14 +59,12 @@ function getStyles(theme: ThemeType) {
             borderRadius: 8,
             overflow: 'hidden',
             borderWidth: 1,
-            borderColor: palette.lightGrey[mode].main
+            borderColor: palette.bg[mode][2]
         },
         pressable: {
             padding: 10,
         },
         Concontainer: {
-            paddingVertical: 5,
-            paddingHorizontal: 2,
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: 'center'
@@ -77,7 +75,7 @@ function getStyles(theme: ThemeType) {
             width: 50,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: palette.lightGrey[mode].main,
+            backgroundColor: palette.bg[mode][2],
             borderRadius: 10,
         },
         transactionDetailsContainer: {

@@ -65,7 +65,7 @@ export const defaultTheme: ThemeType = {
                 3: "#BBCBFF"
             },
             dark: {
-                main: "#3264FF",
+                main: "#133BB7",
                 2: "#7698FF",
                 3: "#0D277A"
             }
@@ -77,7 +77,7 @@ export const defaultTheme: ThemeType = {
                 3: "#8C8E98",
             },
             dark: {
-                main: "#ffffff",
+                main: "#191D31",
                 2: "#29303C",
                 3: "#757788"
             }
@@ -90,8 +90,8 @@ export const defaultTheme: ThemeType = {
             },
             dark: {
                 main: "#FFFFFF",
-                2: "#000000",
-                3: "#000000"
+                2: "#FFFFFF",
+                3: "#FFFFFF"
             }
         },
         grey: {
@@ -113,9 +113,9 @@ export const defaultTheme: ThemeType = {
                 3: "#F8F9FB"
             },
             dark: {
-                main: "#0F1621",
-                2: "#182231",
-                3: "#757788"
+                main: "#F3F3F3",
+                2: "#F9F9F9",
+                3: "#F8F9FB"
             },
         },
         warning: {
@@ -173,7 +173,7 @@ export const defaultTheme: ThemeType = {
                 3: "#8C8E98",
             },
             dark: {
-                main: "#ffffff",
+                main: "#F8F9FB",
                 2: "#29303C",
                 3: "#757788"
             }

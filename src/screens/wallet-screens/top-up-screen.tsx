@@ -3,7 +3,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { Fragment, useEffect, useState } from 'react'
 import { View, Text, StyleSheet, KeyboardAvoidingView, Image, Pressable, ScrollView, TextInput, Modal } from 'react-native'
-import { AddIconcolored, CargoIconColored } from '../../assets'
+import { AddIconcolored, CargoIconColored, sucessfulPaymentImage } from '../../assets'
 import { SaveChangesButton } from '../../components/buttons'
 import { MyBalnce, PaymentCard, TransactionItem } from '../../components/content'
 import { Arrowdown, PlusIcon } from '../../components/icons'
@@ -25,7 +25,7 @@ export const TopUpScreen = ({ navigation }: TopUpScreenProps) => {
     useHideBottomBar(navigation, 2)
     const { goBack } = navigation
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])
     const [paymentCompleted, setPaymentCompleted] = useState(false)
 
     return (
@@ -57,6 +57,7 @@ export const TopUpScreen = ({ navigation }: TopUpScreenProps) => {
                         <TextInput
                             style={styles.amountInput}
                             placeholder='Amount'
+                            placeholderTextColor={theme.palette.grey[theme.mode].main}
                         />
                     </View>
                     <Space direction='vertical' size={20} />
@@ -80,10 +81,13 @@ export const TopUpScreen = ({ navigation }: TopUpScreenProps) => {
                     onBtnPress={() => setModals({ ...modals, onPaymentSuccess: true })}
                 />
                 <OperationSuccessfulModal
+                    title='Payment Successful'
                     visible={modals.onPaymentSuccess}
                     closeModal={() => setModals({ ...modals, onPaymentSuccess: false })}
-                    onBtnPress={()=>navigation.navigate("Home")}
+                    image={sucessfulPaymentImage}
+
                 />
+
             </ScrollView>
 
 
@@ -101,13 +105,11 @@ const getStyles = (theme: ThemeType) => {
         root: {
             flex: 1,
             padding: 24,
-            backgroundColor: palette.white[theme.mode].main,
-
+            backgroundColor: palette.bg[mode].main,
         },
         sectionHeader: {
             marginTop: 30,
             marginBottom: 20,
-
         },
         sectionHeaderText: {
             ...text.heading.H3,
@@ -124,7 +126,7 @@ const getStyles = (theme: ThemeType) => {
             borderRadius: 12,
             overflow: "hidden",
             borderWidth: 1,
-            borderColor: palette.lightGrey[mode].main,
+            borderColor: palette.bg[mode][2],
         },
         currency: {
             ...text.medium.P14_Lh130,
@@ -134,7 +136,7 @@ const getStyles = (theme: ThemeType) => {
         amountInput: {
             padding: 12,
             flexGrow: 1,
-            backgroundColor: palette.lightGrey[mode].main
+            backgroundColor: palette.bg[mode][2]
         },
         methodeSelector: {
             borderWidth: 1,

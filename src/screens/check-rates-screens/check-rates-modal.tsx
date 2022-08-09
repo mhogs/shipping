@@ -20,7 +20,7 @@ type CheckRatesModalProps = {
 export const CheckRatesModal = (props: CheckRatesModalProps) => {
     const { visible,route, closeModal } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     const { data: services, isLoading: loading_services } = useServices()
 
     return (
@@ -89,7 +89,7 @@ const getStyles = (theme: ThemeType) => {
             paddingHorizontal: 24,
             paddingVertical: 10,
             height: "60%",
-            backgroundColor: palette.white[mode].main
+            backgroundColor: palette.bg[mode].main
         },
         modalTopBa: {
             width: 60,

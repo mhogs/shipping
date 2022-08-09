@@ -19,7 +19,7 @@ export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
     const { signOut, serverState, currentUser } = useAuthentication()
     const { theme, switchMode } = useTheme()
     
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     return (
         <>
             <StatusBar backgroundColor={theme.palette.primary[theme.mode].main} />

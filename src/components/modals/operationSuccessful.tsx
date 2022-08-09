@@ -4,6 +4,7 @@ import { sucessfulPaymentImage } from "../../assets"
 import { SaveChangesButton } from "../buttons"
 import { useTheme } from "../../state"
 import { ThemeType } from "../../constants/theme"
+import { ModalTopBarIndicator, Space } from "../util"
 
 
 type OperationSuccessfulModalProps = {
@@ -18,7 +19,7 @@ type OperationSuccessfulModalProps = {
 export const OperationSuccessfulModal = (props: OperationSuccessfulModalProps) => {
     const { visible, image, title, sub_title, buttonText, closeModal, onBtnPress } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     return (
         <Modal
             animationType="slide"
@@ -36,9 +37,10 @@ export const OperationSuccessfulModal = (props: OperationSuccessfulModalProps) =
                 <View style={styles.modalContent}>
                     <ScrollView contentContainerStyle={styles.modalContainer} showsVerticalScrollIndicator={false}  >
                         <View>
-                            <View style={styles.modalTopBa} />
+                            <ModalTopBarIndicator/>
                             <View style={{ alignItems: "center", }}>
                                 <Image source={image} />
+                                <Space size={15} direction="vertical" />
                                 <Text style={styles.headerText}>
                                     {title}
                                 </Text>
@@ -72,7 +74,7 @@ const getStyles = (theme: ThemeType) => {
             paddingHorizontal: 24,
             paddingVertical: 10,
             height: "70%",
-            backgroundColor: palette.white[mode].main
+            backgroundColor: palette.bg[mode].main
         },
         modalTopBa: {
             width: 60,

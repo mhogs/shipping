@@ -14,10 +14,10 @@ type MyBalnceProps = {
 }
 export const MyBalnce = (props: MyBalnceProps) => {
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     const {
         bgColor = theme.palette.white[theme.mode].main,
-        balanceColor = theme.palette.text[theme.mode].main,
+        balanceColor = theme.palette.black[theme.mode].main,
         titleColor=theme.palette.grey[theme.mode].main,
         topUpColor = theme.palette.primary[theme.mode].main,
         rippleColor = theme.palette.grey[theme.mode][3],

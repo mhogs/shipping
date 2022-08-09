@@ -14,9 +14,9 @@ export const OtpTextInput = (props: OtpTextInputProps) => {
     const inputRef = useRef(new Array(digits));
 
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
 
-    const [code, setCode] = useState<string[]>(Array(6).fill(""))
+    const [code, setCode] = useState<string[]>(Array(digits).fill(""))
     const [focused, setFocused] = useState(0)
 
 
@@ -80,8 +80,8 @@ const getStyles = (theme: ThemeType) => {
             flexDirection: 'row',
             alignItems: 'center',
             borderWidth: 1.5,
-            borderColor: palette.primary[mode].main,
-            backgroundColor: palette.lightGrey[mode][3],
+            borderColor: palette.primary["light"].main,
+            backgroundColor: palette.bg[mode].main,
             flexGrow: 1,
             height: 60,
             borderRadius: 12
@@ -90,8 +90,8 @@ const getStyles = (theme: ThemeType) => {
             flexDirection: 'row',
             alignItems: 'center',
             borderWidth: 1.5,
-            borderColor: palette.lightGrey[mode][3],
-            backgroundColor: palette.lightGrey[mode][3],
+            borderColor: palette.lightGrey[mode][2],
+            backgroundColor: palette.bg[mode][2],
             flexGrow: 1,
             height: 60,
             borderRadius: 12
@@ -101,6 +101,7 @@ const getStyles = (theme: ThemeType) => {
             flex: 1,
             textAlign: 'center',
             ...text.medium.P20_Lh130,
+            color:palette.text[mode].main
         },
 
     })

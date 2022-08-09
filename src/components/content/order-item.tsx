@@ -13,7 +13,7 @@ type OrderItemProps = {
 export const OrderItem = (props: OrderItemProps) => {
     const { code, onPress,onDelete } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     return (
         <View style={{ borderRadius: 8, overflow: 'hidden' }}>
             <View

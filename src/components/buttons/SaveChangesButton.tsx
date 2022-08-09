@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useMemo} from 'react'
 import { Pressable, View, StyleSheet, Text, StyleProp, ViewStyle, ActivityIndicator } from 'react-native'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../constants/theme'
@@ -23,7 +23,7 @@ export const SaveChangesButton = (props: SaveChangesButtonProps) => {
   } = props
 
 
-  const styles = getStyles(theme)
+  const styles = React.useMemo(() => getStyles(theme), [theme])  
 
   return (
     <View style={[styles.saveButtonWraper, { backgroundColor: disabled?theme.palette.grey[theme.mode].main: bgColor }]}>

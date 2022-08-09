@@ -20,7 +20,7 @@ const orderClientDetailsSchema = yup.object().shape({
 export const ClientDetailsScene = (props: OrderSceneProps) => {
   const { moveForward, moveBackward, navigation, updateOrder,order } = props
   const { theme } = useTheme()
-  const styles = getStyles(theme)
+  const styles = React.useMemo(() => getStyles(theme), [theme])  
   const { mutate: check_user, isLoading: submiting, isError } = useMutation(AuthService.CheckUser, {
     onSuccess: (data) => {
       updateOrder({ made_to: data.id })
@@ -103,7 +103,6 @@ const getStyles = (theme: ThemeType) => {
       position: 'relative',
       paddingTop: 24,
       paddingHorizontal: 24,
-      backgroundColor: palette.white[theme.mode][3],
     },
     actionContainer: {
       marginBottom: 20

@@ -18,7 +18,7 @@ type HelpCenterCategoryScreenProps = NativeStackScreenProps<HelpCenterStackParam
 export const HelpCenterCategoryScreen = ({ route, navigation }: HelpCenterCategoryScreenProps) => {
     useHideBottomBar(navigation, 2)
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     const { category } = route.params
 
     return (

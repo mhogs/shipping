@@ -24,7 +24,7 @@ export function QuestionsListView(props: QuestionsListViewProps) {
     const { params, navigation } = props
 
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     const {
         faqs,
         faqs_loading,

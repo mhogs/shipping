@@ -5,6 +5,7 @@ import { MessageNotifIcon, PackageColored } from '../../assets'
 import { useTheme } from '../../state'
 import { ThemeType } from '../../constants/theme'
 import * as Clipboard from 'expo-clipboard';
+import { showsuccessToast } from '../../helpers'
 
 type orderItemProps = OrdersResponseDataType & {
     onPress?: () => void
@@ -13,42 +14,42 @@ type orderItemProps = OrdersResponseDataType & {
 export const OrderHistoryItem = (props: orderItemProps) => {
     const { code, description, state, onPress } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
 
     const copyToClipboard = async (text: string) => {
         await Clipboard.setStringAsync(text);
+        showsuccessToast(`coppied`)
     };
 
     return (
         <View style={styles.root}>
-            <View
-                style={styles.pressable}
-            //onPress={onPress}
-            //android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
-            >
-                <View style={styles.orderContainer}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={styles.orderIconcontainer}>
-                            <Image source={PackageColored} />
-                        </View>
-                        <View style={styles.orderDetailsContainer}>
-                            <Pressable onPress={() => copyToClipboard(code as string)}>
-                                <Text style={styles.orderTitle}>
-                                    {code}
-                                </Text>
-                            </Pressable>
 
-                            <Text style={styles.orderBrief}>
-                                {description}
-                            </Text>
-                        </View>
+            <View style={styles.orderContainer}>
+                <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.orderIconcontainer}>
+                        <Image source={PackageColored} />
                     </View>
+                    <View style={styles.orderDetailsContainer}>
+                        <Pressable
+                            onPress={() => copyToClipboard(code as string)}
+                            android_ripple={{ color: theme.palette.bg[theme.mode][2] }}
+                        >
+                            <Text style={styles.orderTitle}>
+                                {code}
+                            </Text>
+                        </Pressable>
 
-                    <Text style={[styles.orderState, { color: getStateColor(theme, state) }]}>
-                        {state}
-                    </Text>
+                        <Text style={styles.orderBrief}>
+                            {description}
+                        </Text>
+                    </View>
                 </View>
+
+                <Text style={[styles.orderState, { color: getStateColor(theme, state) }]}>
+                    {state}
+                </Text>
             </View>
+
         </View>
 
 
@@ -76,14 +77,13 @@ function getStyles(theme: ThemeType) {
             borderRadius: 8,
             overflow: 'hidden',
             borderWidth: 1,
-            borderColor: palette.lightGrey[mode].main
+            borderColor: palette.bg[mode][2]
         },
         pressable: {
             padding: 10,
         },
         orderContainer: {
-            paddingVertical: 5,
-            paddingHorizontal: 2,
+            padding:10,
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: 'center'
@@ -94,7 +94,7 @@ function getStyles(theme: ThemeType) {
             width: 50,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: palette.lightGrey[mode].main,
+            backgroundColor: palette.bg[mode][2],
             borderRadius: 10,
         },
         orderDetailsContainer: {

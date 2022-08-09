@@ -13,7 +13,7 @@ type WarningTextProps = {
 export const WarningText = (props: WarningTextProps) => {
     const { text, withIcon } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     return (
         <View style={styles.root}>
             {withIcon ? <Image source={infoCircleIcon} /> : null}

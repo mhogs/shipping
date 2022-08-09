@@ -24,7 +24,7 @@ export const CodeScanScreen = ({ navigation }: CodeScanScreenProps) => {
   const { navigate } = navigation
   const { goBack } = navigation
   const { theme } = useTheme()
-  const styles = getStyles(theme)
+  const styles = React.useMemo(() => getStyles(theme), [theme])  
   /**  */
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);

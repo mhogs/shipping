@@ -15,7 +15,7 @@ type OrderSuccessfulModalProps = {
 export const OrderSuccessfulModal = (props: OrderSuccessfulModalProps) => {
     const { visible, closeModal, onBtnPress } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     return (
         <Modal
             animationType="slide"

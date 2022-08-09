@@ -21,7 +21,7 @@ type MessagesScreenProps = NativeStackScreenProps<MessagesStackParamList & RootS
 export const MessagesScreen = ({ navigation }: MessagesScreenProps) => {
   const { navigate } = navigation
   const { theme } = useTheme()
-  const styles = getStyles(theme)
+  const styles = React.useMemo(() => getStyles(theme), [theme])  
 
   const { dialogs, isLoading, loadMore, loading_more, refetch } = useDialogs()
   useRefreshOnFocus(refetch)
@@ -92,10 +92,10 @@ const getStyles = (theme: ThemeType) => {
   return StyleSheet.create({
     root: {
       flex: 1,
-      backgroundColor: palette.lightGrey[theme.mode][3],
+      backgroundColor: palette.bg[mode].main,
     },
     head: {
-      backgroundColor: palette.primary[theme.mode].main,
+      backgroundColor: palette.primary["light"].main,
       padding: 24
     },
     title: {

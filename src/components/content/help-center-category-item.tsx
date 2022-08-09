@@ -12,7 +12,7 @@ type LocationItemProps = {
 export const HelpCenterCategoryItem = (props: LocationItemProps) => {
   const { icon, name, onPress } = props
   const { theme } = useTheme()
-  const styles = getStyles(theme)
+  const styles = React.useMemo(() => getStyles(theme), [theme])  
   return (
     <View style={styles.category}>
       <Pressable

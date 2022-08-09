@@ -31,7 +31,7 @@ export const SearchInput = (props: searchBoxProps) => {
     } = props
 
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     return (
         <View style={[styles.searchBox, extraStyle]}>
             {startIcon}

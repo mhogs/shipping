@@ -7,7 +7,7 @@ import { ServiceItem } from "../../../components/content/service-item";
 import { cargoIcon, expressIcon, regularIcon } from "../../../assets";
 import { ServiceType } from "../../../@types";
 import { useQuery } from "@tanstack/react-query";
-import { OrdersServices } from "../../../services";
+
 
 
 type SelectServiceModalProps = {
@@ -35,7 +35,7 @@ const services: ServiceType[] = [
 export const SelectServiceModal = (props: SelectServiceModalProps) => {
     const { visible, closeModal, selectService, services, isLoading } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
 
     
     const selectServiceCloseModal = (service: ServiceType) => {
@@ -62,7 +62,7 @@ export const SelectServiceModal = (props: SelectServiceModalProps) => {
                     <View style={styles.contentContainer}>
                         <Space direction='vertical' size={46} />
                         <View style={{ flexDirection: "row" }}>
-                            <Text style={styles.selectServiceTitle}>Services {services?.length}</Text>
+                            <Text style={styles.selectServiceTitle}>Services</Text>
                         </View>
                         <Space direction='vertical' size={20} />
                         <View style={styles.servicesListe}>
@@ -101,7 +101,7 @@ const getStyles = (theme: ThemeType) => {
             paddingHorizontal: 24,
             paddingVertical: 10,
             height: "60%",
-            backgroundColor: palette.white[mode].main
+            backgroundColor: palette.bg[mode].main
         },
         modalTopBa: {
             width: 60,

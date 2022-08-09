@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, KeyboardAvoidingView, Image, Pressable, TextInput, ScrollView, Platform } from 'react-native'
-import { ChangeImageIcon, ColoredCallIcon, ColoredProfileIcon, ProfilePicture } from '../../assets'
+import { avatar_asset, ChangeImageIcon, ColoredCallIcon, ColoredProfileIcon, ProfilePicture } from '../../assets'
 import { SaveChangesButton } from '../../components/buttons'
 import { CheckedIcon, LeftArrowIcon } from '../../components/icons'
 import { MyTextInput } from '../../components/inputs'
@@ -34,7 +34,7 @@ export const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
   useHideBottomBar(navigation, 1)
   const { goBack } = navigation
   const { theme } = useTheme()
-  const styles = getStyles(theme)
+  const styles = React.useMemo(() => getStyles(theme), [theme])  
   const { currentUser, setCurrentUser } = useAuthentication()
 
 
@@ -75,7 +75,12 @@ export const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
             <View>
               <SimpleScreenHeader title="Edit Profile" goBack={goBack} />
               <View style={styles.profilePicWraper} >
-                <Image source={{ uri: currentUser?.picture }} style={{ width: 100, height: 100, borderRadius: 100 }} />
+
+                {currentUser?.picture ?
+                  <Image source={{ uri: currentUser?.picture }} style={styles.profilePicture} />
+                  :
+                  <Image source={avatar_asset} style={styles.profilePicture} />
+                }
                 <Pressable
                   style={{ position: "absolute", right: 20, top: -20 }}
                   onPress={handlePickPhoto}
@@ -88,7 +93,6 @@ export const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
                 <MyTextInput
                   label='First Name'
                   startIcon={<Image source={ColoredProfileIcon} />}
-                  endIcon={<CheckedIcon color={theme.palette.success[theme.mode].main} />}
                   value={values.first_name}
                   onChangeText={handleChange('first_name')}
                   onBlur={handleBlur('first_name')}
@@ -100,7 +104,6 @@ export const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
                 <MyTextInput
                   label='Last Name'
                   startIcon={<Image source={ColoredProfileIcon} />}
-                  endIcon={<CheckedIcon color={theme.palette.success[theme.mode].main} />}
                   value={values.last_name}
                   onChangeText={handleChange('last_name')}
                   onBlur={handleBlur('last_name')}
@@ -112,7 +115,6 @@ export const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
                 <MyTextInput
                   label='Phone Number'
                   startIcon={<Image source={ColoredCallIcon} />}
-                  endIcon={<CheckedIcon color={theme.palette.success[theme.mode].main} />}
                   value={values.phonenumber}
                   onChangeText={handleChange('phonenumber')}
                   onBlur={handleBlur('phonenumber')}
@@ -145,7 +147,7 @@ const getStyles = (theme: ThemeType) => {
     root: {
       flex: 1,
       padding: 24,
-      backgroundColor: palette.lightGrey[theme.mode][3],
+      backgroundColor: palette.bg[theme.mode].main,
       justifyContent: 'space-between',
 
     },
@@ -154,6 +156,11 @@ const getStyles = (theme: ThemeType) => {
       marginTop: 30,
       width: '100%',
       alignItems: 'center',
+    },
+    profilePicture: {
+      width: 100,
+      height: 100,
+      borderRadius: 100
     },
     form: {
       marginTop: 30,
@@ -172,7 +179,8 @@ const getStyles = (theme: ThemeType) => {
     saveButtonText: {
       ...text.medium.P16_Lh180,
       color: palette.white[mode].main
-    }
+    },
+
 
 
   })

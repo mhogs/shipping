@@ -22,7 +22,7 @@ export const WalletScreen = ({ navigation }: WalletScreenProps) => {
   useHideBottomBar(navigation, 2)
   const { goBack } = navigation
   const { theme } = useTheme()
-  const styles = getStyles(theme)
+  const styles = React.useMemo(() => getStyles(theme), [theme])
 
   return (
 
@@ -44,7 +44,8 @@ export const WalletScreen = ({ navigation }: WalletScreenProps) => {
             Payment Methode
           </Text>
           <Pressable
-            android_ripple={{ color: theme.palette.grey[theme.mode][3] }}>
+            onPress={() => navigation.navigate("TopUp")}
+            android_ripple={{ color: theme.palette.grey[theme.mode][3],borderless:true }}>
             <PlusIcon color={theme.palette.primary[theme.mode].main} />
           </Pressable>
         </View>
@@ -83,7 +84,7 @@ const getStyles = (theme: ThemeType) => {
     root: {
       flex: 1,
       padding: 24,
-      backgroundColor: palette.lightGrey[theme.mode][3],
+      backgroundColor: palette.bg[mode].main,
 
     },
     paymentMethodesHeader: {

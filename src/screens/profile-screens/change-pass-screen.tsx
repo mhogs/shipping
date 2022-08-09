@@ -32,7 +32,7 @@ export const ChangePasswordScreen = ({ navigation }: ChangePasswordScreenProps) 
   useHideBottomBar(navigation, 1)
   const { goBack } = navigation
   const { theme } = useTheme()
-  const styles = getStyles(theme)
+  const styles = React.useMemo(() => getStyles(theme), [theme])  
   const { mutate: change_password, isLoading: submiting } = useMutation(ProfileServices.changePassword, {
     onSuccess: (data) => {
     },

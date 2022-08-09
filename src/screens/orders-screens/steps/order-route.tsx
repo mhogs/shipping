@@ -22,7 +22,7 @@ const orderRouteShema = yup.object().shape({
 export const OrderRouteScene = (props: OrderSceneProps) => {
     const { moveForward, moveBackward, navigation, updateOrder,order } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     
 
     return (
@@ -120,7 +120,6 @@ const getStyles = (theme: ThemeType) => {
             position: 'relative',
             paddingTop: 24,
             paddingHorizontal: 24,
-            backgroundColor: palette.white[theme.mode][3],
         },
         actionContainer: {
             marginBottom: 20

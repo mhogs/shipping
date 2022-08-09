@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, Children } from 'react'
 import { View, StyleSheet, Text, Pressable, Image, TextStyle, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
-import { Actions, ActionsProps, AvatarProps, Bubble, BubbleProps, Composer, ComposerProps, GiftedChat, IMessage, InputToolbar, InputToolbarProps, LeftRightStyle, Message, MessageImage, MessageImageProps, MessageProps, MessageText, MessageTextProps, Send, SendProps, Time, TimeProps } from 'react-native-gifted-chat'
+import { Actions, ActionsProps, AvatarProps, Bubble, BubbleProps, Composer, ComposerProps, GiftedChat, IMessage, InputToolbar, InputToolbarProps, LeftRightStyle, LoadEarlier, LoadEarlierProps, Message, MessageImage, MessageImageProps, MessageProps, MessageText, MessageTextProps, Send, SendProps, Time, TimeProps } from 'react-native-gifted-chat'
 import { WS_MSG_TYPE } from '../../@types';
 import { avatar_asset } from '../../assets';
 import { AttachmentIcon, LeftArrowIcon, PhoneCallIcon, SendIcon, ThreeDotsIcon } from '../../components/icons';
@@ -22,37 +22,9 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
     const { sender } = route.params
     useHideBottomBar(navigation, 1)
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
 
-    const { messages, dispatch, can_load_more, loading_more, isLoading, loadMore, socket, } = useMessageDetails({ user2: sender.id || 0 })
-
-
-
-    const onSend = (msgs: IMessage[] = []) => {
-        const random_id = generateRondomMessageID()
-        if (msgs.length) {
-            const msg = msgs[0]
-            dispatch({
-                type: 'PUSH',
-                payload: {
-                    message: { ...msg, _id: random_id }
-                }
-            })
-            if (msg.text != "") {
-
-                socket?.send(JSON.stringify(
-                    {
-                        msg_type: WS_MSG_TYPE.TextMessage,
-                        text: msg.text,
-                        user_pk: sender.id?.toString(),
-                        random_id: random_id
-                    }
-                ))
-            }
-
-        }
-
-    }
+    const { messages, dispatch, can_load_more, loading_more, isLoading, loadMore, onSend, } = useMessageDetails({ user2: sender.id || 0 })
 
     return (
         <View style={styles.root}>
@@ -62,7 +34,7 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
                         onPress={() => goBack()}
                         android_ripple={{ color: theme.palette.grey[theme.mode][3], borderless: true }}
                     >
-                        <LeftArrowIcon />
+                        <LeftArrowIcon color={theme.palette.text[theme.mode].main} />
                     </Pressable>
 
                     <View style={{ marginLeft: 20 }}>
@@ -82,10 +54,10 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
                                 </View>
 
                                 <View >
-                                    <Text style={styles.notificatioTitle}>
+                                    <Text style={styles.user2Name}>
                                         {sender.first_name} {sender.last_name}
                                     </Text>
-                                    <Text style={styles.notificatioBrief}>
+                                    <Text style={styles.onlineStatus}>
                                         Online
                                     </Text>
                                 </View>
@@ -97,13 +69,13 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
                     <Pressable
                         android_ripple={{ color: theme.palette.grey[theme.mode][3], borderless: true }}
                     >
-                        <PhoneCallIcon size={22} />
+                        <PhoneCallIcon size={22} color={theme.palette.text[theme.mode].main} />
                     </Pressable>
                     <Space size={20} />
                     <Pressable
                         android_ripple={{ color: theme.palette.grey[theme.mode][3], borderless: true }}
                     >
-                        <ThreeDotsIcon size={22} />
+                        <ThreeDotsIcon size={22} color={theme.palette.text[theme.mode].main} />
                     </Pressable>
                 </View>
             </View>
@@ -126,12 +98,14 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
                 messagesContainerStyle={{ paddingBottom: 20 }}
                 renderMessageImage={(props) => customtImage(props, theme)}
                 renderInputToolbar={(toolbarProps) => customtInputToolbar(toolbarProps, theme)}
+                renderBubble={(props) => renderBubble(props, theme)}
+                renderLoadEarlier={(props) => renderLoadEarlier(props, theme)}
                 renderComposer={(props) => customtComposer(props, theme)}
                 renderSend={(props) => customtSend(props, theme)}
                 renderActions={(props) => customtAction(props, theme)}
                 renderLoading={() => <ActivityIndicator size="large" color={theme.palette.primary[theme.mode].main} />}
                 listViewProps={{
-                    onEndReached: loadMore
+                    //onEndReached: loadMore
                 }}
 
             />
@@ -146,7 +120,7 @@ const getStyles = (theme: ThemeType) => {
     return StyleSheet.create({
         root: {
             flex: 1,
-            backgroundColor: palette.white[mode].main
+            backgroundColor: palette.bg[mode].main
         },
         chatHeader: {
             flexDirection: "row",
@@ -154,7 +128,7 @@ const getStyles = (theme: ThemeType) => {
             justifyContent: 'space-between',
             paddingVertical: 20,
             paddingHorizontal: 24,
-            borderBottomColor: palette.lightGrey[mode].main,
+            borderBottomColor: palette.bg[mode][2],
             borderBottomWidth: 1,
 
         },
@@ -171,18 +145,15 @@ const getStyles = (theme: ThemeType) => {
             borderRadius: 44,
         },
 
-        notificatioTitle: {
+        user2Name: {
             ...text.medium.P14_Lh130,
             color: palette.text[mode].main
         },
-        notificatioBrief: {
+        onlineStatus: {
             ...text.regular.P14_Lh130,
             color: palette.grey[mode].main
         },
-        notificatioTime: {
-            ...text.regular.P12_Lh180,
-            color: palette.grey[mode].main
-        },
+
         onlineBadge: {
             position: "absolute",
             width: 10,
@@ -199,7 +170,48 @@ const getStyles = (theme: ThemeType) => {
     })
 }
 
+const renderBubble = (props: Readonly<BubbleProps<IMessage>> & Readonly<{
+    children?: React.ReactNode;
+}>, theme: ThemeType) => {
 
+    const { palette, mode,text } = theme
+    return (
+        <Bubble
+            {...props}
+            textStyle={{
+                left: {
+                    ...text.regular.P14_Lh180,
+                    color: palette.grey[mode].main,
+                },
+                right: {
+                    ...text.regular.P14_Lh180,
+                    color: 'white',   
+                },
+
+            }}
+            wrapperStyle={{
+                left: {
+                    backgroundColor: palette.bg[mode][2]
+                },
+                right: {
+                    backgroundColor: palette.primary["light"].main
+                }
+            }}>
+            {props.children}
+        </Bubble>
+    )
+}
+const renderLoadEarlier = (props: LoadEarlierProps, theme: ThemeType) => {
+    const { palette, mode } = theme
+    return (
+        <LoadEarlier
+            {...props}
+            label="Load earlier"
+            wrapperStyle={{ backgroundColor: "#3264FF15", paddingVertical: 4, paddingHorizontal: 16 }}
+            textStyle={{ color: palette.primary["light"].main }}
+        />
+    )
+}
 const customtInputToolbar = (props: InputToolbarProps<IMessage>, theme: ThemeType) => {
     const { palette, mode } = theme
 
@@ -207,9 +219,9 @@ const customtInputToolbar = (props: InputToolbarProps<IMessage>, theme: ThemeTyp
         <InputToolbar
             {...props}
             containerStyle={{
-                backgroundColor: "white",
+                backgroundColor: palette.bg[mode].main,
                 borderTopWidth: 1,
-                borderTopColor: palette.lightGrey[mode].main,
+                borderTopColor: palette.bg[mode][2],
 
             }}
             primaryStyle={{
@@ -230,7 +242,7 @@ const customtSend = (props: SendProps<IMessage>, theme: ThemeType) => {
                 justifyContent: "center",
                 marginLeft: 10
             }}>
-            <SendIcon color={palette.primary[mode].main} />
+            <SendIcon color={palette.primary["light"].main} />
         </Send>
 
     );
@@ -243,7 +255,7 @@ const customtAction = (props: ActionsProps, theme: ThemeType) => {
             {...props}
             icon={() => <AttachmentIcon color={palette.grey[mode].main} />}
             containerStyle={{
-                backgroundColor: palette.lightGrey[mode].main,
+                backgroundColor: palette.bg[mode][2],
                 borderTopLeftRadius: 10,
                 borderBottomLeftRadius: 10,
                 marginBottom: 0,
@@ -266,7 +278,7 @@ const customtComposer = (props: ComposerProps, theme: ThemeType) => {
             composerHeight={INPUT_HEIGHT}
             placeholderTextColor={theme.palette.grey[mode].main}
             textInputStyle={{
-                backgroundColor: palette.lightGrey[mode].main,
+                backgroundColor: palette.bg[mode][2],
                 borderTopRightRadius: 10,
                 borderBottomRightRadius: 10,
                 marginLeft: 0,

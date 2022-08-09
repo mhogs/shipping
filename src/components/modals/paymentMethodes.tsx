@@ -1,5 +1,5 @@
 import React, { Fragment } from "react"
-import { Modal, Pressable, ScrollView,Image, View ,Text,StyleSheet} from "react-native"
+import { Modal, Pressable, ScrollView, Image, View, Text, StyleSheet } from "react-native"
 import { AddIconcolored } from "../../assets"
 import { SaveChangesButton } from "../buttons"
 import { PaymentCard } from "../content"
@@ -17,7 +17,7 @@ type PaymentMethodeModalProps = {
 export const PaymentMethodeModal = (props: PaymentMethodeModalProps) => {
     const { visible, closeModal, onBtnPress } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])
     return (
         <Modal
             animationType="slide"
@@ -35,15 +35,15 @@ export const PaymentMethodeModal = (props: PaymentMethodeModalProps) => {
                 <View style={styles.modalContent}>
                     <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "space-between" }} showsVerticalScrollIndicator={false}  >
                         <View>
-                        <ModalTopBarIndicator/>
+                            <ModalTopBarIndicator />
                             <Text style={styles.ModalHeaderText}>
                                 Payment Method
                             </Text>
 
                             {
-                                Array(1).fill("").map((_, index) => (
+                                Array(2).fill("").map((_, index) => (
                                     <Fragment key={index}>
-                                        <PaymentCard selected />
+                                        <PaymentCard />
                                         <Space direction="vertical" size={15} />
                                     </Fragment>
                                 ))
@@ -60,7 +60,7 @@ export const PaymentMethodeModal = (props: PaymentMethodeModalProps) => {
                                 </Pressable>
                             </View>
                         </View>
-
+                        <Space size={20} direction="vertical" />
                         <SaveChangesButton onPress={onBtnPress} text='Confirm Payment' />
                     </ScrollView>
                 </View>
@@ -74,7 +74,7 @@ export const PaymentMethodeModal = (props: PaymentMethodeModalProps) => {
 const getStyles = (theme: ThemeType) => {
     const { palette, mode, text } = theme
     return StyleSheet.create({
-      
+
         /**modal */
         modalContainer: {
             flex: 1,
@@ -83,9 +83,9 @@ const getStyles = (theme: ThemeType) => {
             paddingHorizontal: 24,
             paddingVertical: 10,
             height: "50%",
-            backgroundColor: palette.white[mode].main
+            backgroundColor: palette.bg[mode].main
         },
-        
+
         ModalHeaderText: {
             ...text.heading.H2,
             color: palette.text[mode].main,
@@ -99,7 +99,7 @@ const getStyles = (theme: ThemeType) => {
             borderRadius: 12,
             overflow: 'hidden',
             borderWidth: 1,
-            borderColor: palette.lightGrey[mode].main
+            borderColor: palette.bg[mode][2]
         },
         addPaymentMethodePressable: {
             paddingVertical: 11,

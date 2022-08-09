@@ -14,7 +14,7 @@ type NotificaionProps = {
 export const NotificationItem = (props: NotificaionProps) => {
     const { icon, title, description, time, onPress } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme)
+    const styles = React.useMemo(() => getStyles(theme), [theme])  
     return (
         <View style={{borderRadius:8, overflow:'hidden'}}>
             <Pressable

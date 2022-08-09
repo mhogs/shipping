@@ -23,7 +23,7 @@ export const UpdateLanguageScreen = ({ navigation }: UpdateLanguageScreenProps) 
   useHideBottomBar(navigation, 1)
   const { goBack } = navigation
   const { theme } = useTheme()
-  const styles = getStyles(theme)
+  const styles = React.useMemo(() => getStyles(theme), [theme])  
 
   const [currentLang, setLang] = useState(i18n.language as supportedLangCodeType || defaultLang)
   function updateLang(lang: supportedLangCodeType) {

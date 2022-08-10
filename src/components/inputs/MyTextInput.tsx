@@ -4,6 +4,7 @@ import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../constants/theme'
 import { CheckIcon, EyeIcon, EyeOffIcon } from '../icons'
 import { Space } from '../util'
+import { isRTL } from '../../locales'
 
 type iconPressActionType = "TOGGLE_SECRET" | "RESET_INPUT" | undefined
 type TextInputProps = {
@@ -74,7 +75,7 @@ export const MyTextInput = (props: TextInputProps) => {
                 {startIcon &&
                     <Pressable
                         onPress={onIconPress(startIconAction)}
-                        style={styles.startIonWraper}
+                        style={styles.IonWraper}
                     >
                         {startIcon}
                     </Pressable>
@@ -95,7 +96,7 @@ export const MyTextInput = (props: TextInputProps) => {
                 />
                 <Pressable
                     onPress={onIconPress(endIconAction)}
-                    style={{ paddingRight: 13 }}
+                    style={styles.IonWraper}
                 >
                     {!secureTextEntry && !endIcon && touched && !error &&
                         <CheckIcon color={theme.palette.success[theme.mode].main} size={20} />
@@ -124,26 +125,25 @@ const getStyles = (theme: ThemeType) => {
         inputLabel: {
             ...text.medium.P16_Lh180,
             color: palette.text[mode].main,
+            textAlign:isRTL()?'right':'left'
             
         },
         inputWraper: {
-            flexDirection: 'row',
+            flexDirection: isRTL()?'row-reverse': 'row',
             alignItems: 'center',
             borderWidth: 1.5,
             borderColor: palette.bg[mode][2],
-            borderRadius: 12
+            borderRadius: 12,
         },
         input: {
-            paddingHorizontal: 8,
             paddingVertical: 13,
-            flex: 1,
-            textAlign: "left",
+            flexGrow: 1,
+            textAlign:isRTL()?"right": "left",
             color: palette.text[mode].main,
            
         },
-        startIonWraper:{
-            paddingLeft:13,
-            
+        IonWraper:{
+            paddingHorizontal:10,
         },
         errorText: {
             fontSize: 10,

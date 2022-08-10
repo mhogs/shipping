@@ -83,8 +83,8 @@ export const ChangePasswordScreen = ({ navigation }: ChangePasswordScreenProps) 
 
 
                 <MyTextInput
-                  label='New Password'
-                  placeholder='New password'
+                  label={t('New password')}
+                  placeholder={t('New password')}
                   startIcon={<LockOutLineIcon color={theme.palette.grey[theme.mode].main} size={24} />}
                   endIconAction="TOGGLE_SECRET"
                   secureTextEntry={true}
@@ -98,8 +98,8 @@ export const ChangePasswordScreen = ({ navigation }: ChangePasswordScreenProps) 
                 <Space direction='vertical' size={20} />
 
                 <MyTextInput
-                  label='Confirm Password'
-                  placeholder='Confirm your password'
+                  label={t('Confirm Password')}
+                  placeholder= {t('Confirm your password')}
                   startIcon={<LockOutLineIcon color={theme.palette.grey[theme.mode].main} size={24} />}
                   endIconAction="TOGGLE_SECRET"
                   secureTextEntry={true}
@@ -114,7 +114,7 @@ export const ChangePasswordScreen = ({ navigation }: ChangePasswordScreenProps) 
             </View>
 
             <SaveChangesButton
-              text='Change Password'
+              text={t('Change Password')}
               disabled={submiting || !isValid}
               pending={submiting}
               onPress={handleSubmit}
@@ -123,10 +123,6 @@ export const ChangePasswordScreen = ({ navigation }: ChangePasswordScreenProps) 
         </ScrollView>
       )}
     </Formik>
-
-
-
-
 
   )
 }

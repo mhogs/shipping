@@ -16,6 +16,7 @@ import { ThemeType } from '../../constants/theme'
 import * as yup from 'yup';
 import { Formik } from 'formik'
 import { changePasswordRequestType } from '../../@types'
+import { isRTL, useTranslation } from '../../locales'
 
 const changePasswordSchema = yup.object().shape({
   current_password: yup.string().required("password is required").min(8, "phone must be at least 8 characters long !"),
@@ -30,9 +31,10 @@ type ChangePasswordScreenProps = NativeStackScreenProps<ProfileStackParamList, '
 export const ChangePasswordScreen = ({ navigation }: ChangePasswordScreenProps) => {
   // 1 is the depth of this screen relative to the stack
   useHideBottomBar(navigation, 1)
+  const { t } = useTranslation("change_password")
   const { goBack } = navigation
   const { theme } = useTheme()
-  const styles = React.useMemo(() => getStyles(theme), [theme])  
+  const styles = React.useMemo(() => getStyles(theme), [theme, isRTL()])
   const { mutate: change_password, isLoading: submiting } = useMutation(ProfileServices.changePassword, {
     onSuccess: (data) => {
     },
@@ -57,13 +59,13 @@ export const ChangePasswordScreen = ({ navigation }: ChangePasswordScreenProps) 
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           <KeyboardAvoidingView style={styles.root} >
             <View>
-              <SimpleScreenHeader title="Edit Profile" goBack={goBack} />
+              <SimpleScreenHeader title={t("Edit Password")} goBack={goBack} />
 
               <View style={styles.form} >
                 <View>
                   <MyTextInput
-                    label='Current Password'
-                    placeholder='Current password'
+                    label={t('Current password')}
+                    placeholder={t('Current password')}
                     startIcon={<Image source={lockIcon} />}
                     endIconAction="TOGGLE_SECRET"
                     secureTextEntry={true}
@@ -74,7 +76,7 @@ export const ChangePasswordScreen = ({ navigation }: ChangePasswordScreenProps) 
                     error={errors.current_password}
                   />
                   <Text style={styles.forgetText}>
-                    Forgot Password
+                    {t("Forgot password")}
                   </Text>
                 </View>
                 <Space direction='vertical' size={30} />

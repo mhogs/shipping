@@ -11,15 +11,17 @@ import { ProfileStackParamList } from '../../navigation/ProfileStack';
 import { useAuthentication } from '../../state';
 import { useTheme } from '../../state/theming';
 import { ThemeType } from '../../constants/theme'
-
+import { useTranslation } from '../../locales';
+import { isRTL } from '../../locales'
 
 type MyProfileScreenProps = NativeStackScreenProps<ProfileStackParamList & RootStackParamList, 'MyProfile'>;
 export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
     const { navigate } = navigation
     const { signOut, serverState, currentUser } = useAuthentication()
+    const { t } = useTranslation("my_profile")
     const { theme, switchMode } = useTheme()
+    const styles = React.useMemo(() => getStyles(theme), [theme,isRTL()])
     
-    const styles = React.useMemo(() => getStyles(theme), [theme])  
     return (
         <>
             <StatusBar backgroundColor={theme.palette.primary[theme.mode].main} />
@@ -27,8 +29,8 @@ export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
                 <View style={styles.head} >
                     {/** title */}
                     <View style={styles.title_wraper}>
-                        <Text style={styles.title}  >My Profile</Text>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                        <Text style={styles.title}  >{t("My Profile")}</Text>
+                        <View style={styles.headerIconsWraper}>
                             <Pressable
                                 onPress={switchMode}
                                 style={{ padding: 4 }}
@@ -52,8 +54,8 @@ export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
                     <View style={styles.profile_wraper}>
                         <View style={styles.info_wraper}>
                             <Image style={styles.profile_pic} source={{ uri: currentUser?.picture }} />
-
-                            <View style={{ justifyContent: 'center' }}>
+                            <Space size={16} />
+                            <View style={{ justifyContent: "space-around" }}>
                                 <Text style={styles.profile_name}>{`${currentUser?.first_name} ${currentUser?.last_name}`}</Text>
                                 <Text style={styles.phone}>{currentUser?.phonenumber}</Text>
                             </View>
@@ -65,7 +67,7 @@ export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
                                 onPress={() => navigate('EditProfile', { userId: "1" })}
                                 android_ripple={{ color: theme.palette.grey[theme.mode].main }}
                             >
-                                <Text style={styles.editProfileText}>Edit Profile</Text>
+                                <Text style={styles.editProfileText}>{t("Edit Profile")}</Text>
                             </Pressable>
                         </View>
                     </View>
@@ -75,13 +77,13 @@ export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
                     {
                         settings.map(setting => (
                             <Fragment key={setting.title}>
-                                <Text style={styles.sectionTitle}>{setting.title}</Text>
+                                <Text style={styles.sectionTitle}>{t(setting.title)}</Text>
                                 <Space size={20} direction='vertical' />
                                 {
                                     setting.menu.map(item => (
                                         <Fragment key={item.name}>
                                             <MenuItem
-                                                title={item.name}
+                                                title={t(item.name)}
                                                 icon={item.icon}
                                                 onPress={() => navigate(item.route, item.option)}
                                             />
@@ -109,8 +111,7 @@ const getStyles = (theme: ThemeType) => {
     const { palette, mode, text } = theme
     return StyleSheet.create({
         root: {
-            flex: 1,
-
+            flex: 1
         },
         head: {
             backgroundColor: palette.primary[theme.mode].main,
@@ -118,7 +119,7 @@ const getStyles = (theme: ThemeType) => {
         },
         title_wraper: {
             marginTop: 6,
-            flexDirection: "row",
+            flexDirection: isRTL() ? "row-reverse" : "row",
             justifyContent: "space-between",
             alignItems: "center"
         },
@@ -126,18 +127,20 @@ const getStyles = (theme: ThemeType) => {
             ...text.heading.H1,
             color: palette.white[mode].main,
         },
+        headerIconsWraper: {
+            flexDirection: isRTL() ? "row-reverse" : "row",
+            alignItems: "center"
+        },
         profile_wraper: {
             marginTop: 30,
-            flexDirection: 'row',
+            flexDirection: isRTL() ? "row-reverse" : "row",
             alignItems: 'center',
             justifyContent: 'space-between'
         },
         info_wraper: {
-            flexDirection: 'row',
-
+            flexDirection: isRTL() ? "row-reverse" : "row",
         },
         profile_pic: {
-            marginRight: 16,
             width: 54,
             height: 54,
             borderRadius: 54
@@ -145,7 +148,6 @@ const getStyles = (theme: ThemeType) => {
         profile_name: {
             ...text.heading.H3,
             color: palette.white[mode].main,
-            marginBottom: 6
         },
         phone: {
             ...text.regular.P14_Lh130,
@@ -157,10 +159,8 @@ const getStyles = (theme: ThemeType) => {
             backgroundColor: 'rgba(255,255,255,0.15)'
         },
         editProfilePressable: {
-            paddingTop: 8,
-            paddingBottom: 8,
-            paddingLeft: 16,
-            paddingRight: 16,
+            paddingVertical: 8,
+            paddingHorizontal: 16
         },
         editProfileText: {
             ...text.regular.P14_Lh180,
@@ -173,8 +173,9 @@ const getStyles = (theme: ThemeType) => {
         sectionTitle: {
             ...text.heading.H3,
             color: palette.text[mode].main,
+            textAlign: isRTL() ? "right" : "left"
         },
-       
+
     })
 }
 

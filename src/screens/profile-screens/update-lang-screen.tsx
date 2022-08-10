@@ -11,7 +11,7 @@ import { CheckedIcon, EyeIcon, LeftArrowIcon, LockOutLineIcon } from '../../comp
 import { MyTextInput } from '../../components/inputs'
 import { MenuItem, useHideBottomBar } from '../../components/navigation'
 import { SimpleScreenHeader, Space } from '../../components/util'
-import { changeLanguage, defaultLang, i18n, supportedLangCodeType } from '../../locales'
+import { changeLanguage, defaultLang, i18n, supportedLangCodeType, useTranslation, isRTL } from '../../locales'
 import { ProfileStackParamList } from '../../navigation/ProfileStack'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../constants/theme'
@@ -23,19 +23,20 @@ export const UpdateLanguageScreen = ({ navigation }: UpdateLanguageScreenProps) 
   useHideBottomBar(navigation, 1)
   const { goBack } = navigation
   const { theme } = useTheme()
-  const styles = React.useMemo(() => getStyles(theme), [theme])  
-
+  const styles = React.useMemo(() => getStyles(theme), [theme, isRTL()])
+  const { t } = useTranslation("update_lang")
   const [currentLang, setLang] = useState(i18n.language as supportedLangCodeType || defaultLang)
   function updateLang(lang: supportedLangCodeType) {
     changeLanguage(lang)
     setLang(lang)
+    //setTimeout(() => goBack(), 1000)
   }
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <KeyboardAvoidingView style={styles.root} >
 
-        <SimpleScreenHeader title="Language" goBack={goBack} />
+        <SimpleScreenHeader title={t("Language")} goBack={goBack} />
         <Space direction='vertical' size={30} />
         {
           getLangsList(currentLang).map(lang => (
@@ -48,11 +49,8 @@ export const UpdateLanguageScreen = ({ navigation }: UpdateLanguageScreenProps) 
               />
               <Space direction='vertical' size={15} />
             </Fragment>
-
           ))
         }
-
-
       </KeyboardAvoidingView>
     </ScrollView>
 
@@ -80,25 +78,25 @@ type LangType = {
 }
 
 function getLangsList(currentLang: supportedLangCodeType): LangType[] {
-  
-  
+
+
   return [
     {
       name: "العربية",
       code: 'ar',
-      icon: <Image source={ArabicIcon} style={{width:24, height:24}}  />,
+      icon: <Image source={ArabicIcon} style={{ width: 24, height: 24 }} />,
       selected: currentLang.includes("ar")
     },
     {
       name: "Français",
       code: 'fr',
-      icon: <Image source={FrenchIcon}  style={{width:24, height:24}} />,
-      selected: currentLang.includes("fr") ,
+      icon: <Image source={FrenchIcon} style={{ width: 24, height: 24 }} />,
+      selected: currentLang.includes("fr"),
     },
     {
       name: "English",
       code: 'en',
-      icon: <Image source={EnglishIcon} style={{width:24, height:24}}  />,
+      icon: <Image source={EnglishIcon} style={{ width: 24, height: 24 }} />,
       selected: currentLang.includes("en")
     },
   ]

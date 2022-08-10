@@ -78,7 +78,7 @@ export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
           </Pressable>
         </View>
 
-        {/**search box */}
+        {/** search box */}
         <Space size={20} direction="vertical" />
         <SearchInput
           startIcon={<Image source={searchIcon} />}

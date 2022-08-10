@@ -3,6 +3,7 @@ import { Pressable, View,Text,StyleSheet } from 'react-native'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../constants/theme'
 import { LeftArrowIcon } from '../icons'
+import { isRTL } from '../../locales'
 
 type SimpleScreenHeaderProps={
     title?:string,
@@ -12,7 +13,7 @@ type SimpleScreenHeaderProps={
 export const SimpleScreenHeader = (props:SimpleScreenHeaderProps) => {
     const {title,endIcon,goBack}= props
     const { theme } = useTheme()
-    const styles = React.useMemo(() => getStyles(theme), [theme])  
+    const styles = React.useMemo(() => getStyles(theme), [theme,isRTL()])  
     return (
         <View style={styles.screenHeader}>
             <View style={{ borderRadius: 100, overflow: 'hidden' }}>
@@ -41,7 +42,7 @@ const getStyles = (theme: ThemeType) => {
       
       screenHeader: {
         width: '100%',
-        flexDirection: "row",
+        flexDirection: isRTL()? "row-reverse" : "row",
         alignItems: "center",
         paddingBottom:20
       },
@@ -49,7 +50,8 @@ const getStyles = (theme: ThemeType) => {
         padding: 12,
         borderWidth: 1.5,
         borderColor: palette.bg[mode][2],
-        borderRadius: 100
+        borderRadius: 100,
+        transform: [{rotateY: isRTL()?'180deg':'0deg'}]
       },
       screenHeaderText: {
         ...text.medium.P16_Lh130,

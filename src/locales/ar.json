@@ -2,7 +2,35 @@
   "home": {
     "title": "الصفحة الرئيسية"
   },
-  "orders_history":{
-    "screen_title":"طلباتي"
+  "orders_history": {
+    "screen_title": "طلباتي"
+  },
+  "my_profile": {
+    "My Profile": "حسابي",
+    "Edit Profile": "تعديل الحساب",
+    "Settings": "الإعدادات",
+    "Change Password": "تغيير كلمة المرور",
+    "Language": "اللغة",
+    "Notification": "الإشعارات",
+    "Ubout Us": "معلومات عنا",
+    "FAQ": "التعليمات",
+    "Policy & Security": "السياسة والأمان",
+    "Contact Us": "اتصل بنا",
+    "Other": "أخرى",
+    "Share": "شارك",
+    "Get The Latest Version": "احصل على أحدث نسخة"
+  },
+  "update_lang": {
+    "Language": "اللغة"
+  },
+  "change_password": {
+    "Edit Profile": "تعديل الحساب",
+    "Edit Password":"تعديل كلمة السر",
+    "Current password": "كلمة المرور الحالية",
+    "Forgot password": "هل نسيت كلمة السر",
+    "New password": "كلمة السر الجديدة",
+    "Confirm Password": "تأكيد كلمة المرور",
+    "Confirm your password": "أكد رقمك السري",
+    "Change Password": "غير كلمة السر"
   }
 }

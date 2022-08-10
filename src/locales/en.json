@@ -2,7 +2,35 @@
   "home": {
     "title": "Home"
   },
-  "orders_history":{
-    "screen_title":"My Orders"
+  "orders_history": {
+    "screen_title": "My Orders"
+  },
+  "my_profile": {
+    "My Profile": "My Profile",
+    "Edit Profile": "Edit Profile",
+    "Settings": "Settings",
+    "Change Password": "Change Password",
+    "Language": "Language",
+    "Notification": "Notification",
+    "Ubout Us": "Ubout Us",
+    "FAQ": "FAQ",
+    "Policy & Security": "Policy & Security",
+    "Contact Us": "Contact Us",
+    "Other": "Other",
+    "Share": "Share",
+    "Get The Latest Version": "Get The Latest Version"
+  },
+  "update_lang": {
+    "Language": "Language"
+  },
+  "change_password": {
+    "Edit Profile": "Edit Profile",
+    "Edit Password":"Edit Password",
+    "Current password": "Current Password",
+    "Forgot password": "Forgot Password",
+    "New password": "New password",
+    "Confirm Password": "Confirm Password",
+    "Confirm your password": "Confirm your password",
+    "Change Password": "Change Password"
   }
 }

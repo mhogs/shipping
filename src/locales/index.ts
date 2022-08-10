@@ -31,9 +31,7 @@ function changeLanguage(lng: supportedLangCodeType) {
 }
 
 function isRTL() {
-
   return i18n.dir() === 'rtl'
-
 }
 
 

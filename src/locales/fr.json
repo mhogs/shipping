@@ -2,7 +2,34 @@
   "home": {
     "title": "Acceuil"
   },
-  "orders_history":{
-    "screen_title":"Mes Commandes"
+  "orders_history": {
+    "screen_title": "Mes Commandes"
+  },
+  "my_profile": {
+    "My Profile": "Mon Profile",
+    "Edit Profile": "Modif Profile",
+    "Settings": "Paramètres",
+    "Change Password": "Changer le Mot de Pass",
+    "Language": "Langue",
+    "Notification": "Notification",
+    "Ubout Us":"À propos de nous",
+    "FAQ": "FAQ",
+    "Policy & Security": "politique et sécurité",
+    "Contact Us": "Contactez-nous",
+    "Other": "Autre",
+    "Share": "Partagez",
+    "Get The Latest Version": "Télécharger la dernière version"
+  },
+  "update_lang":{
+    "Language": "Langue"
+  },
+  "change_password": {
+    "Edit Profile": "Modif Profile",
+    "Current password": "Mot de passe courant",
+    "Forgot password": "Mot de passe oublié",
+    "New password": "Nouveau mot de passe",
+    "Confirm Password": "Confirmation du mot de pass",
+    "Confirm your password": "Confirmez votre mot de passe",
+    "Change Password": "Changer le mot de passe"
   }
 }

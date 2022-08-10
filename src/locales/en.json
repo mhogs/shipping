@@ -32,5 +32,12 @@
     "Confirm Password": "Confirm Password",
     "Confirm your password": "Confirm your password",
     "Change Password": "Change Password"
+  },
+  "edit_profile": {
+    "Edit Profile": "Edit Profile",
+    "First Name":"First Name",
+    "Last Name":"Last Name",
+    "Phone Number": "Phone Number",
+    "Save Changes":"Save Changes"
   }
 }

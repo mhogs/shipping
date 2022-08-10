@@ -2,25 +2,26 @@ import React, { Fragment } from "react"
 import { Modal, Image, View, Text, StyleSheet, Pressable } from "react-native"
 import { useTheme } from '../../state';
 import { ThemeType } from '../../constants/theme';
-import { Devider, Space } from "../../components/util";
+import { Devider, ModalTopBarIndicator, Space } from "../../components/util";
 import { ServiceItem } from "../../components/content/service-item";
 import { doubleArrowIcon } from "../../assets";
 import { directionType } from "../../@types";
 import { useServices } from "../../hooks/orders";
+import { ScrollView } from "react-native-gesture-handler";
 
 
 
 
 type CheckRatesModalProps = {
     visible: boolean
-    route:directionType
+    route: directionType
     closeModal: () => void
 }
 
 export const CheckRatesModal = (props: CheckRatesModalProps) => {
-    const { visible,route, closeModal } = props
+    const { visible, route, closeModal } = props
     const { theme } = useTheme()
-    const styles = React.useMemo(() => getStyles(theme), [theme])  
+    const styles = React.useMemo(() => getStyles(theme), [theme])
     const { data: services, isLoading: loading_services } = useServices()
 
     return (
@@ -38,37 +39,42 @@ export const CheckRatesModal = (props: CheckRatesModalProps) => {
                 </Pressable>
 
                 <View style={styles.modalContent}>
-                    <View style={styles.modalTopBa}></View>
-                    <View style={styles.contentContainer}>
-                        <Space direction='vertical' size={46} />
-                        <View style={styles.headerContainer}>
-                            <View style={styles.pickupPlaceContainer}>
-                                <Text style={styles.pickupPlace}>{route.pickup?.place}</Text>
-                                <Text style={styles.type}>Pick Up</Text>
+                    <ScrollView contentContainerStyle={{flexGrow:1}} showsVerticalScrollIndicator={false} >
+                        <ModalTopBarIndicator />
+
+                        <View style={styles.contentContainer}>
+
+                            <View style={styles.headerContainer}>
+                                <View style={styles.pickupPlaceContainer}>
+                                    <Text style={styles.pickupPlace}>{route.pickup?.place}</Text>
+                                    <Text style={styles.type}>Pick Up</Text>
+                                </View>
+                                <Image source={doubleArrowIcon} />
+                                <View style={styles.destinationPlaceContainer}>
+                                    <Text style={styles.destinationPlace}>{route.destination?.place}</Text>
+                                    <Text style={styles.type}>Destination</Text>
+                                </View>
                             </View>
-                            <Image source={doubleArrowIcon} />
-                            <View style={styles.destinationPlaceContainer}>
-                                <Text style={styles.destinationPlace}>{route.destination?.place}</Text>
-                                <Text style={styles.type}>Destination</Text>
+                            <Space direction='vertical' size={15} />
+                            <Devider />
+                            <Space direction='vertical' size={15} />
+                            <View style={styles.servicesListe}>
+                                {
+                                    services?.map((item, index) => {
+                                        return (
+                                            <Fragment key={index}>
+                                                <ServiceItem id={item.id} icon={item.icon} name={item.name} price={'10$'} />
+                                                <Space direction='vertical' size={15} />
+                                            </Fragment>
+                                        )
+                                    })
+                                }
                             </View>
                         </View>
-                        <Space direction='vertical' size={15} />
-                        <Devider />
-                        <Space direction='vertical' size={15} />
-                        <View style={styles.servicesListe}>
-                            {
-                                services?.map((item, index) => {
-                                    return (
-                                        <Fragment key={index}>
-                                            <ServiceItem id={item.id} icon={item.icon} name={item.name} price={'10$'} />
-                                            <Space direction='vertical' size={15} />
-                                        </Fragment>
-                                    )
-                                })
-                            }
-                        </View>
-                    </View>
+                    </ScrollView>
                 </View>
+
+
             </View>
         </Modal>
     )
@@ -107,7 +113,7 @@ const getStyles = (theme: ThemeType) => {
         },
         contentContainer: {
             flex: 1,
-            marginBottom: 47,
+
         },
         selectServiceTitle: {
             ...text.medium.P18_Lh180,

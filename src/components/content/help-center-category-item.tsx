@@ -30,17 +30,13 @@ export const HelpCenterCategoryItem = (props: LocationItemProps) => {
 
 const getStyles = (theme: ThemeType) => {
   const { palette, mode, text } = theme
-  var { height, width } = Dimensions.get('window');
-  const iconWidth = 44
-  const notifTimewidth = 40
-  const marginH = 14
   return StyleSheet.create({
 
     category: {
       flex: 1,
       borderRadius: 12,
       overflow: 'hidden',
-      borderColor: palette.lightGrey[mode].main,
+      borderColor: palette.bg[mode][2],
       borderWidth: 1
     },
     iconstyle: {

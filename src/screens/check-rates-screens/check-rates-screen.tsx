@@ -135,7 +135,7 @@ const getStyles = (theme: ThemeType) => {
       position: 'relative',
       paddingTop: 24,
       paddingHorizontal: 24,
-      backgroundColor: palette.white[theme.mode][3],
+      backgroundColor: palette.bg[theme.mode].main,
     },
     unit: {
       ...text.medium.P14_Lh130,

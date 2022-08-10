@@ -31,5 +31,12 @@
     "Confirm Password": "Confirmation du mot de pass",
     "Confirm your password": "Confirmez votre mot de passe",
     "Change Password": "Changer le mot de passe"
+  },
+  "edit_profile": {
+    "Edit Profile": "Modification du Profile",
+    "First Name":"Prénom",
+    "Last Name":"Nom",
+    "Phone Number": "Numéro de téléphone",
+    "Save Changes":"Enregistrer"
   }
 }

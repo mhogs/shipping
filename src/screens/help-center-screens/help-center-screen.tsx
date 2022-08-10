@@ -124,11 +124,11 @@ const getStyles = (theme: ThemeType) => {
       flex: 1,
       position: 'relative',
       padding: 24,
-      backgroundColor: palette.white[theme.mode][3],
+      backgroundColor: palette.bg[mode].main,
     },
 
     searchBox: {
-      backgroundColor: palette.lightGrey[mode][2],
+      backgroundColor: palette.bg[mode][2],
       flexDirection: 'row',
       justifyContent: 'space-between',
       borderRadius: 12,
@@ -144,24 +144,8 @@ const getStyles = (theme: ThemeType) => {
     row: {
       flexDirection: 'row'
     },
-    category: {
-      flex: 1,
-      borderRadius: 12,
-      overflow: 'hidden',
-      borderColor: palette.lightGrey[mode].main,
-      borderWidth: 1
-    },
-    categoryPressable: {
-      flexDirection: 'row',
-      paddingVertical: 11,
-      paddingHorizontal: 11,
-      alignItems: 'center'
-    },
-    categoryName: {
-      ...text.medium.P14_Lh180,
-      color: palette.text[mode].main,
-      marginLeft: 10
-    },
+    
+   
     customerServiceText: {
       ...text.heading.H3,
       color: palette.text[mode].main,

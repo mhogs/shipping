@@ -32,5 +32,12 @@
     "Confirm Password": "تأكيد كلمة المرور",
     "Confirm your password": "أكد رقمك السري",
     "Change Password": "غير كلمة السر"
+  },
+  "edit_profile": {
+    "Edit Profile": "تعديل الحساب",
+    "First Name":"الاسم",
+    "Last Name":"اللقب",
+    "Phone Number": "رقم الهاتف",
+    "Save Changes":"حفظ التغييرات"
   }
 }

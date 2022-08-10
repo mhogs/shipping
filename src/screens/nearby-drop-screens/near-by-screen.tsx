@@ -123,7 +123,7 @@ const getStyles = (theme: ThemeType) => {
       flex: 1,
       position: 'relative',
       paddingTop: 24,
-      backgroundColor: palette.white[theme.mode][3],
+      backgroundColor: palette.bg[theme.mode].main,
     },
 
     map: {
@@ -131,7 +131,7 @@ const getStyles = (theme: ThemeType) => {
       height: Dimensions.get('window').height / 2.5,
     },
     searchBox: {
-      backgroundColor: palette.lightGrey[mode][2],
+      backgroundColor: palette.bg[mode][2],
       flexDirection: 'row',
       justifyContent: 'space-between',
       borderRadius: 12,

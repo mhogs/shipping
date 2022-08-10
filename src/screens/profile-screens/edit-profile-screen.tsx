@@ -18,6 +18,7 @@ import { useMutation } from '@tanstack/react-query'
 import * as yup from 'yup';
 import { useAuthentication } from '../../state'
 import { ChoosePhotoFromMediaLib } from '../../helpers'
+import { isRTL, useTranslation } from '../../locales'
 
 
 
@@ -34,9 +35,9 @@ export const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
   useHideBottomBar(navigation, 1)
   const { goBack } = navigation
   const { theme } = useTheme()
-  const styles = React.useMemo(() => getStyles(theme), [theme])  
+  const styles = React.useMemo(() => getStyles(theme), [theme, isRTL])
   const { currentUser, setCurrentUser } = useAuthentication()
-
+  const { t } = useTranslation("edit_profile")
 
   /** */
   const handlePickPhoto = async () => {
@@ -73,7 +74,7 @@ export const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           <KeyboardAvoidingView style={styles.root} >
             <View>
-              <SimpleScreenHeader title="Edit Profile" goBack={goBack} />
+              <SimpleScreenHeader title={t("Edit Profile")} goBack={goBack} />
               <View style={styles.profilePicWraper} >
 
                 {currentUser?.picture ?
@@ -91,7 +92,7 @@ export const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
 
               <View style={styles.form} >
                 <MyTextInput
-                  label='First Name'
+                  label={t('First Name')}
                   startIcon={<Image source={ColoredProfileIcon} />}
                   value={values.first_name}
                   onChangeText={handleChange('first_name')}
@@ -102,7 +103,7 @@ export const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
                 <Space direction='vertical' size={20} />
 
                 <MyTextInput
-                  label='Last Name'
+                  label={t('Last Name')}
                   startIcon={<Image source={ColoredProfileIcon} />}
                   value={values.last_name}
                   onChangeText={handleChange('last_name')}
@@ -113,7 +114,7 @@ export const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
                 <Space direction='vertical' size={20} />
 
                 <MyTextInput
-                  label='Phone Number'
+                  label={t('Phone Number')}
                   startIcon={<Image source={ColoredCallIcon} />}
                   value={values.phonenumber}
                   onChangeText={handleChange('phonenumber')}
@@ -127,7 +128,7 @@ export const EditProfileScreen = ({ navigation }: EditProfileScreenProps) => {
 
             <SaveChangesButton
               onPress={handleSubmit}
-              text='Save Changes'
+              text={t('Save Changes')}
               pending={submiting}
               disabled={submiting || !isValid}
             />

@@ -179,7 +179,7 @@ const getStyles = (theme: ThemeType) => {
         },
         sectionContainerStyle: {
             borderRadius: 12,
-            borderColor: palette.lightGrey[mode].main,
+            borderColor: palette.bg[mode][2],
             borderWidth: 1,
             marginBottom: 15,
             padding: 14,

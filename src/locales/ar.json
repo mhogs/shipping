@@ -10,9 +10,24 @@
     "Wallet":"محفظة",
     "Others":"أخرى"
   },
-  "my_balnce":{
-    "My balance":"رصيدي",
-    "Top up":"عبأ"
+  "check_rates": {
+    "Check Rates":"التحقق من الأسعار",
+    "Pickup Adress": "عنوان الاستلام",
+    "Where to pickup from":"أين عنوان الاستلام" ,
+    "Drop Adress":"مكان التسليم",
+    "Where to drop": "أين مكان التسليم",
+    "Weight":"الوزن",
+    "kg":"كلغ",
+    "Check":"تحقق",
+    "Pick Up":"الاستلام",
+    "Destination":"التسليم"
+  },
+  "nearby":{
+    "NearBy Drop":"التوصيلات القريبة",
+    "Search Location":"ابحث عن موقع",
+    "all": "الكل",
+    "pickup": "إستلام",
+    "drop": "ايصال"
   },
   "orders_history": {
     "My Orders": "طلباتي",
@@ -66,18 +81,7 @@
     "Phone Number": "رقم الهاتف",
     "Save Changes":"حفظ التغييرات"
   },
-  "check_rates": {
-    "Check Rates":"التحقق من الأسعار",
-    "Pickup Adress": "عنوان الاستلام",
-    "Where to pickup from":"أين عنوان الاستلام" ,
-    "Drop Adress":"مكان التسليم",
-    "Where to drop": "أين مكان التسليم",
-    "Weight":"الوزن",
-    "kg":"كلغ",
-    "Check":"تحقق",
-    "Pick Up":"الاستلام",
-    "Destination":"التسليم"
-  },
+ 
   "services":{
     "regular":"عادي",
     "cargo":"حمولة",
@@ -88,5 +92,9 @@
     "My Orders":"طلباتي",
     "Messages":"الرسائل",
     "Profile":"حسابي"
+  },
+  "my_balnce":{
+    "My balance":"رصيدي",
+    "Top up":"عبأ"
   }
 }

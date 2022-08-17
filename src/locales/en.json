@@ -1,35 +1,50 @@
 {
   "home": {
     "Tracky": "Tracky",
-    "Enter track number":"Enter track number",
-    "Features":"Features",
-    "Check Rates":"Ckeck Rates",
-    "Nearby Drop":"Nearby Drop",
-    "Order":"Order",
-    "Help Center":"Help Center",
-    "Wallet":"Wallet",
-    "Others":"Others"
+    "Enter track number": "Enter track number",
+    "Features": "Features",
+    "Check Rates": "Ckeck Rates",
+    "Nearby Drop": "Nearby Drop",
+    "Order": "Order",
+    "Help Center": "Help Center",
+    "Wallet": "Wallet",
+    "Others": "Others"
   },
-  "my_balnce":{
-    "My balance":"My balance",
-    "Top up":"Top up"
+  "check_rates": {
+    "Check Rates": "Check Rates",
+    "Pickup Adress": "Pickup Adress",
+    "Where to pickup from": "Where to pickup from",
+    "Drop Adress": "Drop Adress",
+    "Where to drop": "Where to drop",
+    "Wheight": "Wheight",
+    "kg": "kg",
+    "Check": "Check",
+    "Pick Up": "Pick Up",
+    "Destination": "Destination"
+  },
+  "nearby": {
+    "NearBy Drop": "NearBy Drop",
+    "Search Location": "Search Location",
+    "all": "All",
+    "pickup": "Pick Up",
+    "drop": "Drop"
   },
   "orders_history": {
     "My Orders": "My Orders",
-    "Search Orders":"Search Orders",
-    "From Me":"From Me",
-    "To Me":"To Me",
-    "all":"All",
-    "draft":"Draft",
-    "pending":"Pending",
-    "on_progress":"On Progress",
-    "delivered":"Delivered",
-    "Results":"Results"
+    "Search Orders": "Search Orders",
+    "From Me": "From Me",
+    "To Me": "To Me",
+    "all": "All",
+    "draft": "Draft",
+    "pending": "Pending",
+    "on_progress": "On Progress",
+    "delivered": "Delivered",
+    "Results": "Results"
   },
-  "messages":{
-    "Messages":"Messages",
-    "Search Messages":"Search Messages",
-    "Type your message":"Type your message"
+  "messages": {
+    "Messages": "Messages",
+    "Search Messages": "Search Messages",
+    "Type your message": "Type your message"
   },
   "my_profile": {
     "My Profile": "My Profile",
@@ -51,7 +66,7 @@
   },
   "change_password": {
     "Edit Profile": "Edit Profile",
-    "Edit Password":"Edit Password",
+    "Edit Password": "Edit Password",
     "Current password": "Current Password",
     "Forgot password": "Forgot Password",
     "New password": "New password",
@@ -61,32 +76,24 @@
   },
   "edit_profile": {
     "Edit Profile": "Edit Profile",
-    "First Name":"First Name",
-    "Last Name":"Last Name",
+    "First Name": "First Name",
+    "Last Name": "Last Name",
     "Phone Number": "Phone Number",
-    "Save Changes":"Save Changes"
+    "Save Changes": "Save Changes"
   },
-  "check_rates": {
-    "Check Rates":"Check Rates",
-    "Pickup Adress": "Pickup Adress",
-    "Where to pickup from":"Where to pickup from",
-    "Drop Adress":"Drop Adress",
-    "Where to drop": "Where to drop",
-    "Wheight":"Wheight",
-    "kg":"kg",
-    "Check":"Check",
-    "Pick Up":"Pick Up",
-    "Destination":"Destination"
+  "services": {
+    "regular": "Regular",
+    "cargo": "Cargo",
+    "express": "Express"
   },
-  "services":{
-    "regular":"Regular",
-    "cargo":"Cargo",
-    "express":"Express"
+  "bottom_tab_bar": {
+    "Home": "Home",
+    "My Orders": "My Orders",
+    "Messages": "Messages",
+    "Profile": "Profile"
   },
-  "bottom_tab_bar":{
-    "Home":"Home",
-    "My Orders":"My Orders",
-    "Messages":"Messages",
-    "Profile":"Profile"
+  "my_balnce": {
+    "My balance": "My balance",
+    "Top up": "Top up"
   }
 }

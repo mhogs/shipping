@@ -5,6 +5,7 @@ import { useTheme } from '../../state'
 import { ThemeType } from '../../constants/theme'
 import { ClockIcon, CloseIcon } from '../icons'
 import { Space } from '../util'
+import { isRTL } from '../../locales'
 
 type searchBoxProps = {
     onFocus?: () => void,
@@ -73,7 +74,8 @@ const getStyles = (theme: ThemeType) => {
         searchInput: {
             padding: 14,
             flex: 1,
-            color: palette.grey[mode][3]
+            color: palette.grey[mode][3],
+            textAlign:isRTL()?"right":"left"
         },
 
     })

@@ -18,10 +18,12 @@ export const defaultLang: supportedLangCodeType = "en"
 
 function findBestAvailableLanguage() {
   const systemLangs = Localization.locales
+  console.log("=============================");
   return (
     systemLangs.map(sys_lang => sys_lang.split('-')[0]).find((locale) =>
       supportedLanguages.find((lng) => lng === locale)
     ) || defaultLang
+
   )
 }
 
@@ -35,30 +37,30 @@ function isRTL() {
 }
 
 
-function initI18N() {
-  AsyncStorage.getItem('lng').then((lng) => {
-    if (lng === null) {
-      i18n.changeLanguage(defaultLang)
-      return
-    }
-    i18n.changeLanguage(lng)
+async function findLngFromStorage() {
+  const lng = await AsyncStorage.getItem('lng')
+  return lng || defaultLang
+
+}
+
+async function initLang() {
+  i18n.use(initReactI18next).init({
+    compatibilityJSON: 'v3',
+    resources: { en, ar, fr },
+    defaultNS: 'translation',
+    fallbackLng: defaultLang,
+    lng: await findLngFromStorage(),
+    returnObjects: true,
+    nonExplicitSupportedLngs: true,
+    interpolation: {
+      escapeValue: false, // react already safes from xss
+    },
   })
 }
 
+initLang()
 
-i18n.use(initReactI18next).init({
-  compatibilityJSON: 'v3',
-  resources: { en, ar, fr },
-  defaultNS: 'translation',
-  fallbackLng: defaultLang,
-  lng: findBestAvailableLanguage(),
-  returnObjects: true,
-  nonExplicitSupportedLngs: true,
-  interpolation: {
-    escapeValue: false, // react already safes from xss
-  },
-})
-export  {useTranslation}  from 'react-i18next'
-export { i18n, isRTL, initI18N, changeLanguage }
+export { useTranslation } from 'react-i18next'
+export { i18n, isRTL, changeLanguage }
 
 

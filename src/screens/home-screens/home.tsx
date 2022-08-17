@@ -18,7 +18,7 @@ type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'HomeStack'>;
 export const HomeScreen = ({ navigation }: HomeScreenProps) => {
     const { navigate } = navigation
     const { theme } = useTheme()
-    const styles = React.useMemo(() => getStyles(theme), [theme])
+    const styles = React.useMemo(() => getStyles(theme), [theme,isRTL()])
     const { t } = useTranslation("home")
     return (
         <>

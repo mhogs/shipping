@@ -17,7 +17,7 @@ export function MyBottomTabBar(props: BottomTabBarProps) {
     const { t } = useTranslation("bottom_tab_bar")
     const isActiveTab = (tabName: string) => state.routeNames[state.index] === tabName
     const { theme } = useTheme()
-    const styles = React.useMemo(() => getStyles(theme), [theme])
+    const styles = React.useMemo(() => getStyles(theme), [theme,isRTL()])
 
 
 

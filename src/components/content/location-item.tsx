@@ -3,6 +3,7 @@ import { Pressable, View, StyleSheet, Image, Text, Dimensions } from 'react-nati
 import { MessageNotifIcon } from '../../assets'
 import { useTheme } from '../../state'
 import { ThemeType } from '../../constants/theme'
+import { isRTL } from '../../locales'
 
 type LocationItemProps = {
     icon?: any,
@@ -14,15 +15,15 @@ type LocationItemProps = {
 export const LocationItem = (props: LocationItemProps) => {
     const { icon, title, place, distance, onPress } = props
     const { theme } = useTheme()
-    const styles = React.useMemo(() => getStyles(theme), [theme])  
+    const styles = React.useMemo(() => getStyles(theme), [theme])
     return (
-        <View style={{borderRadius:8, overflow:'hidden'}}>
+        <View style={{ borderRadius: 8, overflow: 'hidden' }}>
             <Pressable
                 style={styles.locationContainer}
                 onPress={onPress}
                 android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
             >
-                <View style={{ flexDirection: 'row' }}>
+                <View style={styles.infocontainer}>
                     <View style={styles.locationIconcontainer}>
                         {icon}
                     </View>
@@ -31,7 +32,7 @@ export const LocationItem = (props: LocationItemProps) => {
                             {title}
                         </Text>
                         <Text style={styles.locationBrief}>
-                            {place}
+                            {place?.substring(0,25)}
                         </Text>
                     </View>
                 </View>
@@ -47,18 +48,21 @@ export const LocationItem = (props: LocationItemProps) => {
 
 const getStyles = (theme: ThemeType) => {
     const { palette, mode, text } = theme
-    var { height, width } = Dimensions.get('window');
+    var {  width } = Dimensions.get('window');
     const iconWidth = 44
     const notifTimewidth = 40
     const marginH = 14
     return StyleSheet.create({
 
         locationContainer: {
-            paddingVertical:5,
-            paddingHorizontal:2,
-            flexDirection: "row",
+            paddingVertical: 5,
+            paddingHorizontal: 2,
+            flexDirection: isRTL() ? "row-reverse" : "row",
             justifyContent: "space-between",
             alignItems: "center"
+        },
+        infocontainer:{
+            flexDirection: isRTL() ? "row-reverse" : "row", 
         },
         locationIconcontainer: {
             width: iconWidth,
@@ -70,7 +74,8 @@ const getStyles = (theme: ThemeType) => {
         locationDetailsContainer: {
             marginHorizontal: marginH,
             maxWidth: width - (marginH * 2 + iconWidth + notifTimewidth) - 10,
-            
+            alignItems:isRTL()?"flex-end":"flex-start"
+
         },
         locationTitle: {
             ...text.medium.P14_Lh130,

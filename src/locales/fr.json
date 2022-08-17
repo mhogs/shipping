@@ -1,35 +1,50 @@
 {
   "home": {
     "Tracky": "Tracky",
-    "Enter track number":"Entrez le numéro de suivi",
-    "Features":"Fonctionnalités",
-    "Check Rates":"Vérifier les prix",
-    "Nearby Drop":"A proximité",
-    "Order":"Commande",
-    "Help Center":"Assistance",
-    "Wallet":"Pochette",
-    "Others":"Autre"
+    "Enter track number": "Entrez le numéro de suivi",
+    "Features": "Fonctionnalités",
+    "Check Rates": "Vérifier les prix",
+    "Nearby Drop": "A proximité",
+    "Order": "Commande",
+    "Help Center": "Assistance",
+    "Wallet": "Pochette",
+    "Others": "Autre"
   },
-  "my_balnce":{
-    "My balance":"Mon solde",
-    "Top up":"Recharger"
+  "check_rates": {
+    "Check Rates": "Vérifier les tarifs",
+    "Pickup Adress": "Adresse de ramassage",
+    "Where to pickup from": "Où retirer de",
+    "Drop Adress": "Adresse de dépôt",
+    "Where to drop": "Où déposer",
+    "Weight": "Poids",
+    "kg": "kg",
+    "Check": "Vérifier",
+    "Pick Up": "Ramassage",
+    "Destination": "Destination"
+  },
+  "nearby": {
+    "NearBy Drop": "Livraison à proximité",
+    "Search Location": "Rechercher une destination",
+    "all": "tout",
+    "pickup": "Ramasser",
+    "drop": "Livrer"
   },
   "orders_history": {
     "My Orders": "Mes commandes",
-    "Search Orders":"Rechercher des commandes",
-    "From Me":"De Moi",
-    "To Me":"Pour Moi",
-    "all":"Tout",
-    "draft":"Brouillon",
-    "pending":"En attente",
-    "on_progress":"En cours",
-    "delivered":"Livré",
-    "Results":"Résultats"
+    "Search Orders": "Rechercher des commandes",
+    "From Me": "De Moi",
+    "To Me": "Pour Moi",
+    "all": "Tout",
+    "draft": "Brouillon",
+    "pending": "En attente",
+    "on_progress": "En cours",
+    "delivered": "Livré",
+    "Results": "Résultats"
   },
-  "messages":{
-    "Messages":"Messages",
-    "Search Messages":"Chercher des messages",
-    "Type your message":"Tapez votre message"
+  "messages": {
+    "Messages": "Messages",
+    "Search Messages": "Chercher des messages",
+    "Type your message": "Tapez votre message"
   },
   "my_profile": {
     "My Profile": "Mon Profile",
@@ -38,7 +53,7 @@
     "Change Password": "Changer le Mot de Pass",
     "Language": "Langue",
     "Notification": "Notification",
-    "Ubout Us":"À propos de nous",
+    "Ubout Us": "À propos de nous",
     "FAQ": "FAQ",
     "Policy & Security": "politique et sécurité",
     "Contact Us": "Contactez-nous",
@@ -46,7 +61,7 @@
     "Share": "Partagez",
     "Get The Latest Version": "Télécharger la dernière version"
   },
-  "update_lang":{
+  "update_lang": {
     "Language": "Langue"
   },
   "change_password": {
@@ -60,32 +75,24 @@
   },
   "edit_profile": {
     "Edit Profile": "Modification du Profile",
-    "First Name":"Prénom",
-    "Last Name":"Nom",
+    "First Name": "Prénom",
+    "Last Name": "Nom",
     "Phone Number": "Numéro de téléphone",
-    "Save Changes":"Enregistrer"
+    "Save Changes": "Enregistrer"
   },
-  "check_rates": {
-    "Check Rates":"Vérifier les tarifs",
-    "Pickup Adress": "Adresse de ramassage",
-    "Where to pickup from":"Où retirer de",
-    "Drop Adress":"Adresse de dépôt",
-    "Where to drop": "Où déposer",
-    "Weight":"Poids",
-    "kg":"kg",
-    "Check":"Vérifier",
-    "Pick Up":"Ramassage",
-    "Destination":"Destination"
+  "services": {
+    "regular": "Régulier",
+    "cargo": "Cargaison",
+    "express": "Express"
   },
-  "services":{
-    "regular":"Régulier",
-    "cargo":"Cargaison",
-    "express":"Express"
+  "bottom_tab_bar": {
+    "Home": "Accueil",
+    "My Orders": "Commandes",
+    "Messages": "Messages",
+    "Profile": "Profil"
   },
-  "bottom_tab_bar":{
-    "Home":"Accueil",
-    "My Orders":"Commandes",
-    "Messages":"Messages",
-    "Profile":"Profil"
+  "my_balnce": {
+    "My balance": "Mon solde",
+    "Top up": "Recharger"
   }
 }

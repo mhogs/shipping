@@ -8,20 +8,23 @@ import { SaveChangesButton } from '../../components/buttons';
 import { LocationItem } from '../../components/content';
 import { DropLocationIcon, PickUpLocationIcon, ThreeDotsIcon } from '../../components/icons';
 import { SearchInput } from '../../components/inputs';
-import { useHideBottomBar } from '../../components/navigation';
+import { MyTabView, useHideBottomBar } from '../../components/navigation';
 import { Devider, LoadingBlock, MyMarkerIcon, SimpleScreenHeader, Space } from '../../components/util'
 import { useMapHandler, useOrders, useRefreshOnFocus } from '../../hooks';
 import { NearByStackParamList } from '../../navigation/NearByStack';
 import { useTheme } from '../../state';
 import { ThemeType } from '../../constants/theme';
-import { DeliveryPlaces, LocationModal } from './components';
+import { DeliveryPlaces, LocationModal, NearByLocationsList } from './components';
+import { isRTL, useTranslation } from '../../locales';
+import { SceneRendererProps } from 'react-native-tab-view';
 
 type NearByScreenProps = NativeStackScreenProps<NearByStackParamList, 'NearBy'>;
 export const NearByScreen = ({ navigation }: NearByScreenProps) => {
   useHideBottomBar(navigation, 2)
   const { theme } = useTheme()
-  const styles = React.useMemo(() => getStyles(theme), [theme])
-  const [search, setSearch] = useState("")
+  const styles = React.useMemo(() => getStyles(theme), [theme, isRTL()])
+  const { t } = useTranslation("nearby")
+  const [status, setStatus] = useState<"pending" | "on_progress" | "all">("all")
   const [selectedOreder, setSelectedOrder] = useState<OrdersResponseDataType | null>(null);
   const { mapState, handleMapRegionChange } = useMapHandler()
   const {
@@ -29,20 +32,67 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
     isLoading,
     refetch,
   } = useOrders({ as_driver: true })
-
-  const filteredOrders = orders?.filter(order => order.description?.includes(search))
   useRefreshOnFocus(refetch)
+
+  const TabRoutes = [
+    { key: "all", title: t("all") },
+    { key: "pickup", title: t("pickup") },
+    { key: "drop", title: t("drop") },
+  ]
+  const renderScene = (props: SceneRendererProps & {
+    route: {
+      key: string;
+      title: string;
+    };
+  }) => {
+    const { route } = props;
+
+    switch (route.key) {
+      case 'all':
+
+        return <NearByLocationsList
+          orders={orders}
+          isLoading={isLoading}
+          setSelectedOrder={setSelectedOrder}
+        />
+      case 'pickup':
+
+        return <NearByLocationsList
+          orders={orders?.filter(order => order.state === "pending")}
+          isLoading={isLoading}
+          setSelectedOrder={setSelectedOrder}
+        />
+      case 'drop':
+
+        return <NearByLocationsList
+          orders={orders?.filter(order => order.state === "on_progress")}
+          isLoading={isLoading}
+          setSelectedOrder={setSelectedOrder}
+        />
+      default:
+        return null;
+    }
+  };
+
   return (
 
     <KeyboardAvoidingView style={styles.root} >
       <View style={{ paddingHorizontal: 24 }}>
         <SimpleScreenHeader
-          title='NearBy Drop'
+          title={t('NearBy Drop')}
           goBack={() => navigation.goBack()}
-          endIcon={<ThreeDotsIcon size={16} color={theme.palette.text[theme.mode].main} />}
+          endIcon={
+            <Pressable
+              style={{ padding: 4 }}
+              android_ripple={{ color: theme.palette.grey[theme.mode][3], borderless: true }}
+            >
+              <ThreeDotsIcon size={16} color={theme.palette.text[theme.mode].main} />
+            </Pressable>
+          }
         />
       </View>
-      <ScrollView >
+      <View style={{ flex: 1 }} >
+
         <MapView
           region={mapState.mapRegion}
           onRegionChange={handleMapRegionChange}
@@ -71,49 +121,14 @@ export const NearByScreen = ({ navigation }: NearByScreenProps) => {
             </>
 
           }
-          <DeliveryPlaces orders={filteredOrders} />
+          <DeliveryPlaces orders={orders} />
         </MapView>
-
-        <View style={{ padding: 24 }}>
-          <SearchInput
-            startIcon={<Image source={searchIconGrey} />}
-            placeholder='Search Location'
-            placeholderTextColor={theme.palette.grey[theme.mode][3]}
-            extraStyle={styles.searchBox}
-            onChangeText={(text) => setSearch(text)}
-          />
+        <View style={styles.body}>
+          <MyTabView enabledSwip={false} tabRoutes={TabRoutes} sceneRendrer={renderScene} />
         </View>
-
-        <View style={{ paddingHorizontal: 24 }}>
-          {isLoading && <LoadingBlock />}
-          {filteredOrders &&
-            filteredOrders.map((order, index) => (
-              <Fragment key={index}>
-                <LocationItem
-                  icon={
-                    order.state == "on_progress" ?
-                      <DropLocationIcon size={24} color={theme.palette.primary[theme.mode].main} />
-                      :
-                      <PickUpLocationIcon size={24} color={theme.palette.warning[theme.mode].main} />
-                  }
-                  title={order.description}
-                  place={order.destination?.place}
-                  distance="3.7km"
-                  onPress={() => setSelectedOrder(order)}
-                />
-                <Devider spacing={8} />
-              </Fragment>
-            ))
-          }
-        </View>
-      </ScrollView>
+      </View>
       <LocationModal selectedOreder={selectedOreder} setSelectedOrder={setSelectedOrder} />
-
     </KeyboardAvoidingView>
-
-
-
-
   )
 }
 const getStyles = (theme: ThemeType) => {
@@ -125,7 +140,10 @@ const getStyles = (theme: ThemeType) => {
       paddingTop: 24,
       backgroundColor: palette.bg[theme.mode].main,
     },
-
+    body: {
+      flex: 1,
+      padding: 24
+    },
     map: {
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height / 2.5,

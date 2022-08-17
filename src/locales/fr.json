@@ -26,6 +26,11 @@
     "delivered":"Livré",
     "Results":"Résultats"
   },
+  "messages":{
+    "Messages":"Messages",
+    "Search Messages":"Chercher des messages",
+    "Type your message":"Tapez votre message"
+  },
   "my_profile": {
     "My Profile": "Mon Profile",
     "Edit Profile": "Modif Profile",

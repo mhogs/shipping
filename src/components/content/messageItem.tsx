@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Pressable, View, StyleSheet, Image, Text, Dimensions } from 'react-native'
-import { avatar_asset, MessageNotifIcon } from '../../assets'
+import { avatar_asset } from '../../assets'
 import { useTheme } from '../../state'
 import { ThemeType } from '../../constants/theme'
-import { ChatlIcon } from '../icons'
-import { Badge } from '../util'
 import { dialogType } from '../../@types'
+import { isRTL } from '../../locales'
 
 type MessageItemProps = dialogType & {
     onPress?: () => void
@@ -13,7 +12,7 @@ type MessageItemProps = dialogType & {
 export const MessageItem = (props: MessageItemProps) => {
     const { picture, fullName, messageText, time, unread, onPress } = props
     const { theme } = useTheme()
-    const styles = getStyles(theme, unread)
+    const styles = useMemo(() => getStyles(theme, unread), [theme, unread, isRTL()])
     return (
         <View style={{ borderRadius: 8, overflow: 'hidden' }}>
             <Pressable
@@ -21,7 +20,7 @@ export const MessageItem = (props: MessageItemProps) => {
                 onPress={onPress}
                 android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
             >
-                <View style={{ flexDirection: 'row' }}>
+                <View style={styles.messageWraper}>
                     <View style={styles.avatarContainer}>
                         {
                             picture ?
@@ -30,7 +29,7 @@ export const MessageItem = (props: MessageItemProps) => {
                                 <Image source={avatar_asset} style={styles.picture} />
 
                         }
-                        
+
                     </View>
                     <View style={styles.messageDetailsContainer}>
                         <Text style={styles.senderName}>
@@ -62,18 +61,21 @@ const getStyles = (theme: ThemeType, unread: boolean) => {
         messageContainer: {
             paddingVertical: 5,
             paddingHorizontal: 2,
-            flexDirection: "row",
+            flexDirection: isRTL()?"row-reverse" :"row",
             justifyContent: "space-between",
             alignItems: 'center'
+        },
+        messageWraper: {
+            flexDirection: isRTL()?"row-reverse" :"row",
         },
         avatarContainer: {
             position: "relative"
         },
         messageDetailsContainer: {
-
             marginHorizontal: marginH,
             maxWidth: width - (marginH * 2 + iconWidth + notifTimewidth) - 10,
-            justifyContent: "space-around"
+            justifyContent: "space-around",
+            alignItems: isRTL()? "flex-end":"flex-start"
         },
         senderName: unread ?
             {
@@ -87,12 +89,13 @@ const getStyles = (theme: ThemeType, unread: boolean) => {
             },
         messageText: {
             ...text.regular.P14_Lh130,
-            color:unread?palette.primary[mode].main : palette.grey[mode].main
+            color: unread ? palette.primary[mode].main : palette.grey[mode].main,
+            
         },
         messageTime: {
             maxWidth: notifTimewidth,
             ...text.regular.P10_Lh130,
-            color: unread?palette.text[mode].main : palette.grey[mode].main
+            color: unread ? palette.text[mode].main : palette.grey[mode].main
         },
         picture: {
             width: 44,

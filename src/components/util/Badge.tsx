@@ -1,19 +1,30 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { View } from 'react-native'
 import { useTheme } from '../../state/theming'
 
-export const Badge = (props: { color?: string, right?: number | string, top?: number | string, height?:number, width?:number }) => {
-   const {theme}= useTheme()
+type BadgeProps = {
+    color?: string,
+    right?: number | string,
+    top?: number | string,
+    height?: number,
+    width?: number
+}
+export const Badge: FC<BadgeProps> = (props) => {
+    const { theme } = useTheme()
     return (
         <View style={{
             position: 'absolute',
-            width:props.width|| 8,
-            height:props.height || 8,
-            borderRadius: 5,
-            backgroundColor: props.color || theme.palette.danger[theme.mode].main ,
+            borderRadius: 10,
+            minHeight:props.height,
+            minWidth:props.width,
+            backgroundColor: props.color || theme.palette.danger[theme.mode].main,
             top: props.top || 2,
             right: props.right || 2,
-            zIndex: 1
-        }} />
+            zIndex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+        }} >
+            {props.children}
+        </View>
     )
 }

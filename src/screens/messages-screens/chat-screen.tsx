@@ -1,46 +1,46 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState, useCallback, useEffect, Children } from 'react'
-import { View, StyleSheet, Text, Pressable, Image, TextStyle, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
-import { Actions, ActionsProps, AvatarProps, Bubble, BubbleProps, Composer, ComposerProps, GiftedChat, IMessage, InputToolbar, InputToolbarProps, LeftRightStyle, LoadEarlier, LoadEarlierProps, Message, MessageImage, MessageImageProps, MessageProps, MessageText, MessageTextProps, Send, SendProps, Time, TimeProps } from 'react-native-gifted-chat'
-import { WS_MSG_TYPE } from '../../@types';
+import React from 'react'
+import { View, StyleSheet, Text, Pressable, Image, ActivityIndicator } from 'react-native';
+import { Actions, ActionsProps, AvatarProps, Bubble, BubbleProps, Composer, ComposerProps, GiftedChat, IMessage, InputToolbar, InputToolbarProps, LoadEarlier, LoadEarlierProps, MessageImage, MessageImageProps, Send, SendProps } from 'react-native-gifted-chat'
 import { avatar_asset } from '../../assets';
 import { AttachmentIcon, LeftArrowIcon, PhoneCallIcon, SendIcon, ThreeDotsIcon } from '../../components/icons';
 import { useHideBottomBar } from '../../components/navigation';
 import { Space } from '../../components/util';
-import { generateRondomMessageID } from '../../helpers';
 import { MessagesStackParamList } from '../../navigation/MessagesStack';
 import { useTheme } from '../../state';
 import { ThemeType } from '../../constants/theme';
 import { useMessageDetails } from './useMessageDetails';
+import { isRTL, useTranslation } from '../../locales';
 
 const INPUT_HEIGHT = 44
 
 type ChatScreenScreenProps = NativeStackScreenProps<MessagesStackParamList, "MessageDetails">;
 
 export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
-    const { goBack, pop } = navigation
+    const { goBack } = navigation
     const { sender } = route.params
     useHideBottomBar(navigation, 1)
     const { theme } = useTheme()
-    const styles = React.useMemo(() => getStyles(theme), [theme])  
-
+    const styles = React.useMemo(() => getStyles(theme), [theme, isRTL()])
+    const {t} = useTranslation("messages")
     const { messages, dispatch, can_load_more, loading_more, isLoading, loadMore, onSend, } = useMessageDetails({ user2: sender.id || 0 })
 
     return (
         <View style={styles.root}>
             <View style={styles.chatHeader}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View style={styles.chatHeaderWraper}>
                     <Pressable
                         onPress={() => goBack()}
                         android_ripple={{ color: theme.palette.grey[theme.mode][3], borderless: true }}
+                        style={styles.backButtonWraper}
                     >
                         <LeftArrowIcon color={theme.palette.text[theme.mode].main} />
                     </Pressable>
-
-                    <View style={{ marginLeft: 20 }}>
+                    <Space size={20} />
+                    <View >
                         <View style={styles.messageContainer}>
-                            <View style={{ flexDirection: 'row', alignItems: "center" }}>
-                                <View style={{ marginRight: 14 }}>
+                            <View style={styles.infoWraper}>
+                                <View>
                                     {
                                         sender.picture ?
                                             <Image
@@ -52,8 +52,8 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
                                     }
 
                                 </View>
-
-                                <View >
+                                    <Space size={14} />
+                                <View style={styles.info} >
                                     <Text style={styles.user2Name}>
                                         {sender.first_name} {sender.last_name}
                                     </Text>
@@ -65,7 +65,7 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
                         </View>
                     </View>
                 </View>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View style={styles.iconsWraper}>
                     <Pressable
                         android_ripple={{ color: theme.palette.grey[theme.mode][3], borderless: true }}
                     >
@@ -83,7 +83,7 @@ export const ChatScreen = ({ navigation, route }: ChatScreenScreenProps) => {
             <GiftedChat
                 messages={messages}
                 onSend={messages => onSend(messages)}
-                placeholder="Type your message "
+                placeholder={t("Type your message")}
                 alwaysShowSend
                 user={{ _id: 1, name: 'Bz', }}
                 loadEarlier={can_load_more}
@@ -123,14 +123,17 @@ const getStyles = (theme: ThemeType) => {
             backgroundColor: palette.bg[mode].main
         },
         chatHeader: {
-            flexDirection: "row",
+            flexDirection: isRTL() ? "row-reverse" : "row",
             alignItems: "center",
             justifyContent: 'space-between',
             paddingVertical: 20,
             paddingHorizontal: 24,
             borderBottomColor: palette.bg[mode][2],
             borderBottomWidth: 1,
-
+        },
+        chatHeaderWraper: {
+            flexDirection: isRTL() ? "row-reverse" : "row",
+            alignItems: "center"
         },
         messageContainer: {
             paddingVertical: 5,
@@ -167,6 +170,22 @@ const getStyles = (theme: ThemeType) => {
             height: 24,
             borderRadius: 24
         },
+        infoWraper: {
+            flexDirection: isRTL() ? "row-reverse" : "row",
+            alignItems: "center"
+        },
+        iconsWraper:
+        {
+            flexDirection: isRTL() ? "row-reverse" : "row",
+            alignItems: "center"
+        },
+        backButtonWraper: {
+            transform: [{ rotateY: isRTL()? '180deg':"0deg" }]
+        },
+        info:{
+            alignItems:isRTL()? "flex-end":"flex-start"
+        },
+      
     })
 }
 
@@ -174,7 +193,7 @@ const renderBubble = (props: Readonly<BubbleProps<IMessage>> & Readonly<{
     children?: React.ReactNode;
 }>, theme: ThemeType) => {
 
-    const { palette, mode,text } = theme
+    const { palette, mode, text } = theme
     return (
         <Bubble
             {...props}
@@ -185,7 +204,7 @@ const renderBubble = (props: Readonly<BubbleProps<IMessage>> & Readonly<{
                 },
                 right: {
                     ...text.regular.P14_Lh180,
-                    color: 'white',   
+                    color: 'white',
                 },
 
             }}
@@ -227,6 +246,7 @@ const customtInputToolbar = (props: InputToolbarProps<IMessage>, theme: ThemeTyp
             primaryStyle={{
                 paddingHorizontal: 24,
                 paddingVertical: 12,
+                flexDirection:isRTL()? "row-reverse":"row",
                 alignItems: "stretch",
             }}
         />
@@ -240,7 +260,9 @@ const customtSend = (props: SendProps<IMessage>, theme: ThemeType) => {
             {...props}
             containerStyle={{
                 justifyContent: "center",
-                marginLeft: 10
+                marginLeft: isRTL()?0: 10,
+                marginRight: isRTL()?10: 0,
+                transform: [{ rotateY: isRTL()? '180deg':"0deg" }]
             }}>
             <SendIcon color={palette.primary["light"].main} />
         </Send>
@@ -256,8 +278,10 @@ const customtAction = (props: ActionsProps, theme: ThemeType) => {
             icon={() => <AttachmentIcon color={palette.grey[mode].main} />}
             containerStyle={{
                 backgroundColor: palette.bg[mode][2],
-                borderTopLeftRadius: 10,
-                borderBottomLeftRadius: 10,
+                borderTopRightRadius:isRTL()?10: 0,
+                borderBottomRightRadius: isRTL()?10: 0,
+                borderTopLeftRadius:isRTL()?0: 10,
+                borderBottomLeftRadius: isRTL()?0: 10,
                 marginBottom: 0,
                 marginLeft: 0,
                 height: INPUT_HEIGHT,
@@ -277,14 +301,18 @@ const customtComposer = (props: ComposerProps, theme: ThemeType) => {
             {...props}
             composerHeight={INPUT_HEIGHT}
             placeholderTextColor={theme.palette.grey[mode].main}
+            
             textInputStyle={{
                 backgroundColor: palette.bg[mode][2],
-                borderTopRightRadius: 10,
-                borderBottomRightRadius: 10,
+                borderTopRightRadius:isRTL()?0: 10,
+                borderBottomRightRadius: isRTL()?0: 10,
+                borderTopLeftRadius:isRTL()?10: 0,
+                borderBottomLeftRadius: isRTL()?10: 0,
                 marginLeft: 0,
                 marginBottom: 0,
                 marginTop: 0,
                 flexGrow: 1,
+                textAlign: isRTL()?"right":"left"
             }}
         />
     );

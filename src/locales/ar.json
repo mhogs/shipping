@@ -26,6 +26,11 @@
     "delivered":"تم التسليم",
     "Results":"نتائج"
   },
+  "messages":{
+    "Messages":"الرسائل",
+    "Search Messages":"البحث في الرسائل",
+    "Type your message":"اكتب رسالتك"
+  },
   "my_profile": {
     "My Profile": "حسابي",
     "Edit Profile": "تعديل الحساب",

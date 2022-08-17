@@ -13,6 +13,8 @@ import { RootStackParamList } from '../../navigation/BottomNavigationBar'
 import { MessagesStackParamList } from '../../navigation/MessagesStack'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../constants/theme'
+import { isRTL, useTranslation } from '../../locales'
+import { ChatlIcon } from '../../components/icons'
 
 
 
@@ -20,8 +22,9 @@ type MessagesScreenProps = NativeStackScreenProps<MessagesStackParamList & RootS
 
 export const MessagesScreen = ({ navigation }: MessagesScreenProps) => {
   const { navigate } = navigation
+  const {t} = useTranslation("messages")
   const { theme } = useTheme()
-  const styles = React.useMemo(() => getStyles(theme), [theme])  
+  const styles = React.useMemo(() => getStyles(theme), [theme,isRTL()])  
 
   const { dialogs, isLoading, loadMore, loading_more, refetch } = useDialogs()
   useRefreshOnFocus(refetch)
@@ -48,15 +51,16 @@ export const MessagesScreen = ({ navigation }: MessagesScreenProps) => {
         {/** title */}
         <View style={styles.title}>
 
-          <Text style={styles.logo_text}  >Messages</Text>
+          <Text style={styles.logo_text}>{t("Messages")}</Text>
 
           <Pressable
             style={styles.message_wraper}
-            onPress={() => navigate('NotificationsStack', { userId: "1" })}
           >
             <View style={styles.message_icon}>
-              <Badge />
-              <Image source={notification_asset} />
+              <Badge top={-4} right={-4} height={10} width={10} >
+                <Text style={styles.badgeText}> 3 </Text>
+              </Badge>
+              <ChatlIcon size={20} color={theme.palette.lightGrey[theme.mode].main} />
             </View>
           </Pressable>
         </View>
@@ -65,7 +69,7 @@ export const MessagesScreen = ({ navigation }: MessagesScreenProps) => {
         <Space size={20} direction="vertical" />
         <SearchInput
           startIcon={<Image source={searchIcon} />}
-          placeholder='Search Messages'
+          placeholder={t('Search Messages')}
           placeholderTextColor={theme.palette.grey[theme.mode][3]}
         />
       </View>
@@ -99,12 +103,12 @@ const getStyles = (theme: ThemeType) => {
       padding: 24
     },
     title: {
-      flexDirection: 'row',
+      flexDirection: isRTL()?'row-reverse': 'row',
       alignItems: 'center',
       justifyContent: 'space-between'
     },
     logo_wraper: {
-      flexDirection: 'row',
+      flexDirection: isRTL()?'row-reverse': 'row',
       alignItems: 'center'
     },
     logo_text: {
@@ -123,6 +127,10 @@ const getStyles = (theme: ThemeType) => {
     },
     message_icon: {
       position: 'relative',
+    },
+    badgeText:{
+      fontSize:8,
+      color:palette.lightGrey[mode].main
     },
 
 

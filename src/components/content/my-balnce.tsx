@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { useTheme } from '../../state'
 import { ThemeType } from '../../constants/theme'
 import { PlusIcon, PlusSquareIcon } from '../icons'
+import { useTranslation } from '../../locales'
 
 type MyBalnceProps = {
     bgColor?: string;
@@ -15,6 +16,7 @@ type MyBalnceProps = {
 export const MyBalnce = (props: MyBalnceProps) => {
     const { theme } = useTheme()
     const styles = React.useMemo(() => getStyles(theme), [theme])  
+    const { t } = useTranslation("my_balnce")
     const {
         bgColor = theme.palette.white[theme.mode].main,
         balanceColor = theme.palette.black[theme.mode].main,
@@ -30,7 +32,7 @@ export const MyBalnce = (props: MyBalnceProps) => {
 
         < View style={[{ backgroundColor: bgColor }, styles.balanceBaner]} >
             <View>
-                <Text style={[styles.balancetitle,{color:titleColor}]}>My balance</Text>
+                <Text style={[styles.balancetitle,{color:titleColor}]}>{t("My balance")}</Text>
                 <Text style={[styles.balanceAmount, { color: balanceColor }]}>
                     $ 3.356.00
                 </Text>
@@ -43,7 +45,7 @@ export const MyBalnce = (props: MyBalnceProps) => {
                         android_ripple={{ color: rippleColor }}
                     >
                         <View style={styles.addBalanceWraper}>
-                            <Text style={[styles.addBalanceText, { color: topUpColor }]}>Top up</Text>
+                            <Text style={[styles.addBalanceText, { color: topUpColor }]}>{t("Top up")}</Text>
                             <View>
                                 <PlusSquareIcon color={topUpColor} />
                             </View>

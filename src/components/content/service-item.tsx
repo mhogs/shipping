@@ -3,6 +3,8 @@ import React, { useMemo } from 'react'
 import { useTheme } from '../../state';
 import { ThemeType } from '../../constants/theme';
 import { ServiceType } from '../../@types';
+import { isRTL, useTranslation } from '../../locales';
+import { Space } from '../util';
 
 type serviceItemProps = {
     id: number,
@@ -17,7 +19,7 @@ export const ServiceItem = (props: serviceItemProps) => {
     const { id, icon, name, description, price, onPress } = props
     const { theme } = useTheme()
     const styles = React.useMemo(() => getStyles(theme), [theme])
-
+    const { t } = useTranslation("services")
     return (
         <View style={styles.root}
         >
@@ -29,33 +31,22 @@ export const ServiceItem = (props: serviceItemProps) => {
                 android_ripple={{ color: theme.palette.grey[theme.mode][3] }}
             >
 
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={styles.icon}>
-                        <Image source={{ uri: icon }} style={{ width: 24, height: 24 }} />
+                <View style={styles.info_Wraper}>
+                    <View style={styles.iconWraper}>
+                        <Image source={{ uri: icon }} style={styles.icon} />
                     </View>
-                    <View style={{
-                        marginLeft: 14,
-                        justifyContent: "space-around"
-                    }}>
-                        <Text style={{
-                            ...theme.text.medium.P14_Lh130,
-                            color: theme.palette.text[theme.mode].main
-                        }}>
-                            {name}
+                    <Space size={14} />
+                    <View style={styles.infos}>
+                        <Text style={styles.nameText}>
+                            {t(name)}
                         </Text>
-                        <Text style={{
-                            ...theme.text.regular.P14_Lh130,
-                            color: theme.palette.grey[theme.mode].main
-                        }}>
-                            {description}
+                        <Text style={styles.descriptionText}>
+                            {description && t(description)}
                         </Text>
                     </View>
                 </View>
 
-                <Text style={{
-                    ...theme.text.medium.P12_Lh130,
-                    color: theme.palette.text[theme.mode].main
-                }}>
+                <Text style={styles.priceText}>
                     {price}
                 </Text>
 
@@ -76,18 +67,39 @@ const getStyles = (theme: ThemeType) => {
         },
         pressable: {
             padding: 10,
-            flexDirection: "row",
+            flexDirection: isRTL() ? "row-reverse" : "row",
             justifyContent: "space-between",
             alignItems: 'center'
         },
-        icon:{
-            padding: 13,
+        info_Wraper: {
+            flexDirection: isRTL() ? "row-reverse" : 'row'
+        },
+        infos: {
+            justifyContent: "space-around"
+        },
+        icon: {
+            width: 24,
+            height: 24
+        },
+        iconWraper: {
             height: 50,
             width: 50,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: theme.palette.bg[mode][2],
             borderRadius: 10,
+        },
+        nameText: {
+            ...theme.text.medium.P14_Lh130,
+            color: theme.palette.text[theme.mode].main
+        },
+        descriptionText: {
+            ...theme.text.regular.P14_Lh130,
+            color: theme.palette.grey[theme.mode].main
+        },
+        priceText:{
+            ...theme.text.medium.P12_Lh130,
+            color: theme.palette.text[theme.mode].main
         }
     })
 }

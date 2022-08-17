@@ -41,8 +41,8 @@ export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
 
 
   const TabRoutes = [
-    { key: "from_me", title: "From Me" },
-    { key: "to_me", title: "To Me" },
+    { key: "from_me", title: t("From Me") },
+    { key: "to_me", title: t("To Me") },
   ]
   const renderScene = (props: SceneRendererProps & {
     route: {
@@ -69,7 +69,7 @@ export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
         {/** title */}
         <View style={styles.title}>
 
-          <Text style={styles.title_text}  >{t("screen_title")}</Text>
+          <Text style={styles.title_text}  >{t("My Orders")}</Text>
 
           <Pressable
             style={styles.filterIconContainer}
@@ -82,13 +82,12 @@ export const OrderHistoryScreen = ({ navigation }: OrderHistoryScreenProps) => {
         <Space size={20} direction="vertical" />
         <SearchInput
           startIcon={<Image source={searchIcon} />}
-          placeholder='Search Orders'
+          placeholder={t('Search Orders')}
           placeholderTextColor={theme.palette.grey[theme.mode][3]}
           endicon={<Image source={scanIcon} />}
           value={values.search}
           onChangeText={handleChange("search")}
         />
-
       </View>
       <View style={styles.body}>
         <MyTabView enabledSwip={false} tabRoutes={TabRoutes} sceneRendrer={renderScene} />

@@ -41,8 +41,9 @@ export const MyProfileScreen = ({ navigation }: MyProfileScreenProps) => {
                             <Space size={8} />
                             <Pressable
                                 onPress={() => signOut()}
-                                style={{ padding: 4 }}
+                                style={styles.signoutButton}
                                 android_ripple={{ color: theme.palette.primary[theme.mode][3], borderless: true }}
+                                
                             >
                                 <SignoutIcon color={theme.palette.white[theme.mode].main} />
                             </Pressable>
@@ -116,6 +117,10 @@ const getStyles = (theme: ThemeType) => {
         head: {
             backgroundColor: palette.primary[theme.mode].main,
             padding: 24,
+        },
+        signoutButton:{
+            padding:4,
+            transform: [{ rotateY: isRTL() ? '180deg' : '0deg' }]
         },
         title_wraper: {
             marginTop: 6,

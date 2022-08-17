@@ -1,5 +1,5 @@
 import React, { Fragment } from "react"
-import { Text, StyleSheet, FlatList } from "react-native"
+import { Text, StyleSheet, FlatList, View } from "react-native"
 import { orderHistoryFilterType, OrdersResponseDataType } from "../../../@types"
 import { OrderHistoryItem } from "../../../components/content"
 import { LoadingBlock, Space } from "../../../components/util"
@@ -7,6 +7,8 @@ import { useInfinitOrders, useRefreshOnFocus } from "../../../hooks"
 
 import { useTheme } from "../../../state"
 import { ThemeType } from "../../../constants/theme"
+import { isRTL, useTranslation } from "../../../locales"
+import { isTheLastElement } from "../../../helpers"
 
 type OrdersHistoryListProps = {
     filter?: orderHistoryFilterType
@@ -16,8 +18,8 @@ type OrdersHistoryListProps = {
 export const OrdersHistoryList = (props: OrdersHistoryListProps) => {
     const { filter } = props
     const { theme } = useTheme()
-    const styles = React.useMemo(() => getStyles(theme), [theme])  
-
+    const styles = React.useMemo(() => getStyles(theme), [theme, isRTL()])
+    const { t } = useTranslation("orders_history")
     const {
         results: orders,
         isLoading,
@@ -39,10 +41,10 @@ export const OrdersHistoryList = (props: OrdersHistoryListProps) => {
                 description={item.description}
             />
             <Space size={15} direction='vertical' />
-            {!loading_more && index >= orders.length - 1 &&
+            {!loading_more && isTheLastElement(orders, index) &&
                 <Space size={50} direction='vertical' />
             }
-            {loading_more && index >= orders.length - 1 &&
+            {loading_more && isTheLastElement(orders, index) &&
                 <LoadingBlock style={{ justifyContent: "flex-start" }} />
             }
         </Fragment>
@@ -54,9 +56,16 @@ export const OrdersHistoryList = (props: OrdersHistoryListProps) => {
     }
     return (
         <>
-            <Text style={styles.resultsText}>
-                {resultsCount} Results
-            </Text>
+            <View style={styles.resultsHeader}>
+                <Text style={styles.resultsText}>
+                    {resultsCount}
+                </Text>
+                <Space size={8} />
+                <Text style={styles.resultsText}>
+                    {t("Results")}
+                </Text>
+            </View>
+
             <Space size={20} direction='vertical' />
             <FlatList
                 data={orders}
@@ -76,9 +85,14 @@ export const OrdersHistoryList = (props: OrdersHistoryListProps) => {
 const getStyles = (theme: ThemeType) => {
     const { palette, mode, text } = theme
     return StyleSheet.create({
+        resultsHeader:{ 
+            flexDirection: isRTL() ? "row-reverse" : "row" ,
+            textAlign: isRTL()?"right" :"left"
+        },
         resultsText: {
             ...text.heading.H3,
             color: palette.text[mode].main
-        }
+        },
+
     })
 }

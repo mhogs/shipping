@@ -6,6 +6,7 @@ import { SceneRendererProps } from 'react-native-tab-view';
 import { orderHistoryFilterType } from '../../../@types';
 import { OrdersHistoryList } from './orders-history-list';
 import { MyTabView } from '../../../components/navigation';
+import { isRTL, useTranslation } from '../../../locales';
 
 
 type OrdersFormMeSceneProps = {
@@ -14,19 +15,19 @@ type OrdersFormMeSceneProps = {
 
 export const OrdersListScene = (props: OrdersFormMeSceneProps) => {
     const { filter } = props;
-
+    const {t} = useTranslation("orders_history")
     const { theme } = useTheme()
-    const styles = React.useMemo(() => getStyles(theme), [theme])  
+    const styles = React.useMemo(() => getStyles(theme), [theme,isRTL()])  
 
 
     // 👇️ type T1 = string
 
     const TabRoutes = [
-        { key: "all", title: "All" },
-        { key: "draft", title: "Draft" },
-        { key: "pending", title: "Pending" },
-        { key: "on_progress", title: "On Progress" },
-        { key: "deliverded", title: "Deliverded" },
+        { key: "all", title: t("all" )},
+        { key: "draft", title: t("draft") },
+        { key: "pending", title: t("pending") },
+        { key: "on_progress", title: t("on_progress") },
+        { key: "delivered", title: t("delivered") },
     ]
 
     const renderScene = (props: SceneRendererProps & {
@@ -46,7 +47,7 @@ export const OrdersListScene = (props: OrdersFormMeSceneProps) => {
                 return <OrdersHistoryList filter={{ ...filter, state: "pending" }} />;
             case 'on_progress':
                 return <OrdersHistoryList filter={{ ...filter, state: "on_progress" }} />;
-            case 'deliverded':
+            case 'delivered':
                 return <OrdersHistoryList filter={{ ...filter, state: "delivered" }} />;
             default:
                 return null;
@@ -59,6 +60,7 @@ export const OrdersListScene = (props: OrdersFormMeSceneProps) => {
             <MyTabView
                 enabledSwip={false}
                 tabRoutes={TabRoutes}
+                
                 sceneRendrer={renderScene}
                 tapBarstyle={styles.tapBar}
                 tabItemFocusedStyle={styles.tabItemFocused}

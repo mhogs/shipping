@@ -5,6 +5,7 @@ import { GooglePlaceData, GooglePlacesAutocomplete, GooglePlacesAutocompleteRef 
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../constants/theme'
 import { Space } from '../util';
+import { i18n, isRTL } from '../../locales';
 
 type GooglePlacesInputProps = {
     label?: string,
@@ -18,24 +19,28 @@ type GooglePlacesInputProps = {
 
 
 export const GooglePlacesInput = (props: GooglePlacesInputProps) => {
-    const { label, placeholder, icon, onChange, touched, error,onBlur } = props;
+    const { label, placeholder, icon, onChange, touched, error, onBlur } = props;
     const { theme } = useTheme()
-    const styles = getStyles(theme, Boolean(error)&&touched)
+    const styles = getStyles(theme, Boolean(error) && touched)
 
     const inputRef = useRef<GooglePlacesAutocompleteRef>(null);
     const clear = () => {
         inputRef?.current?.clear()
     }
+    isRTL()
     const renderIcon = () => {
         return (
-            <Pressable
-                style={{ alignItems: 'center', justifyContent: 'center' }}
-                onPress={() => {
-                    clear()
-                }}
-            >
-                {icon}
-            </Pressable>
+            <>
+                <Pressable
+                    style={[{ position: "absolute" }, isRTL() ? { left: 8 } : { right: 8 }]}
+                    onPress={() => {
+                        clear()
+                    }}
+                >
+                    {icon}
+                </Pressable>
+            </>
+
         )
     }
 
@@ -49,12 +54,12 @@ export const GooglePlacesInput = (props: GooglePlacesInputProps) => {
                     ...theme.text.regular.P14_Lh180,
                 }}>
                     {data.description || data.formatted_address || data.name}
-                    
+
                 </Text>
             </View>
         )
     }
-    const { width: deviceWidth } = useWindowDimensions()
+
     return (
         <View >
             <ScrollView
@@ -77,32 +82,33 @@ export const GooglePlacesInput = (props: GooglePlacesInputProps) => {
 
                         ref={inputRef}
                         placeholder={placeholder ? placeholder : 'Search location'}
-                        
-                        onPress={(data, details = null) => {  
-                            onChange({ 
-                                place:data.description, 
-                                longitude:details?.geometry.location.lng,
-                                latitude:details?.geometry.location.lat,
+
+                        onPress={(data, details = null) => {
+                            onChange({
+                                place: data.description,
+                                longitude: details?.geometry.location.lng,
+                                latitude: details?.geometry.location.lat,
                             });
                         }}
-                        
+
                         fetchDetails={true}
                         suppressDefaultStyles={true}
                         minLength={2}
                         enablePoweredByContainer={false}
                         query={{
                             key: 'AIzaSyBeg9OGJfQWY0CWyRh8PfW2ERQbsP-yEwc',
-                            language: 'en',
+                            language: i18n.language,
                             //components: 'country:dz'
-                        }}    
+                        }}
                         renderRow={renderListItem}
                         renderRightButton={renderIcon}
                         styles={styles}
                         textInputProps={{
                             onChangeText: (location) => location === "" && onChange(null),
-                            placeholderTextColor:theme.palette.grey[theme.mode].main
+                            placeholderTextColor: theme.palette.grey[theme.mode].main,
+                            
                         }}
-                        
+
                         debounce={200}
 
                     />
@@ -121,6 +127,7 @@ const getStyles = (theme: ThemeType, error?: boolean) => {
     const { palette, mode, text } = theme
     return StyleSheet.create({
         container: {
+
         },
         inputLabel: {
             ...text.medium.P16_Lh180,
@@ -135,14 +142,15 @@ const getStyles = (theme: ThemeType, error?: boolean) => {
             alignItems: 'center',
             justifyContent: 'space-between',
             borderRadius: 12,
-            borderWidth: 1, 
+            borderWidth: 1,
             borderColor: error ? palette.danger[mode].main : palette.bg[mode][2],
-            
+
         },
         textInput: {
             flex: 1,
             color: palette.text[mode].main,
             ...text.regular.P14_Lh180,
+            textAlign: isRTL()?"right":"left"
         },
         listView: {
             backgroundColor: palette.bg[mode].main,

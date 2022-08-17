@@ -79,7 +79,9 @@ export async function getModeFromStorage(): Promise<"light" | "dark"> {
     return theme_mode || "light"
 }
 
-
+export function isTheLastElement(arr:any[], index:number){
+    return index+1 === arr.length
+}
 
 export async function getAuthHeaders() {
     const user = await getUserFromStorage()

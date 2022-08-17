@@ -5,10 +5,12 @@ import { checkRatesIcon, HelpCenterFeatureIcon, logo_asset, NearByFeatureIcon, n
 import { MyBalnce } from '../../components/content'
 import { SearchInput } from '../../components/inputs'
 import { Space } from '../../components/util'
-import { listToMatrix } from '../../helpers'
+import { isTheLastElement, listToMatrix } from '../../helpers'
 import { RootStackParamList } from '../../navigation/BottomNavigationBar'
 import { useTheme } from '../../state/theming'
 import { ThemeType } from '../../constants/theme'
+import { isRTL, useTranslation } from '../../locales'
+
 
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'HomeStack'>;
@@ -16,8 +18,8 @@ type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'HomeStack'>;
 export const HomeScreen = ({ navigation }: HomeScreenProps) => {
     const { navigate } = navigation
     const { theme } = useTheme()
-    const styles = React.useMemo(() => getStyles(theme), [theme])  
-
+    const styles = React.useMemo(() => getStyles(theme), [theme])
+    const { t } = useTranslation("home")
     return (
         <>
             <StatusBar backgroundColor={theme.palette.primary[theme.mode].main} />
@@ -27,7 +29,8 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                     <View style={styles.title}>
                         <View style={styles.logo_wraper}>
                             <Image source={logo_asset} />
-                            <Text style={styles.logo_text}  >Tracky</Text>
+                            <Space size={10} />
+                            <Text style={styles.logo_text}  >{t("Tracky")}</Text>
                         </View>
                         <Pressable
                             style={styles.notification_wraper}
@@ -41,12 +44,12 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                     </View>
                     {/** balance banner */}
                     <Space direction="vertical" size={30} />
-                    <MyBalnce onTopUpPress={() => navigation.navigate("TopUp")}/>
+                    <MyBalnce onTopUpPress={() => navigation.navigate("TopUp")} />
                     {/**search box */}
                     <Space size={20} direction="vertical" />
                     <SearchInput
                         startIcon={<Image source={searchIcon} />}
-                        placeholder='Enter track number'
+                        placeholder={t('Enter track number')}
                         placeholderTextColor={theme.palette.grey[theme.mode][3]}
                         onFocus={() => navigate("TrackingStack")}
                         endicon={<Image source={scanIcon} />}
@@ -55,15 +58,15 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
                 </View>
                 <View style={styles.body} >
-                    <Text style={styles.featuresText}>Features</Text>
+                    <Text style={styles.featuresText}>{t("Features")}</Text>
 
                     {
                         listToMatrix(features, 3).map((row, row_index) => (
                             <Fragment key={row_index}>
                                 <View style={styles.featuresWraper}>
                                     {
-                                        row.map((feature: featureType) => (
-                                            <Fragment key={feature.name}>
+                                        row.map((feature: featureType, feature_index) => (
+                                            <Fragment key={feature_index}>
                                                 <View style={styles.feature}>
                                                     <Pressable
                                                         style={styles.featurePressable}
@@ -71,10 +74,10 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                                                         android_ripple={{ color: theme.palette.grey[theme.mode][3], borderless: false }}
                                                     >
                                                         <Image source={feature.icon} />
-                                                        <Text style={styles.featureName}>{feature.name}</Text>
+                                                        <Text style={styles.featureName}>{t(feature.name)}</Text>
                                                     </Pressable>
                                                 </View>
-                                                <Space size={15} />
+                                                {!isTheLastElement(row, feature_index) && <Space size={15} />}
                                             </Fragment>
                                         ))
                                     }
@@ -98,7 +101,7 @@ type featureType = {
 }
 const features = [
     {
-        name: 'CkeckRates',
+        name: 'Check Rates',
         icon: checkRatesIcon,
         route: 'CheckRatesStack'
     },
@@ -141,18 +144,18 @@ const getStyles = (theme: ThemeType) => {
             padding: 24
         },
         title: {
-            flexDirection: 'row',
+            flexDirection: isRTL() ? "row-reverse" : 'row',
             alignItems: 'center',
             justifyContent: 'space-between'
         },
         logo_wraper: {
-            flexDirection: 'row',
+            flexDirection: isRTL() ? "row-reverse" : 'row',
             alignItems: 'center'
         },
         logo_text: {
             ...text.heading.H1,
             color: palette.white[mode].main,
-            marginLeft: 10
+
         },
         notification_wraper: {
             justifyContent: 'center',
@@ -176,15 +179,15 @@ const getStyles = (theme: ThemeType) => {
             right: 2,
             zIndex: 1
         },
-      
-      
-       
+
+
+
         /** Body */
         body: {
             flex: 1,
             paddingTop: 30,
-            paddingLeft: 24,
-            paddingRight: 24
+            paddingHorizontal: 24,
+
         },
         featuresText: {
             ...text.heading.H3,
@@ -192,7 +195,7 @@ const getStyles = (theme: ThemeType) => {
             marginBottom: 20
         },
         featuresWraper: {
-            flexDirection: "row",
+            flexDirection: isRTL() ? "row-reverse" : 'row',
             flexWrap: "wrap",
         },
         feature: {
@@ -202,11 +205,10 @@ const getStyles = (theme: ThemeType) => {
             borderWidth: 1.5,
             borderColor: palette.bg[mode][2],
             alignItems: 'center',
-            borderRadius: 12
+            borderRadius: 12,
         },
         featurePressable: {
-            paddingTop: 16,
-            paddingBottom: 16,
+            paddingVertical: 16,
             width: "100%",
             alignItems: 'center'
         },

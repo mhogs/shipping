@@ -15,6 +15,7 @@ import * as yup from 'yup';
 import { Formik, useFormik } from 'formik';
 import { locationType } from '../../@types';
 import { ScrollView } from 'react-native-gesture-handler';
+import { i18n, isRTL, useTranslation } from '../../locales';
 
 
 const checkRateShema = yup.object().shape({
@@ -27,8 +28,9 @@ type ChackRatesScreenProps = NativeStackScreenProps<CkeckRatesParamList, 'CkeckR
 export const ChackRatesScreen = (props: ChackRatesScreenProps) => {
   const { navigation } = props;
   useHideBottomBar(navigation, 2)
+  const { t } = useTranslation("check_rates")
   const { theme } = useTheme()
-  const styles = React.useMemo(() => getStyles(theme), [theme])  
+  const styles = React.useMemo(() => getStyles(theme), [theme,isRTL()])  
   const [modal, setModal] = useState(false);
 
   const { handleChange, handleBlur, handleSubmit, values, errors, touched, isValid, setFieldValue } = useFormik({
@@ -57,7 +59,7 @@ export const ChackRatesScreen = (props: ChackRatesScreenProps) => {
         backgroundColor={theme.palette.white[theme.mode].main}
       />
       <SimpleScreenHeader
-        title='Check Rates'
+        title={t('Check Rates') }
         goBack={() => navigation.goBack()}
       />
       
@@ -69,18 +71,19 @@ export const ChackRatesScreen = (props: ChackRatesScreenProps) => {
       >
         <View style={{ flex: 1 }}>
           <GooglePlacesInput
-            label='Pickup Adress'
-            placeholder='where to pick from'
+            label={t('Pickup Adress')}
+            placeholder={t('Where to pickup from')}
             onChange={(adress: locationType) => setFieldValue("pickup", adress)}
             icon={<Image source={gpsIcon} />}
             touched={touched.pickup}
             error={errors.pickup}
             onBlur={handleBlur("pickup")}
           />
+         
           <Space direction='vertical' size={30} />
           <GooglePlacesInput
-            label='Drop Adress'
-            placeholder='where to drop'
+            label={t('Drop Adress')}
+            placeholder={t('Where to drop')}
             onChange={(adress) => setFieldValue("destination", adress)}
             icon={<Image source={gpsIcon} />}
             touched={touched.destination}
@@ -90,11 +93,11 @@ export const ChackRatesScreen = (props: ChackRatesScreenProps) => {
           <Space direction='vertical' size={30} />
 
           <MyTextInput
-            label='Weight'
+            label={t('Weight')}
             placeholder='0'
             isNumeric={true}
             startIcon={<Image source={boxSearchIcon} />}
-            endIcon={<Text style={styles.unit}>Kg</Text>}
+            endIcon={<Text style={styles.unit}>{t("kg")}</Text>}
             value={values.weight}
             onChangeText={handleChange('weight')}
             onBlur={handleBlur('weight')}
@@ -104,7 +107,7 @@ export const ChackRatesScreen = (props: ChackRatesScreenProps) => {
 
           <Space direction='vertical' size={40} />
           <SaveChangesButton
-            text='Check'
+            text={t('Check')}
             onPress={handleSubmit}
             disabled={!isValid}
           />

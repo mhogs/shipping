@@ -6,6 +6,8 @@ import { useTheme } from '../../state'
 import { ThemeType } from '../../constants/theme'
 import * as Clipboard from 'expo-clipboard';
 import { showsuccessToast } from '../../helpers'
+import { isRTL, useTranslation } from '../../locales'
+import { Space } from '../util'
 
 type orderItemProps = OrdersResponseDataType & {
     onPress?: () => void
@@ -14,8 +16,8 @@ type orderItemProps = OrdersResponseDataType & {
 export const OrderHistoryItem = (props: orderItemProps) => {
     const { code, description, state, onPress } = props
     const { theme } = useTheme()
-    const styles = React.useMemo(() => getStyles(theme), [theme])  
-
+    const styles = React.useMemo(() => getStyles(theme), [theme, isRTL()])
+    const { t } = useTranslation("orders_history")
     const copyToClipboard = async (text: string) => {
         await Clipboard.setStringAsync(text);
         showsuccessToast(`coppied`)
@@ -25,10 +27,11 @@ export const OrderHistoryItem = (props: orderItemProps) => {
         <View style={styles.root}>
 
             <View style={styles.orderContainer}>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={styles.info_wraper}>
                     <View style={styles.orderIconcontainer}>
                         <Image source={PackageColored} />
                     </View>
+                    <Space size={14} />
                     <View style={styles.orderDetailsContainer}>
                         <Pressable
                             onPress={() => copyToClipboard(code as string)}
@@ -46,7 +49,7 @@ export const OrderHistoryItem = (props: orderItemProps) => {
                 </View>
 
                 <Text style={[styles.orderState, { color: getStateColor(theme, state) }]}>
-                    {state}
+                    {state && t(state)}
                 </Text>
             </View>
 
@@ -83,10 +86,13 @@ function getStyles(theme: ThemeType) {
             padding: 10,
         },
         orderContainer: {
-            padding:10,
-            flexDirection: "row",
+            padding: 10,
+            flexDirection: isRTL()? "row-reverse": "row",
             justifyContent: "space-between",
             alignItems: 'center'
+        },
+        info_wraper:{ 
+            flexDirection: isRTL()? "row-reverse": "row",
         },
         orderIconcontainer: {
             padding: 13,
@@ -98,7 +104,6 @@ function getStyles(theme: ThemeType) {
             borderRadius: 10,
         },
         orderDetailsContainer: {
-            marginLeft: 14,
             justifyContent: "space-around"
         },
         orderTitle: {
@@ -107,7 +112,8 @@ function getStyles(theme: ThemeType) {
         },
         orderBrief: {
             ...text.regular.P14_Lh130,
-            color: palette.grey[mode].main
+            color: palette.grey[mode].main,
+            textAlign:isRTL()?"right":"left"
         },
         orderState: {
             ...text.regular.P12_Lh180,

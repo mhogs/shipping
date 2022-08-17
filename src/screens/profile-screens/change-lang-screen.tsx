@@ -29,7 +29,7 @@ export const UpdateLanguageScreen = ({ navigation }: UpdateLanguageScreenProps) 
   function updateLang(lang: supportedLangCodeType) {
     changeLanguage(lang)
     setLang(lang)
-    //setTimeout(() => goBack(), 1000)
+    goBack()
   }
 
   return (

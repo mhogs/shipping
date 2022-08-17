@@ -8,6 +8,7 @@ import { doubleArrowIcon } from "../../assets";
 import { directionType } from "../../@types";
 import { useServices } from "../../hooks/orders";
 import { ScrollView } from "react-native-gesture-handler";
+import { useTranslation } from "../../locales";
 
 
 
@@ -22,6 +23,7 @@ export const CheckRatesModal = (props: CheckRatesModalProps) => {
     const { visible, route, closeModal } = props
     const { theme } = useTheme()
     const styles = React.useMemo(() => getStyles(theme), [theme])
+    const { t } = useTranslation("check_rates")
     const { data: services, isLoading: loading_services } = useServices()
 
     return (
@@ -47,12 +49,12 @@ export const CheckRatesModal = (props: CheckRatesModalProps) => {
                             <View style={styles.headerContainer}>
                                 <View style={styles.pickupPlaceContainer}>
                                     <Text style={styles.pickupPlace}>{route.pickup?.place}</Text>
-                                    <Text style={styles.type}>Pick Up</Text>
+                                    <Text style={styles.type}>{t("Pick Up")}</Text>
                                 </View>
                                 <Image source={doubleArrowIcon} />
                                 <View style={styles.destinationPlaceContainer}>
                                     <Text style={styles.destinationPlace}>{route.destination?.place}</Text>
-                                    <Text style={styles.type}>Destination</Text>
+                                    <Text style={styles.type}>{t("Destination")}</Text>
                                 </View>
                             </View>
                             <Space direction='vertical' size={15} />

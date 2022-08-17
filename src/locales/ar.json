@@ -1,9 +1,30 @@
 {
   "home": {
-    "title": "الصفحة الرئيسية"
+    "Tracky": "تراكي",
+    "Enter track number":"أدخل رقم التتبع",
+    "Features":"الميزات",
+    "Check Rates":"التحقق من الأسعار",
+    "Nearby Drop":"مواقع قريبة ",
+    "Order":"الطلب",
+    "Help Center":"مركز التعليمات",
+    "Wallet":"محفظة",
+    "Others":"أخرى"
+  },
+  "my_balnce":{
+    "My balance":"رصيدي",
+    "Top up":"عبأ"
   },
   "orders_history": {
-    "screen_title": "طلباتي"
+    "My Orders": "طلباتي",
+    "Search Orders":"البحث عن الطلبات",
+    "From Me":"مني",
+    "To Me":"لي",
+    "all":"الكل",
+    "draft":"مسودة",
+    "pending":"قيد الانتظار",
+    "on_progress":"قيد التسليم",
+    "delivered":"تم التسليم",
+    "Results":"نتائج"
   },
   "my_profile": {
     "My Profile": "حسابي",
@@ -39,5 +60,28 @@
     "Last Name":"اللقب",
     "Phone Number": "رقم الهاتف",
     "Save Changes":"حفظ التغييرات"
+  },
+  "check_rates": {
+    "Check Rates":"التحقق من الأسعار",
+    "Pickup Adress": "عنوان الاستلام",
+    "Where to pickup from":"أين عنوان الاستلام" ,
+    "Drop Adress":"مكان التسليم",
+    "Where to drop": "أين مكان التسليم",
+    "Weight":"الوزن",
+    "kg":"كلغ",
+    "Check":"تحقق",
+    "Pick Up":"الاستلام",
+    "Destination":"التسليم"
+  },
+  "services":{
+    "regular":"عادي",
+    "cargo":"حمولة",
+    "express":"سريع"
+  },
+  "bottom_tab_bar":{
+    "Home":"الرئيسية",
+    "My Orders":"طلباتي",
+    "Messages":"الرسائل",
+    "Profile":"حسابي"
   }
 }

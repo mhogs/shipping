@@ -1,9 +1,30 @@
 {
   "home": {
-    "title": "Acceuil"
+    "Tracky": "Tracky",
+    "Enter track number":"Entrez le numéro de suivi",
+    "Features":"Fonctionnalités",
+    "Check Rates":"Vérifier les prix",
+    "Nearby Drop":"A proximité",
+    "Order":"Commande",
+    "Help Center":"Assistance",
+    "Wallet":"Pochette",
+    "Others":"Autre"
+  },
+  "my_balnce":{
+    "My balance":"Mon solde",
+    "Top up":"Recharger"
   },
   "orders_history": {
-    "screen_title": "Mes Commandes"
+    "My Orders": "Mes commandes",
+    "Search Orders":"Rechercher des commandes",
+    "From Me":"De Moi",
+    "To Me":"Pour Moi",
+    "all":"Tout",
+    "draft":"Brouillon",
+    "pending":"En attente",
+    "on_progress":"En cours",
+    "delivered":"Livré",
+    "Results":"Résultats"
   },
   "my_profile": {
     "My Profile": "Mon Profile",
@@ -38,5 +59,28 @@
     "Last Name":"Nom",
     "Phone Number": "Numéro de téléphone",
     "Save Changes":"Enregistrer"
+  },
+  "check_rates": {
+    "Check Rates":"Vérifier les tarifs",
+    "Pickup Adress": "Adresse de ramassage",
+    "Where to pickup from":"Où retirer de",
+    "Drop Adress":"Adresse de dépôt",
+    "Where to drop": "Où déposer",
+    "Weight":"Poids",
+    "kg":"kg",
+    "Check":"Vérifier",
+    "Pick Up":"Ramassage",
+    "Destination":"Destination"
+  },
+  "services":{
+    "regular":"Régulier",
+    "cargo":"Cargaison",
+    "express":"Express"
+  },
+  "bottom_tab_bar":{
+    "Home":"Accueil",
+    "My Orders":"Commandes",
+    "Messages":"Messages",
+    "Profile":"Profil"
   }
 }

@@ -6,6 +6,7 @@ import { ThemeType } from '../../constants/theme';
 import { HomeIcon, HomeIconActive, MessageIcon, MessageIconActive, OrdersIcon, OrdersIconActive, ProfileIcon, ProfileIconActive } from '../../assets';
 import { RootStackParamList } from '../../navigation/BottomNavigationBar';
 import { OrdersHistoryStackParamList } from '../../navigation/OrderHistoryStack';
+import { isRTL, useTranslation } from '../../locales';
 
 
 
@@ -13,15 +14,15 @@ import { OrdersHistoryStackParamList } from '../../navigation/OrderHistoryStack'
 export function MyBottomTabBar(props: BottomTabBarProps) {
     const { state, navigation, descriptors } = props
     const extraStyle = Object.values(descriptors)[state.index].options.tabBarStyle as any;
-
+    const { t } = useTranslation("bottom_tab_bar")
     const isActiveTab = (tabName: string) => state.routeNames[state.index] === tabName
     const { theme } = useTheme()
-    const styles = React.useMemo(() => getStyles(theme), [theme])  
+    const styles = React.useMemo(() => getStyles(theme), [theme])
 
 
 
     return (
-        <View style={[extraStyle,styles.root ]}>
+        <View style={[extraStyle, styles.root]}>
             <View style={styles.menu}>
                 {
                     BottomTabs.map(tab => (
@@ -33,8 +34,10 @@ export function MyBottomTabBar(props: BottomTabBarProps) {
                                 }}
                                 android_ripple={{ color: theme.palette.lightGrey[theme.mode].main, borderless: true }}
                             >
-                                <Image source={isActiveTab(tab.route) ? tab.activeIcon : tab.icon} style={{width:24, height:24}} />
-                                <Text style={[styles.tabText, isActiveTab(tab.route) ? { color: theme.palette.primary[theme.mode].main } : {}]}>{tab.name}</Text>
+                                <Image source={isActiveTab(tab.route) ? tab.activeIcon : tab.icon} style={{ width: 24, height: 24 }} />
+                                <Text style={[styles.tabText, isActiveTab(tab.route) ? { color: theme.palette.primary[theme.mode].main } : {}]}>
+                                    {t(tab.name)}
+                                </Text>
                             </Pressable>
                         </View>
 
@@ -50,10 +53,12 @@ const getStyles = (theme: ThemeType) => {
     const { palette, mode, text } = theme
     return StyleSheet.create({
         root: {
-            backgroundColor: mode==="light"?"#ffffff":"#0F1621",
+            backgroundColor: palette.bg[mode].main,
+            borderTopWidth:1,
+            borderColor:palette.bg[mode][2]
         },
         menu: {
-            flexDirection: 'row',
+            flexDirection:isRTL()?"row-reverse": 'row',
             paddingLeft: 6,
             paddingRight: 6
         },
@@ -70,7 +75,7 @@ const getStyles = (theme: ThemeType) => {
             padding: 6
         },
         tabText: {
-            ...text.regular.P12_Lh130,
+            ...text.regular.P10_Lh130,
             color: palette.grey[mode].main,
             marginTop: 4
         }

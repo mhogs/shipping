@@ -10,6 +10,7 @@ import {
   NavigationState,
 } from "react-native-tab-view";
 import { ScrollView } from 'react-native-gesture-handler';
+import { isRTL } from '../../locales';
 
 
 type routeType = {
@@ -49,12 +50,9 @@ export const MyTabView = (props: MyTabViewType) => {
 
 
   const { theme } = useTheme();
-  const styles = React.useMemo(() => getStyles(theme), [theme])  ;
-
+  const styles = React.useMemo(() => getStyles(theme), [theme, isRTL()]);
   const layout = useWindowDimensions();
-
   const [index, setIndex] = useState(0);
-  const [routes] = useState(tabRoutes);
 
   const _renderTabBar = (
     props: SceneRendererProps & {
@@ -68,18 +66,22 @@ export const MyTabView = (props: MyTabViewType) => {
       <View style={[tapBarstyle ? tapBarstyle : styles.tapBar, { zIndex: 10, marginBottom: 30 }]}>
         <ScrollView
           horizontal={scrollable}
-          contentContainerStyle={{ flexDirection: 'row', height: "100%" }}
+          contentContainerStyle={styles.scrollable}
           showsHorizontalScrollIndicator={false}
+          style={isRTL()? { transform:  [{ rotateY: '180deg' }] }:{}}
         >
           {props.navigationState.routes.map((route, i) => {
             return (
               <Pressable
                 key={i}
                 style={
-                  index === i ?
+                  [index === i ?
                     (tabItemFocusedStyle ? tabItemFocusedStyle : styles.tabItemFocused)
                     :
                     (tabItemNotFocusedStyle ? tabItemNotFocusedStyle : styles.tabItemNotFocused)
+                    ,
+                  isRTL() ? { transform: [{ rotateY: '180deg' }] } : {}
+                  ]
                 }
                 onPress={() => setIndex(i)}
               >
@@ -105,7 +107,7 @@ export const MyTabView = (props: MyTabViewType) => {
   return (
     <View style={styles.container}>
       <TabView
-        navigationState={{ index, routes }}
+        navigationState={{ index, routes: tabRoutes }}
         renderTabBar={_renderTabBar}
         renderScene={sceneRendrer}
         swipeEnabled={enabledSwip}
@@ -125,6 +127,7 @@ const getStyles = (theme: ThemeType) => {
     container: {
       flex: 1,
     },
+
     tapBar: {
       flexDirection: "row",
       alignItems: "center",
@@ -133,6 +136,10 @@ const getStyles = (theme: ThemeType) => {
       padding: 4,
       elevation: 0,
       backgroundColor: palette.bg[theme.mode][2],
+    },
+    scrollable: {
+      flexDirection: "row",
+      height: "100%"
     },
     tabItemFocused: {
       flex: 1,
